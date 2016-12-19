@@ -29,8 +29,12 @@ PlasmaComponents.ListItem {
     property bool expanded : false
     property int baseHeight : groupItemBase.height
     property var currentGroupDetails : createCurrentGroupDetails()
+    property var currentGroupLights : []
     property string defaultIcon : "help-about"
     property bool available : true
+    
+    property int brightness : 1
+    
 
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
@@ -80,6 +84,7 @@ PlasmaComponents.ListItem {
             height: paintedHeight
             elide: Text.ElideRight
             font.weight: Font.Normal
+            opacity: available ? 1.0 : 0.6
             text: name
             textFormat: Text.PlainText
         }
@@ -97,8 +102,8 @@ PlasmaComponents.ListItem {
             height: paintedHeight
             elide: Text.ElideRight
             font.pointSize: theme.smallestFont.pointSize
-            opacity: 0.6
-            text: infoText
+            opacity: available ? 0.6 : 0.4
+            text: available ? getSubtext() : getSubtext() + " : " + i18n("not available")
             textFormat: Text.PlainText
         }
 
@@ -113,7 +118,7 @@ PlasmaComponents.ListItem {
             }
 
             checked: true
-            enabled: true
+            enabled: available
 
             onClicked: toggleOnOff()
         }
@@ -132,20 +137,20 @@ PlasmaComponents.ListItem {
                     Layout.maximumHeight: slider.height
                     Layout.maximumWidth: slider.height
                     source: "contrast"
+                    visible: expanded
             }
         
             PlasmaComponents.Slider {
                 id: slider
                 
-                property int brightness: Brightness
                 property bool ignoreValueChange: false
 
                 Layout.fillWidth: true
                 minimumValue: 0
                 maximumValue: 100
                 stepSize: 1
-                visible: true
-                enabled: true
+                visible: expanded
+                enabled: available
 
                 onValueChanged: {
                 }
@@ -234,7 +239,7 @@ PlasmaComponents.ListItem {
             
             anchors {
                 top: groupTabBar.bottom
-                topMargin: units.smallSpacing / 4
+                topMargin: units.smallSpacing / 2
                 left: parent.left
                 leftMargin: units.gridUnit * 2
                 right: parent.right
@@ -279,6 +284,16 @@ PlasmaComponents.ListItem {
         }
         else {
             return defaultIcon;
+        }
+    }
+    
+    function getSubtext() {
+        var amount = currentGroupLights.length;
+        if (amount == 1) {
+            return "1 " + i18n("light");
+        }
+        else {
+            return amount + " " + i18n("lights");
         }
     }
     

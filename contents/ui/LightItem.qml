@@ -29,6 +29,8 @@ PlasmaComponents.ListItem {
     property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
     property bool available : true
+    
+    property int brightness : 1
 
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
     checked: containsMouse
@@ -77,6 +79,7 @@ PlasmaComponents.ListItem {
             height: paintedHeight
             elide: Text.ElideRight
             font.weight: Font.Normal
+            opacity: available ? 1.0 : 0.6
             text: name
             textFormat: Text.PlainText
         }
@@ -94,8 +97,8 @@ PlasmaComponents.ListItem {
             height: paintedHeight
             elide: Text.ElideRight
             font.pointSize: theme.smallestFont.pointSize
-            opacity: 0.6
-            text: infoText
+            opacity: available ? 0.6 : 0.4
+            text: available ? infoText : i18n("Not available")
             textFormat: Text.PlainText
         }
         
@@ -113,20 +116,20 @@ PlasmaComponents.ListItem {
                     Layout.maximumHeight: slider.height
                     Layout.maximumWidth: slider.height
                     source: "contrast"
+                    visible: expanded
             }
         
             PlasmaComponents.Slider {
                 id: slider
                 
-                property int brightness: Brightness
                 property bool ignoreValueChange: false
 
                 Layout.fillWidth: true
                 minimumValue: 0
                 maximumValue: 100
                 stepSize: 1
-                visible: true
-                enabled: true
+                visible: expanded
+                enabled: available
 
 
                 onValueChanged: {
@@ -148,7 +151,7 @@ PlasmaComponents.ListItem {
             }
 
             checked: true
-            enabled: true
+            enabled: available
 
             onClicked: toggleOnOff()
         }

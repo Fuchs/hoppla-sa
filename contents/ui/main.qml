@@ -33,7 +33,9 @@ Item {
     Plasmoid.compactRepresentation: CompactRepresentation { }
     Plasmoid.fullRepresentation: FullRepresentation { }
 
-    function action_settings() {
+    function getActiveLampsText() {
+        //TODO: implement me
+        return "5 Lampen aktiv";
     }
 
     Component.onCompleted: {

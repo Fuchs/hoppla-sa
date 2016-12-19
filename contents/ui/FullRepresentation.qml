@@ -323,67 +323,67 @@ FocusScope {
         ListElement {
             uuid: "1"
             name: "Wohnzimmer Decke"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Wohnzimmer Ball"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Schlafzimmer Decke"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Schlafzimmer Ball"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Flur vorne"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Flur hinten"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Küche Decke"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Büro Decke"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Gastzimmer Decke"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Mond"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
             uuid: "1"
             name: "Sonne"
-            infoText: "Irgendwas"
+            infoText: "Extended color light"
             icon: "im-jabber"
         }
     }    
