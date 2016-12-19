@@ -27,7 +27,7 @@ Item {
     id: hopplaApplet
 
     Plasmoid.toolTipMainText: i18n("Philips Hue lights")
-    Plasmoid.toolTipSubText: i18n("Subtext")
+    Plasmoid.toolTipSubText: i18n("5 Lampen aktiv")
     Plasmoid.icon: Logic.icon()
 
     Plasmoid.compactRepresentation: CompactRepresentation { }

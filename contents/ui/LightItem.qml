@@ -24,17 +24,17 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 PlasmaComponents.ListItem {
     id: lightItem
 
-    property bool expanded : visibleDetails
-    property bool visibleDetails : false
+    property bool expanded : false
     property int baseHeight : lightItemBase.height
-    property var currentLightDetails : []
+    property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
+    property bool available : true
 
-    height: expanded ? baseHeight + expandableComponentLoader.height + Math.round(units.gridUnit / 3) : baseHeight
+    height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
 
-    Item {
+    MouseArea {
         id: lightItemBase
 
         anchors {
@@ -71,7 +71,7 @@ PlasmaComponents.ListItem {
                 bottom: lightIcon.verticalCenter
                 left: lightIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onButton.visible ? onButton.left : parent.right
+                right: onoffButton.visible ? onoffButton.left : parent.right
             }
 
             height: paintedHeight
@@ -87,7 +87,7 @@ PlasmaComponents.ListItem {
             anchors {
                 left: lightIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onButton.visible ? onButton.left : parent.right
+                right: onoffButton.visible ? onoffButton.left : parent.right
                 top: lightLabel.bottom
             }
 
@@ -152,20 +152,22 @@ PlasmaComponents.ListItem {
 
             onClicked: toggleOnOff()
         }
-    }
-
-    Loader {
-        id: expandableComponentLoader
-
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: lightItemBase.bottom
+        
+        onClicked: {
+            expanded = !expanded;
         }
     }
 
-    Component {
-        id: lightDetailsComponent
+    Item {
+        id: lightDetailsItem
+        visible: expanded
+        height: 80 + lightTabBar.height
+        
+        anchors {
+            top: lightItemBase.bottom
+            left: parent.left
+            right: parent.right
+        }
 
         PlasmaComponents.TabBar {
             id: lightTabBar
@@ -192,59 +194,44 @@ PlasmaComponents.ListItem {
                 iconSource: "help-about"
             }
         }
-    }
 
-    states: [
-        State {
-            name: "collapsed"
-            when: !visibleDetails
+        
+        Item {
+            id: lightInfoItem
+            visible: lightTabBar.currentTab == lightInfoTab
+            height: 80
+            width: parent.width
+            
+            anchors {
+                top: lightTabBar.bottom
+                topMargin: units.smallSpacing / 4
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+            }
+            
+            GridLayout {
+                width: parent.width
+                columns: 2
+                rowSpacing: units.smallSpacing / 4
+                
+                Repeater {
+                    id: repeater
 
-            StateChangeScript {
-                script: {
-                    if (expandableComponentLoader.status == Loader.Ready) {
-                        expandableComponentLoader.sourceComponent = undefined;
+                    model: currentLightDetails.length
+
+                    PlasmaComponents.Label {
+                        id: detailLabel
+                        Layout.fillWidth: true
+                        horizontalAlignment: index % 2 ? Text.AlignLeft : Text.AlignRight
+                        elide: index % 2 ? Text.ElideRight : Text.ElideNone
+                        font.pointSize: theme.smallestFont.pointSize
+                        opacity: 0.6
+                        text: index % 2 ? currentLightDetails[index] : "<b>%1</b>:".arg(currentLightDetails[index])
+                        textFormat: index % 2 ? Text.PlainText : Text.StyledText
                     }
                 }
             }
-        },
-
-        State {
-            name: "expandedDetails"
-            when: visibleDetails
-
-            StateChangeScript {
-                script: {
-                    expandableComponentLoader.sourceComponent = lightDetailsComponent;
-                }
-            }
-        }
-    ]
-
-    onStateChanged: {
-        if (state == "expandedDetails") {
-            ListView.view.currentIndex = index;
-        }
-    }
-
-    onClicked: {
-        visibleDetails = !visibleDetails;
-
-        if (!visibleDetails) {
-            ListView.view.currentIndex = -1;
-        }
-    }
-
-    property QtObject __dev
-    readonly property QtObject dev : Device
-    onDevChanged: {
-        if (__dev == dev) {
-            return;
-        }
-        __dev = dev;
-
-        if (visibleDetails) {
-            visibleDetails = false;
-            ListView.view.currentIndex = -1;
         }
     }
 
@@ -268,4 +255,35 @@ PlasmaComponents.ListItem {
     function toggleOnOff() {
         //TODO: implement me
     }
+    
+    function createCurrentLightDetails() {
+        var lightDtls = [];
+
+        lightDtls.push(i18n("ID and name"));
+        lightDtls.push("1 Wohnzimmer Decke");
+
+        lightDtls.push(i18n("State"));
+        lightDtls.push("On");
+
+        lightDtls.push(i18n("Brightness"));
+        lightDtls.push("255");
+        
+        lightDtls.push(i18n("Colour mode"));
+        lightDtls.push("xy: 0.5016 0.4151");
+
+        lightDtls.push(i18n("Type"));
+        lightDtls.push("Extended color light");
+        
+        lightDtls.push(i18n("Product ID"));
+        lightDtls.push("Philips-LCT010-1-A19ECLv4");
+        
+        lightDtls.push(i18n("Unique ID"));
+        lightDtls.push("00:17:88:01:02:7a:55:3f-0b");
+
+        lightDtls.push(i18n("Software Version"));
+        lightDtls.push("1.15.2_r19181");
+        
+        return lightDtls;
+    }
 }
+

@@ -75,7 +75,7 @@ PlasmaComponents.ListItem {
                 bottom: actionIcon.verticalCenter
                 left: actionIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onButton.visible ? onButton.left : parent.right
+                right: executeButton.visible ? executeButton.left : parent.right
             }
 
             height: paintedHeight

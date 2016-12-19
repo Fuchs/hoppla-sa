@@ -19,24 +19,24 @@
 
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 PlasmaComponents.ListItem {
     id: groupItem
 
-    property bool expanded : visibleDetails
-    property bool visibleDetails : false
+    property bool expanded : false
     property int baseHeight : groupItemBase.height
-    property var currentLightDetails : []
+    property var currentGroupDetails : createCurrentGroupDetails()
     property string defaultIcon : "help-about"
+    property bool available : true
 
-
-    height: expanded ? baseHeight + expandableComponentLoader.height + Math.round(units.gridUnit / 3) : baseHeight
+    height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
 
-    Item {
+    MouseArea {
         id: groupItemBase
 
 
@@ -74,7 +74,7 @@ PlasmaComponents.ListItem {
                 bottom: groupIcon.verticalCenter
                 left: groupIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onButton.visible ? onButton.left : parent.right
+                right: onoffButton.visible ? onoffButton.left : parent.right
             }
 
             height: paintedHeight
@@ -90,7 +90,7 @@ PlasmaComponents.ListItem {
             anchors {
                 left: groupIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onButton.visible ? onButton.left : parent.right
+                right: onoffButton.visible ? onoffButton.left : parent.right
                 top: groupLabel.bottom
             }
 
@@ -147,7 +147,6 @@ PlasmaComponents.ListItem {
                 visible: true
                 enabled: true
 
-
                 onValueChanged: {
                 }
 
@@ -155,27 +154,30 @@ PlasmaComponents.ListItem {
                 }
             }
         }
-    }
-
-    Loader {
-        id: expandableComponentLoader
-
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: groupItemBase.bottom
+        
+        onClicked: {
+            expanded = !expanded;
         }
     }
 
-    Component {
-        id: groupDetailsComponent
+    Item {
+        id: groupDetailsItem
+        visible: expanded
+        
+        height: Math.max(80, lightsView.contentHeight) + groupTabBar.height
+
+        
+        anchors {
+                top: groupItemBase.bottom
+                left: parent.left
+                right: parent.right
+        }
 
         PlasmaComponents.TabBar {
             id: groupTabBar
 
             anchors {
                 top: parent.top
-                topMargin: Math.round(units.gridUnit / 2)
                 left: parent.left
                 right: parent.right
             }
@@ -191,7 +193,7 @@ PlasmaComponents.ListItem {
             }
 
             PlasmaComponents.TabButton {
-                id: lightColoursTab
+                id: groupColoursTab
                 iconSource: "color-management"
             }
             
@@ -205,59 +207,61 @@ PlasmaComponents.ListItem {
                 iconSource: "help-about"
             }
         }
-    }
+        
+        ListView {
+            id: lightsView
+            anchors {
+                top: groupTabBar.bottom
+                topMargin: Math.round(units.gridUnit / 2)
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+            }
+                
+            interactive: false
+            height: expanded ? lightsView.contentHeight : 0
+            visible: height > 0 && groupTabBar.currentTab == groupLightsTab
+            currentIndex: -1
+            model: groupLightModel
+            delegate: LightItem { }
+        }
 
-    states: [
-        State {
-            name: "collapsed"
-            when: !visibleDetails
+        Item {
+            id: groupInfoItem
+            visible: groupTabBar.currentTab == groupInfoTab
+            height: 80
+            width: parent.width
+            
+            anchors {
+                top: groupTabBar.bottom
+                topMargin: units.smallSpacing / 4
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+            }
+            
+            GridLayout {
+                width: parent.width
+                columns: 2
+                rowSpacing: units.smallSpacing / 4
+                
+                Repeater {
+                    id: repeater
 
-            StateChangeScript {
-                script: {
-                    if (expandableComponentLoader.status == Loader.Ready) {
-                        expandableComponentLoader.sourceComponent = undefined;
+                    model: currentGroupDetails.length
+
+                    PlasmaComponents.Label {
+                        id: detailLabel
+                        Layout.fillWidth: true
+                        horizontalAlignment: index % 2 ? Text.AlignLeft : Text.AlignRight
+                        elide: index % 2 ? Text.ElideRight : Text.ElideNone
+                        font.pointSize: theme.smallestFont.pointSize
+                        opacity: 0.6
+                        text: index % 2 ? currentGroupDetails[index] : "<b>%1</b>:".arg(currentGroupDetails[index])
+                        textFormat: index % 2 ? Text.PlainText : Text.StyledText
                     }
                 }
             }
-        },
-
-        State {
-            name: "expandedDetails"
-            when: visibleDetails
-
-            StateChangeScript {
-                script: {
-                    expandableComponentLoader.sourceComponent = groupDetailsComponent;
-                }
-            }
-        }
-    ]
-
-    onStateChanged: {
-        if (state == "expandedDetails") {
-            ListView.view.currentIndex = index;
-        }
-    }
-
-    onClicked: {
-        visibleDetails = !visibleDetails;
-
-        if (!visibleDetails) {
-            ListView.view.currentIndex = -1;
-        }
-    }
-
-    property QtObject __dev
-    readonly property QtObject dev : Device
-    onDevChanged: {
-        if (__dev == dev) {
-            return;
-        }
-        __dev = dev;
-
-        if (visibleDetails) {
-            visibleDetails = false;
-            ListView.view.currentIndex = -1;
         }
     }
 
@@ -280,5 +284,51 @@ PlasmaComponents.ListItem {
     
     function toggleOnOff() {
         //TODO: implement me
+    }
+    
+    
+    function createCurrentGroupDetails() {
+        var groupDtls = [];
+
+        groupDtls.push(i18n("ID and name"));
+        groupDtls.push("1 Wohnzimmer Decke");
+        
+        groupDtls.push(i18n("Number of lights"));
+        groupDtls.push("2");
+
+        groupDtls.push(i18n("State"));
+        groupDtls.push("Some On");
+
+        groupDtls.push(i18n("Brightness"));
+        groupDtls.push("255");
+        
+        groupDtls.push(i18n("Colour mode"));
+        groupDtls.push("xy: 0.5016 0.4151");
+
+        groupDtls.push(i18n("Type"));
+        groupDtls.push("Room")
+        
+        groupDtls.push(i18n("Class"));
+        groupDtls.push("Living Room");
+        
+        return groupDtls;
+    }
+    
+
+    
+    ListModel {
+        id: groupLightModel
+        ListElement {
+            uuid: "1"
+            name: "Wohnzimmer Decke"
+            infoText: "Irgendwas"
+            icon: "im-jabber"
+        }
+        ListElement {
+            uuid: "1"
+            name: "Wohnzimmer Ball"
+            infoText: "Irgendwas"
+            icon: "im-jabber"
+        }
     }
 }

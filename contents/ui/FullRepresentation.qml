@@ -224,8 +224,8 @@ FocusScope {
             anchors.fill: parent
             clip: true
             currentIndex: -1
-            model: groupModel
             boundsBehavior: Flickable.StopAtBounds
+            model: groupModel
             delegate: GroupItem { }
         }
     }
@@ -247,8 +247,8 @@ FocusScope {
             anchors.fill: parent
             clip: true
             currentIndex: -1
-            model: lightModel
             boundsBehavior: Flickable.StopAtBounds
+            model: lightModel
             delegate: LightItem { }
         }
     }
