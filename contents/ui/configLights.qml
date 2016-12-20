@@ -21,36 +21,4 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0
 
 Item {
-    ColumnLayout {
-        Layout.fillWidth: true
-
-        GroupBox {
-            Layout.fillWidth: true
-            flat: true
-            title: i18n("Bridge")
-
-            GridLayout {
-                columns: 2
-                Layout.fillWidth: true
-
-                Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Bridge URL:")
-                }
-
-                TextField {
-                    id: bla
-                }
-
-                Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Authentication Token:")
-                }
-
-                TextEdit {
-                    id: baz
-                }
-            }
-        }
-    }
 }

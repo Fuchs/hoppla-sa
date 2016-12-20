@@ -20,19 +20,30 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0
 
-
 Item {
+    
+    property alias cfg_baseURL: baseURL.text
+    property alias cfg_authToken: authToken.text
+    width: parent.width
+    anchors.left: parent.left
+    anchors.right: parent.right
+
     ColumnLayout {
         Layout.fillWidth: true
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         GroupBox {
             Layout.fillWidth: true
+            anchors.left: parent.left
+            anchors.right: parent.right
             flat: true
             title: i18n("Bridge")
 
             GridLayout {
                 columns: 2
                 Layout.fillWidth: true
+                anchors.fill: parent
 
                 Label {
                     Layout.alignment: Qt.AlignRight
@@ -41,6 +52,7 @@ Item {
 
                 TextField {
                     id: baseURL
+                    Layout.fillWidth: true
                 }
 
                 Label {
@@ -48,8 +60,9 @@ Item {
                     text: i18n("Authentication Token:")
                 }
 
-                TextEdit {
+                TextField {
                     id: authToken
+                     Layout.fillWidth: true
                 }
             }
         }
