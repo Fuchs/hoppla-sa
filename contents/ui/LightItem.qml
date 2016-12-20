@@ -21,16 +21,18 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import "hue.js" as Hue
+
 PlasmaComponents.ListItem {
     id: lightItem
 
     property bool expanded : false
-    property int baseHeight : lightItemBase.height
+    property int baseHeight : lightItemBase.height + (units.smallSpacing * 2) - slider.height
     property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
     property bool available : true
     
-    property int brightness : 1
+    property int brightness : 100
 
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
     checked: containsMouse
@@ -73,7 +75,7 @@ PlasmaComponents.ListItem {
                 bottom: lightIcon.verticalCenter
                 left: lightIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onoffButton.visible ? onoffButton.left : parent.right
+                right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
             }
 
             height: paintedHeight
@@ -90,7 +92,7 @@ PlasmaComponents.ListItem {
             anchors {
                 left: lightIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onoffButton.visible ? onoffButton.left : parent.right
+                right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
                 top: lightLabel.bottom
             }
 
@@ -107,7 +109,7 @@ PlasmaComponents.ListItem {
             anchors {
                     left: lightIcon.right
                     rightMargin: Math.round(units.gridUnit)
-                    right: onoffButton.left
+                    right: lightOnOffButton.left
                     top: lightInfoLabel.bottom
             }
             
@@ -142,7 +144,7 @@ PlasmaComponents.ListItem {
 
 
         PlasmaComponents.CheckBox {
-            id: onoffButton
+            id: lightOnOffButton
 
             anchors {
                 right: parent.right
@@ -164,7 +166,7 @@ PlasmaComponents.ListItem {
     Item {
         id: lightDetailsItem
         visible: expanded
-        height: 80 + lightTabBar.height
+        height: (theme.smallestFont.pointSize * 12) + lightTabBar.height
         
         anchors {
             top: lightItemBase.bottom
@@ -202,7 +204,6 @@ PlasmaComponents.ListItem {
         Item {
             id: lightInfoItem
             visible: lightTabBar.currentTab == lightInfoTab
-            height: 80
             width: parent.width
             
             anchors {
@@ -219,7 +220,7 @@ PlasmaComponents.ListItem {
                 rowSpacing: units.smallSpacing / 4
                 
                 Repeater {
-                    id: repeater
+                    id: lightInfoRepeater
 
                     model: currentLightDetails.length
 

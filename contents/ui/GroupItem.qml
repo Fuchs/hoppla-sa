@@ -23,17 +23,19 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import "hue.js" as Hue
+
 PlasmaComponents.ListItem {
     id: groupItem
 
     property bool expanded : false
-    property int baseHeight : groupItemBase.height
+    property int baseHeight : groupItemBase.height + (units.smallSpacing * 2) - groupBrightnessSlider.height
     property var currentGroupDetails : createCurrentGroupDetails()
     property var currentGroupLights : []
     property string defaultIcon : "help-about"
     property bool available : true
     
-    property int brightness : 1
+    property int brightness : 100
     
 
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
@@ -51,7 +53,7 @@ PlasmaComponents.ListItem {
             topMargin: -Math.round(units.gridUnit)
         }
 
-        height: Math.max(units.iconSizes.medium, groupLabel.height + groupInfoLabel.height + slider.height) + Math.round(units.gridUnit / 2)
+        height: Math.max(units.iconSizes.medium, groupLabel.height + groupInfoLabel.height + groupBrightnessSlider.height) + Math.round(units.gridUnit / 2)
 
         PlasmaCore.IconItem {
             id: groupIcon
@@ -78,7 +80,7 @@ PlasmaComponents.ListItem {
                 bottom: groupIcon.verticalCenter
                 left: groupIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onoffButton.visible ? onoffButton.left : parent.right
+                right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
             }
 
             height: paintedHeight
@@ -95,7 +97,7 @@ PlasmaComponents.ListItem {
             anchors {
                 left: groupIcon.right
                 leftMargin: Math.round(units.gridUnit / 2)
-                right: onoffButton.visible ? onoffButton.left : parent.right
+                right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
                 top: groupLabel.bottom
             }
 
@@ -109,7 +111,7 @@ PlasmaComponents.ListItem {
 
 
         PlasmaComponents.CheckBox {
-            id: onoffButton
+            id: groupOnOffButton
 
             anchors {
                 right: parent.right
@@ -128,20 +130,20 @@ PlasmaComponents.ListItem {
             anchors {
                     left: groupIcon.right
                     rightMargin: Math.round(units.gridUnit)
-                    right: onoffButton.left
+                    right: groupOnOffButton.left
                     top: groupInfoLabel.bottom
             }
             
             PlasmaCore.IconItem  {
                     id: "brightnessIcon"
-                    Layout.maximumHeight: slider.height
-                    Layout.maximumWidth: slider.height
+                    Layout.maximumHeight: groupBrightnessSlider.height
+                    Layout.maximumWidth: groupBrightnessSlider.height
                     source: "contrast"
                     visible: expanded
             }
         
             PlasmaComponents.Slider {
-                id: slider
+                id: groupBrightnessSlider
                 
                 property bool ignoreValueChange: false
 
@@ -168,8 +170,7 @@ PlasmaComponents.ListItem {
     Item {
         id: groupDetailsItem
         visible: expanded
-        
-        height: Math.max(80, lightsView.contentHeight) + groupTabBar.height
+        height: Math.max(theme.smallestFont.pointSize * 12, groupLightsView.contentHeight) + groupTabBar.height
 
         
         anchors {
@@ -214,7 +215,7 @@ PlasmaComponents.ListItem {
         }
         
         ListView {
-            id: lightsView
+            id: groupLightsView
             anchors {
                 top: groupTabBar.bottom
                 topMargin: Math.round(units.gridUnit / 2)
@@ -224,17 +225,87 @@ PlasmaComponents.ListItem {
             }
                 
             interactive: false
-            height: expanded ? lightsView.contentHeight : 0
+            height: expanded ? groupLightsView.contentHeight : 0
             visible: height > 0 && groupTabBar.currentTab == groupLightsTab
             currentIndex: -1
             model: groupLightModel
             delegate: LightItem { }
         }
+        
+        Item {
+            id: groupColourItem
+            visible: groupTabBar.currentTab == groupColoursTab
+            width: parent.width
+            
+            anchors {
+                top: groupTabBar.bottom
+                topMargin: units.smallSpacing / 2
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+            }
+            
+            PlasmaComponents.Label {
+                id: groupColourLabel
+
+
+                height: paintedHeight
+                elide: Text.ElideRight
+                font.pointSize: theme.smallestFont.pointSize
+                text : "TBI"
+                textFormat: Text.PlainText
+            }
+        }
+        
+        Item {
+            id: groupWhitesItem
+            visible: groupTabBar.currentTab == groupWhitesTab
+            width: parent.width
+            
+            anchors {
+                top: groupTabBar.bottom
+                topMargin: units.smallSpacing / 2
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+            }
+            
+            PlasmaComponents.Label {
+                id: groupWhitesLabel
+                height: paintedHeight
+                elide: Text.ElideRight
+                font.pointSize: theme.smallestFont.pointSize
+                text : "TBI"
+                textFormat: Text.PlainText
+            }
+        }
+        
+        Item {
+            id: groupScenesItem
+            visible: groupTabBar.currentTab == groupSceneTab
+            width: parent.width
+            
+            anchors {
+                top: groupTabBar.bottom
+                topMargin: units.smallSpacing / 2
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+            }
+            
+            PlasmaComponents.Label {
+                id: groupScenesLabel
+                height: paintedHeight
+                elide: Text.ElideRight
+                font.pointSize: theme.smallestFont.pointSize
+                text : "TBI"
+                textFormat: Text.PlainText
+            }
+        }
 
         Item {
             id: groupInfoItem
             visible: groupTabBar.currentTab == groupInfoTab
-            height: 80
             width: parent.width
             
             anchors {
@@ -251,7 +322,7 @@ PlasmaComponents.ListItem {
                 rowSpacing: units.smallSpacing / 4
                 
                 Repeater {
-                    id: repeater
+                    id: groupInfoRepeater
 
                     model: currentGroupDetails.length
 
