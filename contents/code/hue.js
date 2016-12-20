@@ -16,7 +16,18 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+var base = plasmoid.configuration.baseURL 
+var auth = plasmoid.configuration.authToken
+var url = "http://" + base + "/api/" + auth + "/" 
+
 // GETTERS
+
+function getHueConfigured() {
+    return isEmpty(base);
+}
+
+function getHueConnection() {
+}
 
 function getLights() {
 }
@@ -52,6 +63,19 @@ function setGroupBrightness(groupId, brightness) {
 function setLightBrightess(lightId, brighness) {
 }
 
+// HELPERS 
+
+function isEmpty(str) {
+    if(str)
+    {
+        toTest = str.trim;
+        return  0 === toTest.length;
+    }
+    else
+    {
+        return true;
+    }
+}
 
 
 

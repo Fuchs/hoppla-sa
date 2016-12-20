@@ -21,11 +21,12 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import "../code/hue.js" as Hue
 
 FocusScope {
     focus: true
     
-    property bool noHueConfigured: false
+    property bool noHueConfigured: Hue.getHueConfigured()
     property bool noHueConnected: false
     
     PlasmaComponents.TabBar {
@@ -85,6 +86,15 @@ FocusScope {
                 tooltip: getAddTooltip()
                 onClicked: {
                         addClicked()
+                }
+            }
+            
+            PlasmaComponents.ToolButton {
+                id: refreshButton
+                iconSource: "view-refresh"
+                tooltip: i18n("Refresh")
+                onClicked: {
+                        refreshClicked()
                 }
             }
 
@@ -276,6 +286,10 @@ FocusScope {
         else if(tabBar.currentTab == lightsTab){
             //TODO: add action
         }
+    }
+    
+    function refreshClicked() {
+        //TODO: Implement me
     }
     
     ListModel {
