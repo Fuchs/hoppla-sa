@@ -19,6 +19,7 @@
 import QtQuick 2.0
 
 import org.kde.plasma.configuration 2.0
+import "../code/hue.js" as Hue
 
 ConfigModel {
     id: configModel
@@ -37,6 +38,11 @@ ConfigModel {
         name: i18n("Lights")
         icon: "im-jabber"
         source: "configLights.qml"
+    }
+    
+    
+    Component.onCompleted: {
+        Hue.reloadConfig();
     }
 
 }

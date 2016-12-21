@@ -23,7 +23,12 @@ var url = "http://" + base + "/api/" + auth + "/"
 // GETTERS
 
 function getHueConfigured() {
-    return isEmpty(base);
+    reloadConfig()
+    if (!base.trim()) {
+        // is empty or whitespace
+        return false;
+    }
+    return true;
 }
 
 function getHueConnection() {
@@ -65,17 +70,12 @@ function setLightBrightess(lightId, brighness) {
 
 // HELPERS 
 
-function isEmpty(str) {
-    if(str)
-    {
-        toTest = str.trim;
-        return  0 === toTest.length;
-    }
-    else
-    {
-        return true;
-    }
+function reloadConfig() {
+    base = plasmoid.configuration.baseURL 
+    auth = plasmoid.configuration.authToken
+    url = "http://" + base + "/api/" + auth + "/" 
 }
+
 
 
 
