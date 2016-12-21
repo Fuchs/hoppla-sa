@@ -30,8 +30,13 @@ ConfigModel {
          source: "configBridge.qml"
     }
     ConfigCategory {
+        name: i18n("Actions")
+        icon: "practice-start"
+        source: "configActions.qml"
+    }
+    ConfigCategory {
         name: i18n("Groups")
-        icon: "user-home"
+        icon: "object-group"
         source: "configGroups.qml"
     }
     ConfigCategory {
@@ -39,7 +44,11 @@ ConfigModel {
         icon: "im-jabber"
         source: "configLights.qml"
     }
-    
+    ConfigCategory {
+        name: i18n("Schedules")
+        icon: "clock"
+        source: "configSchedules.qml"
+    }
     
     Component.onCompleted: {
         Hue.reloadConfig();

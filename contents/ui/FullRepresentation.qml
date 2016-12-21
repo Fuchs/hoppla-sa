@@ -29,38 +29,11 @@ FocusScope {
     property bool noHueConfigured: !Hue.getHueConfigured()
     property bool noHueConnected: false
     
-    PlasmaComponents.TabBar {
-        id: tabBar
-
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-
-        PlasmaComponents.TabButton {
-            id: actionsTab
-            text: i18n("Actions")
-        }
-
-        PlasmaComponents.TabButton {
-            id: groupsTab
-            text: i18n("Groups / Rooms")
-        }
-        
-        PlasmaComponents.TabButton {
-            id: lightsTab
-            text: i18n("Lights")
-        }
-    }
-    
     Item {
         id: toolBar
-
-        height: addDeviceButton.height
+        height: openSettingsButton.height
         anchors {
-            top: tabBar.bottom
-            topMargin: units.smallSpacing
+            top: parent.top
             left: parent.left
             right: parent.right
         }
@@ -81,20 +54,11 @@ FocusScope {
             }
 
             PlasmaComponents.ToolButton {
-                id: addDeviceButton
-                iconSource: "list-add"
-                tooltip: getAddTooltip()
-                onClicked: {
-                        addClicked()
-                }
-            }
-            
-            PlasmaComponents.ToolButton {
                 id: refreshButton
                 iconSource: "view-refresh"
                 tooltip: i18n("Refresh")
                 onClicked: {
-                        refreshClicked()
+                    reInit();
                 }
             }
 
@@ -105,22 +69,42 @@ FocusScope {
                 tooltip: i18n("Configure Philips Hue...")
 
                 onClicked: {
-                    //TODO: Open configuration GUI
+                    plasmoid.action("configure").trigger()
                 }
             }
         }
     }
     
+    PlasmaComponents.TabBar {
+        id: tabBar
+
+        anchors {
+            top: toolBar.bottom
+            left: parent.left
+            right: parent.right
+        }
+
+        PlasmaComponents.TabButton {
+            id: actionsTab
+            text: i18n("Actions")
+        }
+
+        PlasmaComponents.TabButton {
+            id: groupsTab
+            text: i18n("Groups / Rooms")
+        }
+        
+        PlasmaComponents.TabButton {
+            id: lightsTab
+            text: i18n("Lights")
+        }
+    }
+    
+    
     Item {
         id: hueNotConfiguredView
         
-        anchors {
-            top: toolBar.bottom
-            topMargin: units.smallSpacing
-            left: parent.left
-            right: parent.right
-         }
-        
+        anchors.fill: parent
         visible: noHueConfigured
 
         PlasmaExtras.Heading {
@@ -129,25 +113,41 @@ FocusScope {
             opacity: 0.6
             text: i18n("No Hue bridge configured")
 
-            anchors {
-                horizontalCenter: parent.horizontalCenterblu
+           anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: noHueConfiguredLabel.top
                 bottomMargin: units.smallSpacing
             }
         }
 
-        //TODO: some text, maybe?
+        PlasmaComponents.Label {
+            id: noHueConfiguredLabel
+
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: configureHueBridgeButton.top
+                bottomMargin: units.largeSpacing
+            }
+
+            height: paintedHeight
+            elide: Text.ElideRight
+            font.weight: Font.Normal
+            font.pointSize: theme.smallestFont.pointSize
+            text : i18n("You need to configure your Hue bridge")
+            textFormat: Text.PlainText
+        }
         
         PlasmaComponents.Button {
             id: configureHueBridgeButton
             text: i18n("Configure Hue Bridge")
 
-            anchors {
-                top: noHueConfiguredHeading.bottom
-                topMargin: units.smallSpacing
+           anchors {
+                horizontalCenter: parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
             }
 
             onClicked: {
-                //TODO: Implement me
+               plasmoid.action("configure").trigger()
             }
         }
     }
@@ -155,41 +155,50 @@ FocusScope {
     Item {
         id: hueNotConnectedView
         
-        anchors {
-            top: tabBar.bottom
-            topMargin: units.smallSpacing
-            left: parent.left
-            right: parent.right
-         }
-         
+        anchors.fill: parent
         visible: !noHueConfigured && noHueConnected
 
         PlasmaExtras.Heading {
             id: noHueConnectedHeading
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: noHueConnectedLabel.top
+                bottomMargin: units.smallSpacing
+            }
+            
             level: 3
             opacity: 0.6
             text: i18n("No Hue bridge connected")
-
-            anchors {
-                horizontalCenter: parent.horizontalCenterblu
-                bottomMargin: units.smallSpacing
-            }
         }
 
-        //TODO: some text, maybe?
+        PlasmaComponents.Label {
+            id: noHueConnectedLabel
+
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: configureHueBridgeButton.top
+                bottomMargin: units.largeSpacing
+            }
+
+            font.weight: Font.Normal
+            height: paintedHeight
+            elide: Text.ElideRight
+            font.pointSize: theme.smallestFont.pointSize
+            text : i18n("Check if your Hue bridge is configured and reachable")
+            textFormat: Text.PlainText
+        }
         
         PlasmaComponents.Button {
             id: connnectHueBridgeButton
             text: i18n("Configure Hue Bridge")
 
-            anchors {
+           anchors {
                 horizontalCenter: parent.horizontalCenter
-                top: noHueConnectedHeading.bottom
-                topMargin: units.smallSpacing
+                verticalCenter: parent.verticalCenter
             }
 
             onClicked: {
-                //TODO: Implement me
+                plasmoid.action("configure").trigger()
             }
         }
     }
@@ -197,7 +206,7 @@ FocusScope {
     Item {
         id: tabView
         anchors {
-            top: toolBar.bottom
+            top: tabBar.bottom
             bottom: parent.bottom
             left: parent.left
             right: parent.right
@@ -281,33 +290,6 @@ FocusScope {
         plasmoid.toolTipSubText = i18n("Connected: " + Hue.getHueConfigured());
     }
 
-    function getAddTooltip() {
-        if(tabBar.currentTab == actionsTab){
-            return i18n("Add new action...")
-        }
-        else if(tabBar.currentTab == groupsTab){
-            return i18n("Add new group or room ...")
-        }
-        else if(tabBar.currentTab == lightsTab){
-            return i18n("Add new light ...")
-        }
-    }
-    
-    function addClicked() {
-        if(tabBar.currentTab == actionsTab){
-            //TODO: add action
-        }
-        else if(tabBar.currentTab == groupsTab){
-            //TODO: add action
-        }
-        else if(tabBar.currentTab == lightsTab){
-            //TODO: add action
-        }
-    }
-    
-    function refreshClicked() {
-        reInit();
-    }
     
     ListModel {
         id: actionModel
