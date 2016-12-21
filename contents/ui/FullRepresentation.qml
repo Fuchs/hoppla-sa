@@ -26,7 +26,7 @@ import "../code/hue.js" as Hue
 FocusScope {
     focus: true
     
-    property bool noHueConfigured: Hue.getHueConfigured()
+    property bool noHueConfigured: !Hue.getHueConfigured()
     property bool noHueConnected: false
     
     PlasmaComponents.TabBar {
@@ -194,75 +194,92 @@ FocusScope {
         }
     }
 
-    PlasmaExtras.ScrollArea {
-        id: actionScrollView
-        visible: tabBar.currentTab == actionsTab && !noHueConfigured && !noHueConnected
-        
+    Item {
+        id: tabView
         anchors {
             top: toolBar.bottom
-            topMargin: units.smallSpacing
             bottom: parent.bottom
             left: parent.left
             right: parent.right
         }
-
-        ListView {
-            id: actionView
-            anchors.fill: parent
-            clip: true
-            currentIndex: -1
-            model: actionModel
-            boundsBehavior: Flickable.StopAtBounds
-            delegate: ActionItem { }
-        }
-    }
-
-    PlasmaExtras.ScrollArea {
-        id: groupScrollView
-        visible: tabBar.currentTab == groupsTab && !noHueConfigured && !noHueConnected
+            
         
-        anchors {
-            top: toolBar.bottom
-            topMargin: units.smallSpacing
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
+        PlasmaExtras.ScrollArea {
+            id: actionScrollView
+            visible: tabBar.currentTab == actionsTab && !noHueConfigured && !noHueConnected
+            
+            anchors {
+                top: parent.top
+                topMargin: units.smallSpacing
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            
+            ListView {
+                id: actionView
+                anchors.fill: parent
+                clip: true
+                currentIndex: -1
+                model: actionModel
+                boundsBehavior: Flickable.StopAtBounds
+                delegate: ActionItem { }
+            }
         }
-
-        ListView {
-            id: groupView
-            anchors.fill: parent
-            clip: true
-            currentIndex: -1
-            boundsBehavior: Flickable.StopAtBounds
-            model: groupModel
-            delegate: GroupItem { }
-        }
-    }
-
-    PlasmaExtras.ScrollArea {
-        id: lightScrollView
-        visible: tabBar.currentTab == lightsTab && !noHueConfigured && !noHueConnected
         
-        anchors {
-            top: toolBar.bottom
-            topMargin: units.smallSpacing
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
+        PlasmaExtras.ScrollArea {
+            id: groupScrollView
+            visible: tabBar.currentTab == groupsTab && !noHueConfigured && !noHueConnected
+            
+            anchors {
+                top: parent.top
+                topMargin: units.smallSpacing
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            
+            ListView {
+                id: groupView
+                anchors.fill: parent
+                clip: true
+                currentIndex: -1
+                boundsBehavior: Flickable.StopAtBounds
+                model: groupModel
+                delegate: GroupItem { }
+            }
         }
-
-        ListView {
-            id: lightsView
-            anchors.fill: parent
-            clip: true
-            currentIndex: -1
-            boundsBehavior: Flickable.StopAtBounds
-            model: lightModel
-            delegate: LightItem { }
+        
+        PlasmaExtras.ScrollArea {
+            id: lightScrollView
+            visible: tabBar.currentTab == lightsTab && !noHueConfigured && !noHueConnected
+            
+            anchors {
+                top: parent.top
+                topMargin: units.smallSpacing
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            
+            ListView {
+                id: lightsView
+                anchors.fill: parent
+                clip: true
+                currentIndex: -1
+                boundsBehavior: Flickable.StopAtBounds
+                model: lightModel
+                delegate: LightItem { }
+            }
         }
     }
     
+    function reInit() {
+        hueNotConfiguredView.visible = !Hue.getHueConfigured();
+        hueNotConnectedView.visible = !Hue.getHueConfigured() && noHueConnected;
+        tabView.visible = Hue.getHueConfigured();
+        plasmoid.toolTipSubText = i18n("Connected: " + Hue.getHueConfigured());
+    }
 
     function getAddTooltip() {
         if(tabBar.currentTab == actionsTab){
@@ -289,7 +306,7 @@ FocusScope {
     }
     
     function refreshClicked() {
-        //TODO: Implement me
+        reInit();
     }
     
     ListModel {
