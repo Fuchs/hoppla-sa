@@ -52,20 +52,32 @@ function getLightsForGroup(groupId) {
 // SWITCH
 
 function switchLight(lightId, on) {
+    var body = on ? '{"on":true}' : '{"on":false}';
+    var myUrl = url + "lights/" + lightId + "/state";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 function switchGroup(groupId, on) {
+    var body = on ? '{"on":true}' : '{"on":false}';
+    var myUrl = url + "groups/" + groupId + "/action";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 // GROUP SETTER
 
 function setGroupBrightness(groupId, brightness) {
+    var body = '{"bri":' + brightness + '}';
+    var myUrl = url + "groups/" + groupId + "/action";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 
 // LIGHT SETTER
 
-function setLightBrightess(lightId, brighness) {
+function setLightBrightess(lightId, brightness) {
+    var body = '{"bri":' + brightness + '}';
+    var myUrl = url + "lights/" + lightId + "/state";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 // HELPERS 
@@ -74,6 +86,57 @@ function reloadConfig() {
     base = plasmoid.configuration.baseURL 
     auth = plasmoid.configuration.authToken
     url = "http://" + base + "/api/" + auth + "/" 
+}
+
+function fetchJsonFromHue(getUrl, successCallback, failCallback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        
+        if (request.status !== 200) {
+            failureCallback();
+            return;
+        }
+
+        var json = request.responseText;
+        successCallback(json);
+    }
+    request.open('GET', getUrl);
+    request.send();
+}
+
+function putJsonToHue(putUrl, payload, successCallback, failCallback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        
+        if (request.status !== 200) {
+            debugPrint('ERROR - status: ' + request.status)
+            debugPrint('ERROR - responseText: ' + request.responseText)
+            failureCallback();
+            return;
+        }
+
+        debugPrint('successfull call to: ' + putUrl)
+        var json = request.responseText;
+        debugPrint('result: ' + json);
+        
+        successCallback(json);
+    }
+    request.open('PUT', putUrl);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(payload);
+    debugPrint('PUT called for url: ' + putUrl)
+}
+
+function baseSuccess() {
+}
+
+function baseFail () {
 }
 
 

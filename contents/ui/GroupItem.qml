@@ -149,15 +149,14 @@ PlasmaComponents.ListItem {
 
                 Layout.fillWidth: true
                 minimumValue: 0
-                maximumValue: 100
+                maximumValue: 254
+                updateValueWhileDragging : false
                 stepSize: 1
                 visible: expanded
                 enabled: available
 
                 onValueChanged: {
-                }
-
-                onPressedChanged: {
+                    Hue.setGroupBrightness(uuid, value);
                 }
             }
         }
@@ -243,17 +242,6 @@ PlasmaComponents.ListItem {
                 left: parent.left
                 leftMargin: units.gridUnit * 2
                 right: parent.right
-            }
-            
-            PlasmaComponents.Label {
-                id: groupColourLabel
-
-
-                height: paintedHeight
-                elide: Text.ElideRight
-                font.pointSize: theme.smallestFont.pointSize
-                text : "TBI"
-                textFormat: Text.PlainText
             }
         }
         
@@ -369,7 +357,8 @@ PlasmaComponents.ListItem {
     }
     
     function toggleOnOff() {
-        //TODO: implement me
+        Hue.switchGroup(uuid, groupOnOffButton.checked);
+        dbgprint('uuid: ' + uuid + '  State: ' + groupOnOffButton.checked);
     }
     
     

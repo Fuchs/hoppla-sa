@@ -303,30 +303,56 @@ FocusScope {
             infoText: "SubText"
             icon: "contrast"
         }
-        ListElement {
-            name: "Action 3" 
-            infoText: "SubText"
-        }
     }
     
     ListModel {
         id: groupModel
         ListElement {
             uuid: "1"
-            name: "Wohnzimmer" 
+            name: "Schlafzimmer" 
             infoText: "2 Lampen"
             icon: "go-home"
         }
         ListElement {
             uuid: "2"
-            name: "Büro" 
-            infoText: "1 Lampe"
+            name: "Flur" 
+            infoText: "2 Lampen"
             icon: "mail-attchment"
         }
         ListElement {
             uuid: "3"
-            name: "Küche" 
+            name: "Bureau" 
             infoText: "1 Lampe"
+            icon: "view-filter"
+        }
+        ListElement {
+            uuid: "4"
+            name: "Gastzimmer" 
+            infoText: "1 Lampe"
+            icon: "view-filter"
+        }
+        ListElement {
+            uuid: "5"
+            name: "Kueche" 
+            infoText: "1 Lampe"
+            icon: "view-filter"
+        }
+        ListElement {
+            uuid: "6"
+            name: "Essecke" 
+            infoText: "1 Lampe"
+            icon: "view-filter"
+        }
+        ListElement {
+            uuid: "7"
+            name: "Wohnzimmer" 
+            infoText: "1 Lampe"
+            icon: "view-filter"
+        }
+        ListElement {
+            uuid: "8"
+            name: "TV" 
+            infoText: "6 Lampen"
             icon: "view-filter"
         }
     }
@@ -335,66 +361,66 @@ FocusScope {
         id: lightModel
         ListElement {
             uuid: "1"
-            name: "Wohnzimmer Decke"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "1"
-            name: "Wohnzimmer Ball"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "1"
-            name: "Schlafzimmer Decke"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "1"
             name: "Schlafzimmer Ball"
             infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
-            uuid: "1"
-            name: "Flur vorne"
+            uuid: "2"
+            name: "Schlafzimmer Decke"
             infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
-            uuid: "1"
+            uuid: "3"
+            name: "Bureau Decke"
+            infoText: "Extended color light"
+            icon: "im-jabber"
+        }
+        ListElement {
+            uuid: "4"
+            name: "Gaestezimmer Decke"
+            infoText: "Extended color light"
+            icon: "im-jabber"
+        }
+        ListElement {
+            uuid: "5"
             name: "Flur hinten"
             infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
-            uuid: "1"
+            uuid: "6"
+            name: "Flur vorne"
+            infoText: "Extended color light"
+            icon: "im-jabber"
+        }
+        ListElement {
+            uuid: "7"
             name: "Küche Decke"
             infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
-            uuid: "1"
-            name: "Büro Decke"
+            uuid: "8"
+            name: "Essecke Decke"
             infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
-            uuid: "1"
-            name: "Gastzimmer Decke"
+            uuid: "9"
+            name: "Wohnzimmer Ball"
             infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
-            uuid: "1"
+            uuid: "10"
             name: "Mond"
             infoText: "Extended color light"
             icon: "im-jabber"
         }
         ListElement {
-            uuid: "1"
+            uuid: "11"
             name: "Sonne"
             infoText: "Extended color light"
             icon: "im-jabber"

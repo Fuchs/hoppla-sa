@@ -25,6 +25,7 @@ import "logic.js" as Logic
 
 Item {
     id: hopplaApplet
+    property bool debug: true
 
     Plasmoid.toolTipMainText: i18n("Philips Hue lights")
     Plasmoid.toolTipSubText: i18n("5 Lampen aktiv")
@@ -36,6 +37,13 @@ Item {
     function getActiveLampsText() {
         //TODO: implement me
         return "5 Lampen aktiv";
+    }
+    
+    function debugPrint(msg) {
+        if(!debug) {
+            return;
+        }
+        print('[Hoppla] ' + msg)
     }
 
     Component.onCompleted: {

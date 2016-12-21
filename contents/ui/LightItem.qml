@@ -128,16 +128,16 @@ PlasmaComponents.ListItem {
 
                 Layout.fillWidth: true
                 minimumValue: 0
-                maximumValue: 100
+                maximumValue: 254
                 stepSize: 1
                 visible: expanded
                 enabled: available
+                updateValueWhileDragging : false
 
 
                 onValueChanged: {
-                }
-
-                onPressedChanged: {
+                    debugPrint("Setting " + uuid + " brightness to: " + value);
+                    Hue.setLightBrightess(uuid, value);
                 }
             }
         }
@@ -257,7 +257,7 @@ PlasmaComponents.ListItem {
     }
     
     function toggleOnOff() {
-        //TODO: implement me
+        Hue.switchLight(uuid, lightOnOffButton.checked);
     }
     
     function createCurrentLightDetails() {
