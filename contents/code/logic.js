@@ -16,15 +16,6 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function init()
-{
-    updateStatus();
-}
-
-function updateStatus()
-{
-    //TODO: Implement me
-}
 
 function icon()
 {

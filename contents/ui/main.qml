@@ -45,8 +45,4 @@ Item {
         }
         print('[Hoppla] ' + msg)
     }
-
-    Component.onCompleted: {
-        Logic.init();
-    }
 }

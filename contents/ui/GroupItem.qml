@@ -31,12 +31,9 @@ PlasmaComponents.ListItem {
     property bool expanded : false
     property int baseHeight : groupItemBase.height + (units.smallSpacing * 2) - groupBrightnessSlider.height
     property var currentGroupDetails : createCurrentGroupDetails()
-    property var currentGroupLights : []
+    property var currentGroupLights : getGroupLights()
     property string defaultIcon : "help-about"
     property bool available : true
-    
-    property int brightness : 100
-    
 
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
@@ -87,7 +84,7 @@ PlasmaComponents.ListItem {
             elide: Text.ElideRight
             font.weight: Font.Normal
             opacity: available ? 1.0 : 0.6
-            text: name
+            text: vname
             textFormat: Text.PlainText
         }
 
@@ -119,7 +116,7 @@ PlasmaComponents.ListItem {
                 verticalCenter: groupIcon.verticalCenter
             }
 
-            checked: true
+            checked: vall_on || vany_on
             enabled: available
 
             onClicked: toggleOnOff()
@@ -149,14 +146,15 @@ PlasmaComponents.ListItem {
 
                 Layout.fillWidth: true
                 minimumValue: 0
-                maximumValue: 254
+                maximumValue: 255
                 updateValueWhileDragging : false
                 stepSize: 1
                 visible: expanded
-                enabled: available
+                enabled: vany_on || vall_on
+                value: vbrigthness
 
                 onValueChanged: {
-                    Hue.setGroupBrightness(uuid, value);
+                    Hue.setGroupBrightness(vuuid, value);
                 }
             }
         }
@@ -242,6 +240,15 @@ PlasmaComponents.ListItem {
                 left: parent.left
                 leftMargin: units.gridUnit * 2
                 right: parent.right
+            }
+            
+            PlasmaComponents.Label {
+                id: groupColoursLabel
+                height: paintedHeight
+                elide: Text.ElideRight
+                font.pointSize: theme.smallestFont.pointSize
+                text : "TBI"
+                textFormat: Text.PlainText
             }
         }
         
@@ -338,8 +345,8 @@ PlasmaComponents.ListItem {
     }
     
     function getIcon() {
-        if(icon) {
-            return icon;
+        if(vicon) {
+            return vicon;
         }
         else {
             return defaultIcon;
@@ -347,7 +354,7 @@ PlasmaComponents.ListItem {
     }
     
     function getSubtext() {
-        var amount = currentGroupLights.length;
+        var amount = vlights.count;
         if (amount == 1) {
             return "1 " + i18n("light");
         }
@@ -357,8 +364,8 @@ PlasmaComponents.ListItem {
     }
     
     function toggleOnOff() {
-        Hue.switchGroup(uuid, groupOnOffButton.checked);
-        dbgprint('uuid: ' + uuid + '  State: ' + groupOnOffButton.checked);
+        Hue.switchGroup(vuuid, groupOnOffButton.checked);
+        debugPrint('uuid: ' + vuuid + '  State: ' + groupOnOffButton.checked);
     }
     
     
@@ -366,25 +373,34 @@ PlasmaComponents.ListItem {
         var groupDtls = [];
 
         groupDtls.push(i18n("ID and name"));
-        groupDtls.push("1 Wohnzimmer Decke");
+        groupDtls.push(vuuid + ": " + vname);
         
         groupDtls.push(i18n("Number of lights"));
-        groupDtls.push("2");
-
+        groupDtls.push(vlights.count);
         groupDtls.push(i18n("State"));
-        groupDtls.push("Some On");
+        var mystate = i18n("All lights off");
+        if (vall_on) {
+            mystate = i18n("All lights on");
+        }
+        else if (vany_on) {
+            mystate = i18n("Some lights on");
+        }
+        
+        groupDtls.push(mystate);
+
 
         groupDtls.push(i18n("Brightness"));
-        groupDtls.push("255");
+        groupDtls.push(vbri);
+        groupBrightnessSlider.value = vbri
         
         groupDtls.push(i18n("Colour mode"));
-        groupDtls.push("xy: 0.5016 0.4151");
+        groupDtls.push(vcolormode);
 
         groupDtls.push(i18n("Type"));
-        groupDtls.push("Room")
+        groupDtls.push(vtype)
         
         groupDtls.push(i18n("Class"));
-        groupDtls.push("Living Room");
+        groupDtls.push(vclass);
         
         return groupDtls;
     }

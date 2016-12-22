@@ -19,6 +19,7 @@
 var base = plasmoid.configuration.baseURL 
 var auth = plasmoid.configuration.authToken
 var url = "http://" + base + "/api/" + auth + "/" 
+var groups;
 
 // GETTERS
 
@@ -35,15 +36,23 @@ function getHueConnection() {
 }
 
 function getLights() {
+    var myUrl = url + "lights";
+    getJsonFromHue(myUrl, baseSuccess, baseFail);
 }
 
 function getLight(lightId) {
+    var myUrl = url + "lights/" + lightId;
+    getJsonFromHue(myUrl, baseSuccess, baseFail);
 }
 
-function getGroups() {
+function getGroups(myModel) {
+    var myUrl = url + "groups";
+    getJsonFromHue(myUrl, parseGroups, baseFail, myModel);
 }
 
 function getGroup(groupId) {
+    var myUrl = url + "groups/" + groupId;
+    getJsonFromHue(myUrl, baseSuccess, baseFail);
 }
 
 function getLightsForGroup(groupId) {
@@ -71,7 +80,6 @@ function setGroupBrightness(groupId, brightness) {
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
-
 // LIGHT SETTER
 
 function setLightBrightess(lightId, brightness) {
@@ -88,7 +96,7 @@ function reloadConfig() {
     url = "http://" + base + "/api/" + auth + "/" 
 }
 
-function fetchJsonFromHue(getUrl, successCallback, failCallback) {
+function getJsonFromHue(getUrl, successCallback, failCallback, container) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -101,7 +109,7 @@ function fetchJsonFromHue(getUrl, successCallback, failCallback) {
         }
 
         var json = request.responseText;
-        successCallback(json);
+        successCallback(json, container);
     }
     request.open('GET', getUrl);
     request.send();
@@ -123,7 +131,6 @@ function putJsonToHue(putUrl, payload, successCallback, failCallback) {
 
         debugPrint('successfull call to: ' + putUrl)
         var json = request.responseText;
-        debugPrint('result: ' + json);
         
         successCallback(json);
     }
@@ -134,11 +141,42 @@ function putJsonToHue(putUrl, payload, successCallback, failCallback) {
 }
 
 function baseSuccess() {
+    debugPrint('success callback called');
 }
 
 function baseFail () {
+    debugPrint('fail callback called');
 }
 
-
-
-
+function parseGroups(json, listModel) {
+    debugPrint('parse groups');
+    var myGroups = JSON.parse(json);
+    debugPrint(json);
+    debugPrint(myGroups);
+    var groupsList = [];
+    var propValue;
+    for(var groupName in myGroups) {
+        var cgroup = myGroups[groupName];
+        var myGroup = {
+            vuuid: groupName,
+            vlights: cgroup.lights,
+            vname: cgroup.name,
+            vtype: cgroup.type,
+            vall_on: cgroup.state.all_on,
+            vany_on: cgroup.state.all_on,
+            vclass: cgroup.class,
+            von: cgroup.action.on,
+            vbri: cgroup.action.bri,
+            vhue: cgroup.action.hue,
+            vsat: cgroup.action.sat,
+            veffect: cgroup.action.effect,
+            vx: cgroup.action.xy[0],
+            vy: cgroup.action.xy[1],
+            vct: cgroup.action.ct,
+            valert: cgroup.action.alert,
+            vcolormode: cgroup.action.colormode,
+            vicon: "go-home"
+        };
+        listModel.append(myGroup);
+    }
+}

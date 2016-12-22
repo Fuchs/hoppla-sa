@@ -130,7 +130,12 @@ PlasmaComponents.ListItem {
     }
     
     function execute() {
-        //TODO: Implement me
+        if(action === 'allon') {
+            Hue.switchGroup(0, true)
+        }
+        else if(action === 'alloff') {
+            Hue.switchGroup(0, false)
+        }
     }
     
     function getIcon() {

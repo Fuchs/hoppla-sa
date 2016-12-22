@@ -25,6 +25,7 @@ import "../code/hue.js" as Hue
 
 FocusScope {
     focus: true
+    id: mainView
     
     property bool noHueConfigured: !Hue.getHueConfigured()
     property bool noHueConnected: false
@@ -176,7 +177,7 @@ FocusScope {
 
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                bottom: configureHueBridgeButton.top
+                bottom: connnectHueBridgeButton.top
                 bottomMargin: units.largeSpacing
             }
 
@@ -283,11 +284,23 @@ FocusScope {
         }
     }
     
+    Component.onCompleted: {
+        reInit();
+    }
+    
     function reInit() {
         hueNotConfiguredView.visible = !Hue.getHueConfigured();
         hueNotConnectedView.visible = !Hue.getHueConfigured() && noHueConnected;
         tabView.visible = Hue.getHueConfigured();
         plasmoid.toolTipSubText = i18n("Connected: " + Hue.getHueConfigured());
+        Hue.getLights();
+        debugPrint("get Groups");
+        var groups = Hue.getGroups(groupModel);
+        for (var group in groups)
+        {
+            debugPrint("added");
+            groupModel.append(group);
+        }
     }
 
     
@@ -295,66 +308,20 @@ FocusScope {
         id: actionModel
         ListElement {
             name: "Alle Lampen einschalten" 
-            infoText: "SubText"
+            infoText: "Schaltet alle Lampen ein"
             icon: "im-jabber"
+            action: "allon"
         }
         ListElement {
             name: "Alle Lampen ausschalten"
-            infoText: "SubText"
+            infoText: "Schaltet alle Lampen aus"
             icon: "contrast"
+            action: "alloff"
         }
     }
     
     ListModel {
         id: groupModel
-        ListElement {
-            uuid: "1"
-            name: "Schlafzimmer" 
-            infoText: "2 Lampen"
-            icon: "go-home"
-        }
-        ListElement {
-            uuid: "2"
-            name: "Flur" 
-            infoText: "2 Lampen"
-            icon: "mail-attchment"
-        }
-        ListElement {
-            uuid: "3"
-            name: "Bureau" 
-            infoText: "1 Lampe"
-            icon: "view-filter"
-        }
-        ListElement {
-            uuid: "4"
-            name: "Gastzimmer" 
-            infoText: "1 Lampe"
-            icon: "view-filter"
-        }
-        ListElement {
-            uuid: "5"
-            name: "Kueche" 
-            infoText: "1 Lampe"
-            icon: "view-filter"
-        }
-        ListElement {
-            uuid: "6"
-            name: "Essecke" 
-            infoText: "1 Lampe"
-            icon: "view-filter"
-        }
-        ListElement {
-            uuid: "7"
-            name: "Wohnzimmer" 
-            infoText: "1 Lampe"
-            icon: "view-filter"
-        }
-        ListElement {
-            uuid: "8"
-            name: "TV" 
-            infoText: "6 Lampen"
-            icon: "view-filter"
-        }
     }
     
     ListModel {
