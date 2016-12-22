@@ -30,9 +30,7 @@ PlasmaComponents.ListItem {
     property int baseHeight : lightItemBase.height + (units.smallSpacing * 2) - slider.height
     property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
-    property bool available : true
-    
-    property int brightness : 100
+    property bool available : vreachable
 
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
     checked: containsMouse
@@ -82,7 +80,7 @@ PlasmaComponents.ListItem {
             elide: Text.ElideRight
             font.weight: Font.Normal
             opacity: available ? 1.0 : 0.6
-            text: name
+            text: vname
             textFormat: Text.PlainText
         }
 
@@ -100,7 +98,7 @@ PlasmaComponents.ListItem {
             elide: Text.ElideRight
             font.pointSize: theme.smallestFont.pointSize
             opacity: available ? 0.6 : 0.4
-            text: available ? infoText : i18n("Not available")
+            text: available ? vtype : i18n("Not available")
             textFormat: Text.PlainText
         }
         
@@ -131,13 +129,13 @@ PlasmaComponents.ListItem {
                 maximumValue: 254
                 stepSize: 1
                 visible: expanded
-                enabled: available
+                enabled: available && von
                 updateValueWhileDragging : false
 
 
                 onValueChanged: {
-                    debugPrint("Setting " + uuid + " brightness to: " + value);
-                    Hue.setLightBrightess(uuid, value);
+                    debugPrint("Setting " + vuuid + " brightness to: " + value);
+                    Hue.setLightBrightess(vuuid, value);
                 }
             }
         }
@@ -152,7 +150,7 @@ PlasmaComponents.ListItem {
                 verticalCenter: lightIcon.verticalCenter
             }
 
-            checked: true
+            checked: von
             enabled: available
 
             onClicked: toggleOnOff()
@@ -239,17 +237,9 @@ PlasmaComponents.ListItem {
         }
     }
 
-    function boolToString(v)
-    {
-        if (v) {
-            return i18n("Yes");
-        }
-        return i18n("No");
-    }
-
     function getIcon() {
-        if(icon) {
-            return icon;
+        if(vicon) {
+            return vicon;
         }
         else {
             return defaultIcon;
@@ -257,35 +247,52 @@ PlasmaComponents.ListItem {
     }
     
     function toggleOnOff() {
-        Hue.switchLight(uuid, lightOnOffButton.checked);
+        Hue.switchLight(vuuid, lightOnOffButton.checked);
     }
     
     function createCurrentLightDetails() {
         var lightDtls = [];
 
         lightDtls.push(i18n("ID and name"));
-        lightDtls.push("1 Wohnzimmer Decke");
+        lightDtls.push(vuuid + ": " + vname);
 
+        var myState = von ? i18n("On") : i18n("Off");
+        
         lightDtls.push(i18n("State"));
-        lightDtls.push("On");
+        lightDtls.push(myState);
 
         lightDtls.push(i18n("Brightness"));
-        lightDtls.push("255");
+        lightDtls.push(vbri);
+        
+        slider.value = vbri;
+        
+        var myColor = i18n("Not available");
+        if(vcolormode == "xy") {
+            myColor = i18n("Colour by CIE x: ") + vx + i18n(" y: ") + vy;
+        }
+        
+        if(vcolormode == "hs") {
+             myColor = i18n("Colour by hue / sat, h: ") + vhue + i18n(" s: ") + vsat;
+        }
+        
+        if(vcolormode == "ct") {
+            myColor = "White by temperature: " + vct;
+        }
         
         lightDtls.push(i18n("Colour mode"));
-        lightDtls.push("xy: 0.5016 0.4151");
+        lightDtls.push(myColor);
 
         lightDtls.push(i18n("Type"));
-        lightDtls.push("Extended color light");
+        lightDtls.push(vtype);
         
-        lightDtls.push(i18n("Product ID"));
-        lightDtls.push("Philips-LCT010-1-A19ECLv4");
-        
+        lightDtls.push(i18n("Model ID"));
+        lightDtls.push(vmodelid);
+
         lightDtls.push(i18n("Unique ID"));
-        lightDtls.push("00:17:88:01:02:7a:55:3f-0b");
+        lightDtls.push(vuniqueid);
 
         lightDtls.push(i18n("Software Version"));
-        lightDtls.push("1.15.2_r19181");
+        lightDtls.push(vswversion);
         
         return lightDtls;
     }

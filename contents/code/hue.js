@@ -35,9 +35,9 @@ function getHueConfigured() {
 function getHueConnection() {
 }
 
-function getLights() {
+function getLights(myModel) {
     var myUrl = url + "lights";
-    getJsonFromHue(myUrl, baseSuccess, baseFail);
+    getJsonFromHue(myUrl, parseLights, baseFail, myModel);
 }
 
 function getLight(lightId) {
@@ -151,10 +151,6 @@ function baseFail () {
 function parseGroups(json, listModel) {
     debugPrint('parse groups');
     var myGroups = JSON.parse(json);
-    debugPrint(json);
-    debugPrint(myGroups);
-    var groupsList = [];
-    var propValue;
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
         var myGroup = {
@@ -178,5 +174,37 @@ function parseGroups(json, listModel) {
             vicon: "go-home"
         };
         listModel.append(myGroup);
+    }
+}
+
+function parseLights(json, listModel) {
+    debugPrint('parse lights');
+    var myLights = JSON.parse(json);
+    for(var lightName in myLights) {
+        var clight = myLights[lightName];
+        var myLight = {
+            vuuid: lightName,
+            vname: clight.name,
+            von: clight.state.on,
+            vbri: clight.state.bri,
+            vhue: clight.state.hue,
+            vsat: clight.state.sat,
+            veffect: clight.state.effect,
+            vx: clight.state.xy[0],
+            vy: clight.state.xy[1],
+            vct: clight.state.ct,
+            valert: clight.state.alert,
+            vcolormode: clight.state.colormode,
+            vreachable: clight.state.reachable,
+            vtype: clight.type,
+            vmanufacturername: clight.manufacturername,
+            vmodelid: clight.modelid,
+            vuniqueid: clight.uniqueid,
+            vswversion: clight.swversion,
+            vswconfigid: clight.swconfigid,
+            vproductid: clight.productid,
+            vicon: "go-home"
+        };
+        listModel.append(myLight);
     }
 }

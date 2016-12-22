@@ -293,14 +293,8 @@ FocusScope {
         hueNotConnectedView.visible = !Hue.getHueConfigured() && noHueConnected;
         tabView.visible = Hue.getHueConfigured();
         plasmoid.toolTipSubText = i18n("Connected: " + Hue.getHueConfigured());
-        Hue.getLights();
-        debugPrint("get Groups");
         var groups = Hue.getGroups(groupModel);
-        for (var group in groups)
-        {
-            debugPrint("added");
-            groupModel.append(group);
-        }
+        var lights = Hue.getLights(lightModel);
     }
 
     
@@ -326,72 +320,6 @@ FocusScope {
     
     ListModel {
         id: lightModel
-        ListElement {
-            uuid: "1"
-            name: "Schlafzimmer Ball"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "2"
-            name: "Schlafzimmer Decke"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "3"
-            name: "Bureau Decke"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "4"
-            name: "Gaestezimmer Decke"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "5"
-            name: "Flur hinten"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "6"
-            name: "Flur vorne"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "7"
-            name: "Küche Decke"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "8"
-            name: "Essecke Decke"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "9"
-            name: "Wohnzimmer Ball"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "10"
-            name: "Mond"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "11"
-            name: "Sonne"
-            infoText: "Extended color light"
-            icon: "im-jabber"
-        }
     }    
     
 }
