@@ -364,12 +364,14 @@ PlasmaComponents.ListItem {
     }
     
     function toggleOnOff() {
+        //TODO: update self
         Hue.switchGroup(vuuid, groupOnOffButton.checked);
         groupBrightnessSlider.enabled = groupOnOffButton.checked;
     }
     
     function getGroupLights() {
-         Hue.getGroupLights(lightModel, slights);
+        groupLightModel.clear();
+        Hue.getGroupLights(groupLightModel, slights);
     }
     
     function createCurrentGroupDetails() {

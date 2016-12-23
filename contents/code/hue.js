@@ -37,29 +37,25 @@ function getHueConnection() {
 
 function getLights(myModel) {
     var myUrl = url + "lights";
-    getJsonFromHue(myUrl, parseLights, baseFail, myModel);
+    getJsonFromHue(myUrl, parseLights, baseFail, myModel, "");
 }
 
-function getLight(lightId) {
+function getLight(myModel, lightId) {
     var myUrl = url + "lights/" + lightId;
-    getJsonFromHue(myUrl, baseSuccess, baseFail);
-}
+    getJsonFromHue(myUrl, parseLight, baseFail, myModel, lightId);
+}groupLightModel
 
 function getGroups(myModel) {
     var myUrl = url + "groups";
-    getJsonFromHue(myUrl, parseGroups, baseFail, myModel);
-}
-
-function getGroup(groupId) {
-    var myUrl = url + "groups/" + groupId;
-    getJsonFromHue(myUrl, baseSuccess, baseFail);
+    getJsonFromHue(myUrl, parseGroups, baseFail, myModel, "");
 }
 
 function getGroupLights(myModel, slights) {
-    debugPrint("SLIGHTS: " + slights);
     if(slights) {
-        var array = slights.split();
-        debugPrint("ARRAY: " + array);
+        var array = slights.split(',');
+        for(var index = 0; index < array.length; ++index) {
+            getLight(myModel, array[index]);
+        }
     }
 }
 
@@ -101,7 +97,7 @@ function reloadConfig() {
     url = "http://" + base + "/api/" + auth + "/" 
 }
 
-function getJsonFromHue(getUrl, successCallback, failCallback, container) {
+function getJsonFromHue(getUrl, successCallback, failCallback, container, name) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -114,13 +110,13 @@ function getJsonFromHue(getUrl, successCallback, failCallback, container) {
         }
 
         var json = request.responseText;
-        successCallback(json, container);
+        successCallback(json, container, name);
     }
     request.open('GET', getUrl);
     request.send();
 }
 
-function putJsonToHue(putUrl, payload, successCallback, failCallback) {
+function putJsonToHue(putUrl, payload, successCallback, failCallback, name) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -137,7 +133,7 @@ function putJsonToHue(putUrl, payload, successCallback, failCallback) {
         debugPrint('successfull call to: ' + putUrl)
         var json = request.responseText;
         
-        successCallback(json);
+        successCallback(json, name);
     }
     request.open('PUT', putUrl);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -153,8 +149,7 @@ function baseFail () {
     debugPrint('fail callback called');
 }
 
-function parseGroups(json, listModel) {
-    debugPrint('parse groups');
+function parseGroups(json, listModel, name) {
     var myGroups = JSON.parse(json);
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
@@ -184,8 +179,9 @@ function parseGroups(json, listModel) {
     }
 }
 
-function parseLights(json, listModel) {
-    debugPrint('parse lights');
+
+
+function parseLights(json, listModel, name) {
     var myLights = JSON.parse(json);
     for(var lightName in myLights) {
         var clight = myLights[lightName];
@@ -214,4 +210,33 @@ function parseLights(json, listModel) {
         };
         listModel.append(myLight);
     }
+}
+
+function parseLight(json, listModel, lightName) {
+    var clight = JSON.parse(json);
+    var myLight = {
+        vuuid: lightName,
+        vname: clight.name,
+        von: clight.state.on,
+        vbri: clight.state.bri,
+        vhue: clight.state.hue,
+        vsat: clight.state.sat,
+        veffect: clight.state.effect,
+        vx: clight.state.xy[0],
+        vy: clight.state.xy[1],
+        vct: clight.state.ct,
+        valert: clight.state.alert,
+        vcolormode: clight.state.colormode,
+        vreachable: clight.state.reachable,
+        vtype: clight.type,
+        vmanufacturername: clight.manufacturername,
+        vmodelid: clight.modelid,
+        vuniqueid: clight.uniqueid,
+        vswversion: clight.swversion,
+        vswconfigid: clight.swconfigid,
+        vproductid: clight.productid,
+        vicon: "go-home"
+    };
+    listModel.append(myLight);
+    
 }
