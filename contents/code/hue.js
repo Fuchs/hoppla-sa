@@ -55,7 +55,12 @@ function getGroup(groupId) {
     getJsonFromHue(myUrl, baseSuccess, baseFail);
 }
 
-function getLightsForGroup(groupId) {
+function getGroupLights(myModel, slights) {
+    debugPrint("SLIGHTS: " + slights);
+    if(slights) {
+        var array = slights.split();
+        debugPrint("ARRAY: " + array);
+    }
 }
 
 // SWITCH
@@ -155,9 +160,10 @@ function parseGroups(json, listModel) {
         var cgroup = myGroups[groupName];
         var myGroup = {
             vuuid: groupName,
-            vlights: cgroup.lights,
             vname: cgroup.name,
             vtype: cgroup.type,
+            vlights: cgroup.lights,
+            slights: "" + cgroup.lights,
             vall_on: cgroup.state.all_on,
             vany_on: cgroup.state.all_on,
             vclass: cgroup.class,
@@ -173,6 +179,7 @@ function parseGroups(json, listModel) {
             vcolormode: cgroup.action.colormode,
             vicon: "go-home"
         };
+        
         listModel.append(myGroup);
     }
 }

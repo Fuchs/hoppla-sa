@@ -365,9 +365,12 @@ PlasmaComponents.ListItem {
     
     function toggleOnOff() {
         Hue.switchGroup(vuuid, groupOnOffButton.checked);
-        debugPrint('uuid: ' + vuuid + '  State: ' + groupOnOffButton.checked);
+        groupBrightnessSlider.enabled = groupOnOffButton.checked;
     }
     
+    function getGroupLights() {
+         Hue.getGroupLights(lightModel, slights);
+    }
     
     function createCurrentGroupDetails() {
         var groupDtls = [];
@@ -420,17 +423,5 @@ PlasmaComponents.ListItem {
     
     ListModel {
         id: groupLightModel
-        ListElement {
-            uuid: "1"
-            name: "Wohnzimmer Decke"
-            infoText: "Irgendwas"
-            icon: "im-jabber"
-        }
-        ListElement {
-            uuid: "1"
-            name: "Wohnzimmer Ball"
-            infoText: "Irgendwas"
-            icon: "im-jabber"
-        }
     }
 }

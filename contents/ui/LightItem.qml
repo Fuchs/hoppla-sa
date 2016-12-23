@@ -248,6 +248,7 @@ PlasmaComponents.ListItem {
     
     function toggleOnOff() {
         Hue.switchLight(vuuid, lightOnOffButton.checked);
+        slider.enabled = available && lightOnOffButton.checked;
     }
     
     function createCurrentLightDetails() {
@@ -263,8 +264,6 @@ PlasmaComponents.ListItem {
 
         lightDtls.push(i18n("Brightness"));
         lightDtls.push(vbri);
-        
-        slider.value = vbri;
         
         var myColor = i18n("Not available");
         if(vcolormode == "xy") {

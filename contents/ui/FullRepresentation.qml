@@ -293,8 +293,10 @@ FocusScope {
         hueNotConnectedView.visible = !Hue.getHueConfigured() && noHueConnected;
         tabView.visible = Hue.getHueConfigured();
         plasmoid.toolTipSubText = i18n("Connected: " + Hue.getHueConfigured());
-        var groups = Hue.getGroups(groupModel);
-        var lights = Hue.getLights(lightModel);
+        groupModel.clear();
+        Hue.getGroups(groupModel);
+        lightModel.clear();
+        Hue.getLights(lightModel);
     }
 
     
@@ -320,6 +322,5 @@ FocusScope {
     
     ListModel {
         id: lightModel
-    }    
-    
+    }  
 }
