@@ -293,6 +293,7 @@ FocusScope {
         hueNotConnectedView.visible = !Hue.getHueConfigured() && noHueConnected;
         tabView.visible = Hue.getHueConfigured();
         plasmoid.toolTipSubText = i18n("Connected: " + Hue.getHueConfigured());
+        groupModel.clear();
         Hue.getGroups(groupModel);
         lightModel.clear();
         Hue.getLights(lightModel);
