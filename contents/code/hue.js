@@ -151,6 +151,7 @@ function baseFail () {
 
 function parseGroups(json, listModel, name) {
     var myGroups = JSON.parse(json);
+    
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
         var myGroup = {

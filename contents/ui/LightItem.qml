@@ -131,6 +131,7 @@ PlasmaComponents.ListItem {
                 visible: expanded
                 enabled: available && von
                 updateValueWhileDragging : false
+                value: vbri
 
 
                 onValueChanged: {
