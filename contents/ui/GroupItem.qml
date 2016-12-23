@@ -370,7 +370,6 @@ PlasmaComponents.ListItem {
     }
     
     function getGroupLights() {
-        groupLightModel.clear();
         Hue.getGroupLights(groupLightModel, slights);
     }
     

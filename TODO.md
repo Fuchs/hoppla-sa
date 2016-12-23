@@ -2,8 +2,8 @@
 
 * Authenticate with bridge / generate auth hash 
 * Update items when children are updated
-* Update items regularly 
-* Make updates less visible (empty lists) 
+* Update items regularly
+* Show current colour / temperature in icon
 * Set colour
 * Set white temperature
 

@@ -53,6 +53,7 @@ function getGroups(myModel) {
 function getGroupLights(myModel, slights) {
     if(slights) {
         var array = slights.split(',');
+        myModel.clear();
         for(var index = 0; index < array.length; ++index) {
             getLight(myModel, array[index]);
         }
@@ -151,7 +152,7 @@ function baseFail () {
 
 function parseGroups(json, listModel, name) {
     var myGroups = JSON.parse(json);
-    
+    listModel.clear();
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
         var myGroup = {
@@ -184,6 +185,7 @@ function parseGroups(json, listModel, name) {
 
 function parseLights(json, listModel, name) {
     var myLights = JSON.parse(json);
+    listModel.clear();
     for(var lightName in myLights) {
         var clight = myLights[lightName];
         var myLight = {
@@ -207,7 +209,7 @@ function parseLights(json, listModel, name) {
             vswversion: clight.swversion,
             vswconfigid: clight.swconfigid,
             vproductid: clight.productid,
-            vicon: "go-home"
+            vicon: "im-jabber"
         };
         listModel.append(myLight);
     }
@@ -236,7 +238,7 @@ function parseLight(json, listModel, lightName) {
         vswversion: clight.swversion,
         vswconfigid: clight.swconfigid,
         vproductid: clight.productid,
-        vicon: "go-home"
+        vicon: "im-jabber"
     };
     listModel.append(myLight);
     
