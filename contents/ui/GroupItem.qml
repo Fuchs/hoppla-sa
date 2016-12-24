@@ -31,14 +31,15 @@ PlasmaComponents.ListItem {
     property bool expanded : false
     property int baseHeight : groupItemBase.height + (units.smallSpacing * 2) - groupBrightnessSlider.height
     property var currentGroupDetails : createCurrentGroupDetails()
-    property var currentGroupLights : getGroupLights()
+    property var currentGroupLights : []
     property string defaultIcon : "help-about"
     property bool available : true
+
 
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
-
+    
     MouseArea {
         id: groupItemBase
 
@@ -155,12 +156,17 @@ PlasmaComponents.ListItem {
 
                 onValueChanged: {
                     Hue.setGroupBrightness(vuuid, value);
+                    updateChildren();
                 }
             }
         }
         
         onClicked: {
             expanded = !expanded;
+        }
+        
+        Component.onCompleted: {
+            getGroupLights();
         }
     }
 
@@ -367,6 +373,7 @@ PlasmaComponents.ListItem {
         //TODO: update self
         Hue.switchGroup(vuuid, groupOnOffButton.checked);
         groupBrightnessSlider.enabled = groupOnOffButton.checked;
+        updateChildren();
     }
     
     function getGroupLights() {
@@ -420,8 +427,13 @@ PlasmaComponents.ListItem {
         return groupDtls;
     }
     
+    function updateChildren() {
+        for(var index = 0; index < groupLightModel.count; ++index) {
+            var myLight = groupLightModel.get(index);
+            Hue.updateLight(groupLightModel.get(index));
+        }
+    }
 
-    
     ListModel {
         id: groupLightModel
     }

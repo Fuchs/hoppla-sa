@@ -135,7 +135,6 @@ PlasmaComponents.ListItem {
 
 
                 onValueChanged: {
-                    debugPrint("Setting " + vuuid + " brightness to: " + value);
                     Hue.setLightBrightess(vuuid, value);
                 }
             }

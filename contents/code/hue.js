@@ -37,27 +37,35 @@ function getHueConnection() {
 
 function getLights(myModel) {
     var myUrl = url + "lights";
-    getJsonFromHue(myUrl, parseLights, baseFail, myModel, "");
+    getJsonFromHue(myUrl, parseLightsToModel, baseFail, myModel, "");
 }
 
 function getLight(myModel, lightId) {
     var myUrl = url + "lights/" + lightId;
-    getJsonFromHue(myUrl, parseLight, baseFail, myModel, lightId);
-}groupLightModel
+    getJsonFromHue(myUrl, parseLightToModel, baseFail, myModel, lightId);
+}
+
+function updateLight(myLight) {
+    var myUrl = url + "lights/" + myLight.vuuid;
+    getJsonFromHue(myUrl, parseLightToObject, baseFail, myLight, myLight.vuuid);
+}
 
 function getGroups(myModel) {
     var myUrl = url + "groups";
-    getJsonFromHue(myUrl, parseGroups, baseFail, myModel, "");
+    getJsonFromHue(myUrl, parseGroupsToModel, baseFail, myModel, "");
 }
 
-function getGroupLights(myModel, slights) {
-    if(slights) {
-        var array = slights.split(',');
-        myModel.clear();
+function getGroupLights(myList, myLights) {
+    if(myLights) {
+        myList.clear();
+        var array = myLights.split(',');
         for(var index = 0; index < array.length; ++index) {
-            getLight(myModel, array[index]);
+            getLight(myList, array[index]);
         }
     }
+}
+
+function updateGroup(myGroup) {
 }
 
 // SWITCH
@@ -98,7 +106,7 @@ function reloadConfig() {
     url = "http://" + base + "/api/" + auth + "/" 
 }
 
-function getJsonFromHue(getUrl, successCallback, failCallback, container, name) {
+function getJsonFromHue(getUrl, successCallback, failCallback, object, name) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -111,13 +119,13 @@ function getJsonFromHue(getUrl, successCallback, failCallback, container, name) 
         }
 
         var json = request.responseText;
-        successCallback(json, container, name);
+        successCallback(json, object, name);
     }
     request.open('GET', getUrl);
     request.send();
 }
 
-function putJsonToHue(putUrl, payload, successCallback, failCallback, name) {
+function putJsonToHue(putUrl, payload, successCallback, object, name) {
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -131,7 +139,6 @@ function putJsonToHue(putUrl, payload, successCallback, failCallback, name) {
             return;
         }
 
-        debugPrint('successfull call to: ' + putUrl)
         var json = request.responseText;
         
         successCallback(json, name);
@@ -139,18 +146,15 @@ function putJsonToHue(putUrl, payload, successCallback, failCallback, name) {
     request.open('PUT', putUrl);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send(payload);
-    debugPrint('PUT called for url: ' + putUrl)
 }
 
 function baseSuccess() {
-    debugPrint('success callback called');
 }
 
 function baseFail () {
-    debugPrint('fail callback called');
 }
 
-function parseGroups(json, listModel, name) {
+function parseGroupsToModel(json, listModel, name) {
     var myGroups = JSON.parse(json);
     listModel.clear();
     for(var groupName in myGroups) {
@@ -183,7 +187,7 @@ function parseGroups(json, listModel, name) {
 
 
 
-function parseLights(json, listModel, name) {
+function parseLightsToModel(json, listModel, name) {
     var myLights = JSON.parse(json);
     listModel.clear();
     for(var lightName in myLights) {
@@ -215,7 +219,7 @@ function parseLights(json, listModel, name) {
     }
 }
 
-function parseLight(json, listModel, lightName) {
+function parseLightToModel(json, listModel, lightName) {
     var clight = JSON.parse(json);
     var myLight = {
         vuuid: lightName,
@@ -241,5 +245,32 @@ function parseLight(json, listModel, lightName) {
         vicon: "im-jabber"
     };
     listModel.append(myLight);
-    
 }
+
+
+function parseLightToObject(json, myObject, lightName) {
+    var clight = JSON.parse(json);
+    myObject.vuuid = lightName,
+    myObject.vname = clight.name,
+    myObject.von = clight.state.on,
+    myObject.vbri = clight.state.bri,
+    myObject.vhue = clight.state.hue,
+    myObject.vsat = clight.state.sat,
+    myObject.veffect = clight.state.effect,
+    myObject.vx = clight.state.xy[0],
+    myObject.vy = clight.state.xy[1],
+    myObject.vct = clight.state.ct,
+    myObject.valert = clight.state.alert,
+    myObject.vcolormode = clight.state.colormode,
+    myObject.vreachable = clight.state.reachable,
+    myObject.vtype = clight.type,
+    myObject.vmanufacturername = clight.manufacturername,
+    myObject.vmodelid = clight.modelid,
+    myObject.vuniqueid = clight.uniqueid,
+    myObject.vswversion = clight.swversion,
+    myObject.vswconfigid = clight.swconfigid,
+    myObject.vproductid = clight.productid,
+    myObject.vicon = "im-jabber"
+}
+
+
