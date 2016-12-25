@@ -117,7 +117,7 @@ PlasmaComponents.ListItem {
                 verticalCenter: groupIcon.verticalCenter
             }
 
-            checked: vall_on || vany_on
+            checked: vany_on
             enabled: available
 
             onClicked: toggleOnOff()
@@ -370,7 +370,6 @@ PlasmaComponents.ListItem {
     }
     
     function toggleOnOff() {
-        //TODO: update self
         Hue.switchGroup(vuuid, groupOnOffButton.checked);
         groupBrightnessSlider.enabled = groupOnOffButton.checked;
         updateChildren();
@@ -429,7 +428,6 @@ PlasmaComponents.ListItem {
     
     function updateChildren() {
         for(var index = 0; index < groupLightModel.count; ++index) {
-            var myLight = groupLightModel.get(index);
             Hue.updateLight(groupLightModel.get(index));
         }
     }

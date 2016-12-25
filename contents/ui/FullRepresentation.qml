@@ -288,11 +288,15 @@ FocusScope {
         reInit();
     }
     
+    // Method to re-init the plasmoid. 
+    // This is used on refresh because it puts way less load on the Hue bridge
+    // as it fetches all lights and groups together, instead of updating each.
+    // This leads to side effects such as closing the current expanded selection, 
+    // but this should be acceptable, else updateGroups and updateLights can be used.
     function reInit() {
         hueNotConfiguredView.visible = !Hue.getHueConfigured();
         hueNotConnectedView.visible = !Hue.getHueConfigured() && noHueConnected;
         tabView.visible = Hue.getHueConfigured();
-        plasmoid.toolTipSubText = i18n("Connected: " + Hue.getHueConfigured());
         Hue.getGroups(groupModel);
         Hue.getLights(lightModel);
     }

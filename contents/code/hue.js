@@ -19,7 +19,6 @@
 var base = plasmoid.configuration.baseURL 
 var auth = plasmoid.configuration.authToken
 var url = "http://" + base + "/api/" + auth + "/" 
-var groups;
 
 // GETTERS
 
@@ -66,6 +65,8 @@ function getGroupLights(myList, myLights) {
 }
 
 function updateGroup(myGroup) {
+    var myUrl = url + "groups/" + myGroup.vuuid;
+    getJsonFromHue(myUrl, parseGroupToObject, baseFail, myGroup, myGroup.vuuid);
 }
 
 // SWITCH
@@ -166,7 +167,7 @@ function parseGroupsToModel(json, listModel, name) {
             vlights: cgroup.lights,
             slights: "" + cgroup.lights,
             vall_on: cgroup.state.all_on,
-            vany_on: cgroup.state.all_on,
+            vany_on: cgroup.state.any_on,
             vclass: cgroup.class,
             von: cgroup.action.on,
             vbri: cgroup.action.bri,
@@ -185,7 +186,28 @@ function parseGroupsToModel(json, listModel, name) {
     }
 }
 
-
+function parseGroupToObject(json, myObject, name) {
+    var cgroup = JSON.parse(json);
+    myObject.vuuid = name;
+    myObject.vname = cgroup.name;
+    myObject.vtype = cgroup.type;
+    myObject.vlights = cgroup.lights;
+    myObject.slights = "" + cgroup.lights;
+    myObject.vall_on = cgroup.state.all_on;
+    myObject.vany_on = cgroup.state.any_on;
+    myObject.vclass = cgroup.class;
+    myObject.von = cgroup.action.on;
+    myObject.vbri = cgroup.action.bri;
+    myObject.vhue = cgroup.action.hue;
+    myObject.vsat = cgroup.action.sat;
+    myObject.veffect = cgroup.action.effect;
+    myObject.vx = cgroup.action.xy[0];
+    myObject.vy = cgroup.action.xy[1];
+    myObject.vct = cgroup.action.ct;
+    myObject.valert = cgroup.action.alert;
+    myObject.vcolormode = cgroup.action.colormode;
+    myObject.vicon = "go-home"
+}
 
 function parseLightsToModel(json, listModel, name) {
     var myLights = JSON.parse(json);
@@ -247,30 +269,27 @@ function parseLightToModel(json, listModel, lightName) {
     listModel.append(myLight);
 }
 
-
 function parseLightToObject(json, myObject, lightName) {
     var clight = JSON.parse(json);
-    myObject.vuuid = lightName,
-    myObject.vname = clight.name,
-    myObject.von = clight.state.on,
-    myObject.vbri = clight.state.bri,
-    myObject.vhue = clight.state.hue,
-    myObject.vsat = clight.state.sat,
-    myObject.veffect = clight.state.effect,
-    myObject.vx = clight.state.xy[0],
-    myObject.vy = clight.state.xy[1],
-    myObject.vct = clight.state.ct,
-    myObject.valert = clight.state.alert,
-    myObject.vcolormode = clight.state.colormode,
-    myObject.vreachable = clight.state.reachable,
-    myObject.vtype = clight.type,
-    myObject.vmanufacturername = clight.manufacturername,
-    myObject.vmodelid = clight.modelid,
-    myObject.vuniqueid = clight.uniqueid,
-    myObject.vswversion = clight.swversion,
-    myObject.vswconfigid = clight.swconfigid,
-    myObject.vproductid = clight.productid,
+    myObject.vuuid = lightName;
+    myObject.vname = clight.name;
+    myObject.von = clight.state.on;
+    myObject.vbri = clight.state.bri;
+    myObject.vhue = clight.state.hue;
+    myObject.vsat = clight.state.sat;
+    myObject.veffect = clight.state.effect;
+    myObject.vx = clight.state.xy[0];
+    myObject.vy = clight.state.xy[1];
+    myObject.vct = clight.state.ct;
+    myObject.valert = clight.state.alert;
+    myObject.vcolormode = clight.state.colormode;
+    myObject.vreachable = clight.state.reachable;
+    myObject.vtype = clight.type;
+    myObject.vmanufacturername = clight.manufacturername;
+    myObject.vmodelid = clight.modelid;
+    myObject.vuniqueid = clight.uniqueid;
+    myObject.vswversion = clight.swversion;
+    myObject.vswconfigid = clight.swconfigid;
+    myObject.vproductid = clight.productid;
     myObject.vicon = "im-jabber"
 }
-
-

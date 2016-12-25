@@ -248,7 +248,6 @@ PlasmaComponents.ListItem {
     
     function toggleOnOff() {
         Hue.switchLight(vuuid, lightOnOffButton.checked);
-        //TODO: Update self
         slider.enabled = available && lightOnOffButton.checked;
     }
     
