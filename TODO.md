@@ -5,7 +5,6 @@
 * Update items regularly
 * Show current colour / temperature in icon
 * Set colour
-* Set white temperature
 
 # Nice to have features for next release (1.0)
 

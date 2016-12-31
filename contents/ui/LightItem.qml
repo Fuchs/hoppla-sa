@@ -18,6 +18,7 @@
 
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
+import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
@@ -198,6 +199,47 @@ PlasmaComponents.ListItem {
             }
         }
 
+        Item {
+            id: lightWhitesItem
+            visible: lightTabBar.currentTab == lightWhitesTab
+            width: parent.width
+            
+            anchors {
+                top: lightTabBar.bottom
+                topMargin: units.smallSpacing * 4
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+                rightMargin: units.gridUnit * 2
+            }
+            
+            MouseArea {
+                id: whiteTempRect
+                width: parent.width
+                height: units.gridUnit * 6
+                
+                 //153 366 500
+                LinearGradient {
+                    anchors.fill: parent
+                    start: Qt.point(0, 0)
+                    end: Qt.point(whiteTempRect.width, 0)
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#b4ffff" }
+                        GradientStop { position: 0.4; color: "#ffffff" }
+                        GradientStop { position: 1.0; color: "#ffffb4" }
+                    }
+                }
+                
+                onReleased: {
+                    if(available) {
+                        // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
+                        var ct = Math.round(Math.min(153 + ( (347 / whiteTempRect.width) * mouseX), 500))
+                        Hue.setLightColourTemp(vuuid, ct)
+                    }
+                }
+            }
+        }
+        
         
         Item {
             id: lightInfoItem

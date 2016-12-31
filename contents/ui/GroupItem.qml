@@ -19,6 +19,7 @@
 
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
+import QtGraphicalEffects 1.0
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -206,10 +207,10 @@ PlasmaComponents.ListItem {
                 iconSource: "color-management"
             }
             
-            PlasmaComponents.TabButton {
-                id:groupSceneTab
-                iconSource: "viewimage"
-            }
+//             PlasmaComponents.TabButton {
+//                 id:groupSceneTab
+//                 iconSource: "viewimage"
+//             }
             
             PlasmaComponents.TabButton {
                 id: groupInfoTab
@@ -235,6 +236,48 @@ PlasmaComponents.ListItem {
             delegate: LightItem { }
         }
         
+       Item {
+            id: groupWhitesItem
+            visible: groupTabBar.currentTab == groupWhitesTab
+            width: parent.width
+            
+            anchors {
+                top: groupTabBar.bottom
+                topMargin: units.smallSpacing * 4
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+                rightMargin: units.gridUnit * 2
+            }
+            
+            MouseArea {
+                id: whiteTempRect
+                width: parent.width
+                height: units.gridUnit * 6
+                
+                 //153 366 500
+                LinearGradient {
+                    anchors.fill: parent
+                    start: Qt.point(0, 0)
+                    end: Qt.point(whiteTempRect.width, 0)
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#b4ffff" }
+                        GradientStop { position: 0.4; color: "#ffffff" }
+                        GradientStop { position: 1.0; color: "#ffffb4" }
+                    }
+                }
+                
+                onReleased: {
+                    if(available) {
+                        // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
+                        var ct = Math.round(Math.min(153 + ( (347 / whiteTempRect.width) * mouseX), 500))
+                        Hue.setGroupColourTemp(vuuid, ct)
+                        updateChildren();
+                    }
+                }
+            }
+        }
+        
         Item {
             id: groupColourItem
             visible: groupTabBar.currentTab == groupColoursTab
@@ -258,51 +301,29 @@ PlasmaComponents.ListItem {
             }
         }
         
-        Item {
-            id: groupWhitesItem
-            visible: groupTabBar.currentTab == groupWhitesTab
-            width: parent.width
-            
-            anchors {
-                top: groupTabBar.bottom
-                topMargin: units.smallSpacing / 2
-                left: parent.left
-                leftMargin: units.gridUnit * 2
-                right: parent.right
-            }
-            
-            PlasmaComponents.Label {
-                id: groupWhitesLabel
-                height: paintedHeight
-                elide: Text.ElideRight
-                font.pointSize: theme.smallestFont.pointSize
-                text : "TBI"
-                textFormat: Text.PlainText
-            }
-        }
-        
-        Item {
-            id: groupScenesItem
-            visible: groupTabBar.currentTab == groupSceneTab
-            width: parent.width
-            
-            anchors {
-                top: groupTabBar.bottom
-                topMargin: units.smallSpacing / 2
-                left: parent.left
-                leftMargin: units.gridUnit * 2
-                right: parent.right
-            }
-            
-            PlasmaComponents.Label {
-                id: groupScenesLabel
-                height: paintedHeight
-                elide: Text.ElideRight
-                font.pointSize: theme.smallestFont.pointSize
-                text : "TBI"
-                textFormat: Text.PlainText
-            }
-        }
+
+//         Item {
+//             id: groupScenesItem
+//             visible: groupTabBar.currentTab == groupSceneTab
+//             width: parent.width
+//             
+//             anchors {
+//                 top: groupTabBar.bottom
+//                 topMargin: units.smallSpacing / 2
+//                 left: parent.left
+//                 leftMargin: units.gridUnit * 2
+//                 right: parent.right
+//             }
+//             
+//             PlasmaComponents.Label {
+//                 id: groupScenesLabel
+//                 height: paintedHeight
+//                 elide: Text.ElideRight
+//                 font.pointSize: theme.smallestFont.pointSize
+//                 text : "TBI"
+//                 textFormat: Text.PlainText
+//             }
+//         }
 
         Item {
             id: groupInfoItem

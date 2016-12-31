@@ -91,10 +91,22 @@ function setGroupBrightness(groupId, brightness) {
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+function setGroupColourTemp(groupId, ct) {
+    var body = '{"ct":' + ct + ',"colormode": "ct"}';
+    var myUrl = url + "groups/" + groupId + "/action";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+}
+
 // LIGHT SETTER
 
 function setLightBrightess(lightId, brightness) {
     var body = '{"bri":' + brightness + '}';
+    var myUrl = url + "lights/" + lightId + "/state";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+}
+
+function setLightColourTemp(lightId, ct) {
+    var body = '{"ct":' + ct + '}';
     var myUrl = url + "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
@@ -149,7 +161,8 @@ function putJsonToHue(putUrl, payload, successCallback, object, name) {
     request.send(payload);
 }
 
-function baseSuccess() {
+function baseSuccess(json, name) {
+
 }
 
 function baseFail () {
