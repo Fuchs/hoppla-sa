@@ -140,8 +140,6 @@ function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
     var attempt = 1; 
     var attempts = 12;
     var postUrl = "http://" + bridgeUrl + "/api";
-    dbgPrint("Post to " + postUrl + " with config " + url + " and plasmoid " + plasmoid);
-    
     postJsonToHue(postUrl, body, attempt, attempts, authSuccess, authFail, sCb, fCb)
 }
 
@@ -182,7 +180,6 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
         }
     }
     else if(myResult[0].success) {
-        dbgPrint("YAAAAAAAAAAAAAAAAAAAAAAAAAAY");
         gSuccCb(myResult[0].success.username);
         return;
     }
