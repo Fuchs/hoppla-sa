@@ -20,8 +20,16 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.kcoreaddons 1.0 as KCoreAddons
+import "../code/hue.js" as Hue
+
 
 Item {
+    
+    KCoreAddons.KUser {
+        id: kuser
+    }
+
     
     property alias cfg_baseURL: baseURL.text
     property alias cfg_authToken: authToken.text
@@ -118,9 +126,6 @@ Item {
         
         CheckBox {
             id: altConnectionCb
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: grdMain.bottom
             text: i18n("Use a fallback connection when the bridge is out of reach")
         }
         
@@ -191,7 +196,24 @@ Item {
     }
     
     function authenticate() {
+        //TODO: Use something prettier for status
         lblStatus.text = i18n("Push the authenticate button on your Hue bridge within 30 seconds");
         grdStatus.visible = true;
+        var hostname = kuser.host;
+        // This is debatable UX wise, we fetch the bridge URL from the text field instead of the config
+        // so when a user just entered it but didn't save yet it works regardless. 
+        // From a usibility standpoint, this is better as it is what the user expects.
+        Hue.authenticateWithBridge(baseURL.text, hostname, authenticateSuccess, authenticateFail);
+    }
+    
+    function authenticateSuccess(token) {
+        //TODO: Use something prettier for status
+        lblStatus.text = i18n("Successfully authenticated, please save the configuration");
+        authToken.text = token;
+    }
+    
+        function authenticateFail(message) {
+        //TODO: Use something prettier for status
+        lblStatus.text = i18n("Failed to authenticate: " + i18n(message));
     }
 }

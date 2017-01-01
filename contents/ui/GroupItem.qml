@@ -466,10 +466,10 @@ PlasmaComponents.ListItem {
         
         var myColor = "";
         if(vcolormode === 'xy') {
-            myColor = i18n("Colour by X,Y in CIE space, x: ") + vx + i18n(" y: ") + vy;
+            myColor = i18n("Colour in CIE space, x: ") + vx + i18n(" y: ") + vy;
         }
         else if(vcolormode === 'hs') {
-             myColor = i18n("Colour by hue / saturation, hue: ") + vhue + i18n(" sat: ") + vsat;
+             myColor = i18n("Colour in HS, hue: ") + vhue + i18n(" sat: ") + vsat;
         }
         else if(vcolormode === 'hs') {
             myColor = "White by temperature: " + vct;

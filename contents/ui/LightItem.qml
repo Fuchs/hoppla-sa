@@ -368,11 +368,11 @@ PlasmaComponents.ListItem {
         
         var myColor = i18n("Not available");
         if(vcolormode == "xy") {
-            myColor = i18n("Colour by CIE x: ") + vx + i18n(" y: ") + vy;
+            myColor = i18n("Colour in CIE space, x: ") + vx + i18n(" y: ") + vy;
         }
         
         if(vcolormode == "hs") {
-             myColor = i18n("Colour by hue / sat, h: ") + vhue + i18n(" s: ") + vsat;
+              myColor = i18n("Colour in HS, hue: ") + vhue + i18n(" sat: ") + vsat;
         }
         
         if(vcolormode == "ct") {

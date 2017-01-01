@@ -1,21 +1,22 @@
 /*
-    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ * 
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) version 3, or any
+ *    later version accepted by the original Author.
+ * 
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ * 
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) version 3, or any
-    later version accepted by the original Author.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+//TODO: This seems to not work when being called from the config UI, find out why and fix
 var base = plasmoid.configuration.baseURL 
 var auth = plasmoid.configuration.authToken
 var url = "http://" + base + "/api/" + auth + "/" 
@@ -29,9 +30,6 @@ function getHueConfigured() {
         return false;
     }
     return true;
-}
-
-function getHueConnection() {
 }
 
 function getLights(myModel) {
@@ -123,6 +121,83 @@ function setLightColourHS(lightId, hue, sat) {
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+// Authenticate
+
+function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
+    var appname = "Hoppla-SA";
+    // https://www.developers.meethue.com/documentation/configuration-api#71_create_user
+    var maxLength = 19; 
+    
+    if (!hostname) {
+        hostname = "unknowndevice"
+    }
+    else {
+        if(hostname.length > maxLength) {
+            hostname = hostname.substring(0, maxLength);
+        }
+    }
+    var body =  '{"devicetype":"' + appname + '#' + hostname + '"}'
+    var attempt = 1; 
+    var attempts = 12;
+    var postUrl = "http://" + bridgeUrl + "/api";
+    dbgPrint("Post to " + postUrl + " with config " + url + " and plasmoid " + plasmoid);
+    
+    postJsonToHue(postUrl, body, attempt, attempts, authSuccess, authFail, sCb, fCb)
+}
+
+
+function authFail(postUrl, body, att, maxAtt, request, gSuccCb, gFailCb) {
+    var attempt = ++att;
+    var mytimer = new Timer();
+    mytimer.interval = 5000;
+    mytimer.repeat = false;
+    mytimer.triggered.connect(function () {
+        postJsonToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
+    })
+    mytimer.start();
+    gFailCb("unknown error");
+}
+
+function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb) {
+    if(!json) {
+        return;
+    }
+    var myResult = JSON.parse(json);
+    if(!myResult[0]) {
+        return;
+    }
+    
+    if(myResult[0].error) {
+        if(myResult[0].error.type == 101) {
+            var attempt = ++att;
+            var mytimer = new Timer();
+            mytimer.interval = 5000;
+            mytimer.repeat = false;
+            mytimer.triggered.connect(function () {
+                postJsonToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
+            })
+            mytimer.start();
+            gFailCb(myResult[0].error.description);
+            return;
+        }
+    }
+    else if(myResult[0].success) {
+        dbgPrint("YAAAAAAAAAAAAAAAAAAAAAAAAAAY");
+        gSuccCb(myResult[0].success.username);
+        return;
+    }
+    
+    var attempt = ++att;
+    var mytimer = new Timer();
+    mytimer.interval = 5000;
+    mytimer.repeat = false;
+    mytimer.triggered.connect(function () {
+        postJsonToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
+    })
+    mytimer.start();
+    gFailCb("unknown error");
+    
+}
 
 // HELPERS 
 
@@ -143,7 +218,7 @@ function getJsonFromHue(getUrl, successCallback, failCallback, object, name) {
             failureCallback();
             return;
         }
-
+        
         var json = request.responseText;
         successCallback(json, object, name);
     }
@@ -164,7 +239,7 @@ function putJsonToHue(putUrl, payload, successCallback, object, name) {
             failureCallback();
             return;
         }
-
+        
         var json = request.responseText;
         
         successCallback(json, name);
@@ -174,7 +249,10 @@ function putJsonToHue(putUrl, payload, successCallback, object, name) {
     request.send(payload);
 }
 
-function postJsonToHue(postUrl, payload, successCallback, failureCallback) {
+function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gFailCb) {
+    if(att > maxAtt) {
+        return;
+    }
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -182,23 +260,20 @@ function postJsonToHue(postUrl, payload, successCallback, failureCallback) {
         }
         
         if (request.status !== 200) {
-            debugPrint('ERROR - status: ' + request.status)
-            debugPrint('ERROR - responseText: ' + request.responseText)
-            failureCallback();
+            lFailCb(postUrl, body, att, maxAtt, request, gSuccCb, gFailCb);
             return;
         }
-
-        var json = request.responseText;
         
-        successCallback(json, name);
+        var json = request.responseText;
+        lSuccCb(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb);
     }
     request.open('POST', postUrl);
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send(payload);
+    dbgPrint("Post attempt " + att + "/" + maxAtt + " " + postUrl + " with body " + body)
+    request.send(body);
 }
 
 function baseSuccess(json, name) {
-
+    
 }
 
 function baseFail () {
@@ -341,4 +416,12 @@ function parseLightToObject(json, myObject, lightName) {
     myObject.vswconfigid = clight.swconfigid;
     myObject.vproductid = clight.productid;
     myObject.vicon = "im-jabber"
+}
+
+function dbgPrint(msg) {
+    print('[Hoppla] ' + msg)
+}
+
+function Timer() {
+    return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);
 }
