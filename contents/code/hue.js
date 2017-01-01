@@ -19,7 +19,7 @@
 //TODO: This seems to not work when being called from the config UI, find out why and fix
 var base = plasmoid.configuration.baseURL 
 var auth = plasmoid.configuration.authToken
-var url = "http://" + base + "/api/" + auth + "/" 
+var url = base + "/api/" + auth + "/" 
 
 // GETTERS
 
@@ -139,7 +139,7 @@ function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
     var body =  '{"devicetype":"' + appname + '#' + hostname + '"}'
     var attempt = 1; 
     var attempts = 12;
-    var postUrl = "http://" + bridgeUrl + "/api";
+    var postUrl = bridgeUrl + "/api";
     postJsonToHue(postUrl, body, attempt, attempts, authSuccess, authFail, sCb, fCb)
 }
 
@@ -201,7 +201,7 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
 function reloadConfig() {
     base = plasmoid.configuration.baseURL 
     auth = plasmoid.configuration.authToken
-    url = "http://" + base + "/api/" + auth + "/" 
+    url = base + "/api/" + auth + "/" 
 }
 
 function getJsonFromHue(getUrl, successCallback, failCallback, object, name) {

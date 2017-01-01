@@ -92,7 +92,7 @@ Item {
                 
                 Label {
                     Layout.alignment: Qt.AlignRight
-                    text: i18n("Bridge URL:")
+                    text: i18n("Bridge Address:")
                 }
                 
                 Button {
@@ -108,7 +108,7 @@ Item {
                 
                 Label {
                     Layout.alignment: Qt.AlignRight
-                    text: i18n("Authentication Token:")
+                    text: i18n("Authentication Name:")
                 }
                 
                 Button {
