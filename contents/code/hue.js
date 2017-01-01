@@ -161,6 +161,29 @@ function putJsonToHue(putUrl, payload, successCallback, object, name) {
     request.send(payload);
 }
 
+function postJsonToHue(postUrl, payload, successCallback, failureCallback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        
+        if (request.status !== 200) {
+            debugPrint('ERROR - status: ' + request.status)
+            debugPrint('ERROR - responseText: ' + request.responseText)
+            failureCallback();
+            return;
+        }
+
+        var json = request.responseText;
+        
+        successCallback(json, name);
+    }
+    request.open('POST', postUrl);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(payload);
+}
+
 function baseSuccess(json, name) {
 
 }

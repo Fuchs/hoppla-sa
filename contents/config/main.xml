@@ -30,6 +30,18 @@
       <label>Password for the alternative URL</label>
       <default></default>
     </entry>
+    <entry name="altUseAuth" type="Bool">
+      <label>Use Authentication for the alternative URL</label>
+      <default>false</default>
+    </entry>
+    <entry name="altUsername" type="string">
+      <label>Username for the alternative URL</label>
+      <default></default>
+    </entry>
+    <entry name="altPassword" type="string">
+      <label>Password for the alternative URL</label>
+      <default></default>
+    </entry>
     <entry name="authToken" type="string">
       <label>Authentication Token for Hue</label>
       <default></default>
