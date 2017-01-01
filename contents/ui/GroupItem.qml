@@ -23,6 +23,8 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import QtQuick.Controls 1.2 as QtControls
+import QtQuick.Dialogs 1.0 as QtDialogs
 
 import "hue.js" as Hue
 
@@ -285,22 +287,60 @@ PlasmaComponents.ListItem {
             
             anchors {
                 top: groupTabBar.bottom
-                topMargin: units.smallSpacing / 2
+                topMargin: units.smallSpacing * 4
                 left: parent.left
                 leftMargin: units.gridUnit * 2
                 right: parent.right
+                rightMargin: units.gridUnit * 2
             }
             
-            PlasmaComponents.Label {
-                id: groupColoursLabel
-                height: paintedHeight
-                elide: Text.ElideRight
-                font.pointSize: theme.smallestFont.pointSize
-                text : "TBI"
-                textFormat: Text.PlainText
+            MouseArea {
+                id: hueSatRect
+                width: parent.width
+                height: units.gridUnit * 6
+                
+                 //153 366 500
+                LinearGradient {
+                    anchors.fill: parent
+                    start: Qt.point(0, 0)
+                    end: Qt.point(hueSatRect.width, 0)
+                    gradient: Gradient {
+                        GradientStop { position: 0/6; color: "red" }
+                        GradientStop { position: 1/6; color: "magenta" }
+                        GradientStop { position: 2/6; color: "blue" }
+                        GradientStop { position: 3/6; color: "cyan" }
+                        GradientStop { position: 4/6; color: "lime" }
+                        GradientStop { position: 5/6; color: "yellow" }
+                        GradientStop { position: 6/6; color: "red" }
+                    }
+                }
+                
+                LinearGradient {
+                    anchors.fill: parent
+                    start: Qt.point(0, 0)
+                    end: Qt.point(0, hueSatRect.height)
+                    gradient: Gradient {
+                        GradientStop { position: 0/6; color: "#00ffffff" }
+                        GradientStop { position: 1/6; color: "#2affffff" }
+                        GradientStop { position: 2/6; color: "#54ffffff" }
+                        GradientStop { position: 3/6; color: "#7effffff" }
+                        GradientStop { position: 4/6; color: "#a8ffffff" }
+                        GradientStop { position: 5/6; color: "#d2ffffff" }
+                        GradientStop { position: 6/6; color: "#ffffffff" }
+                    }
+                }
+                
+                onReleased: {
+                    if(available) {
+                        // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
+                        var hue = Math.round(Math.min(65535 - ( (65535 / hueSatRect.width) * mouseX), 65535))
+                        var sat = Math.round(Math.min(254 - ( (254 / hueSatRect.height) * mouseY), 254))
+                        Hue.setGroupColourHS(vuuid, hue, sat)
+                        updateChildren();
+                    }
+                }
             }
         }
-        
 
 //         Item {
 //             id: groupScenesItem

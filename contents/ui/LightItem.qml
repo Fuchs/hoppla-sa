@@ -240,6 +240,65 @@ PlasmaComponents.ListItem {
             }
         }
         
+        Item {
+            id: lightColourItem
+            visible: lightTabBar.currentTab == lightColoursTab
+            width: parent.width
+            
+            anchors {
+                top: lightTabBar.bottom
+                topMargin: units.smallSpacing * 4
+                left: parent.left
+                leftMargin: units.gridUnit * 2
+                right: parent.right
+                rightMargin: units.gridUnit * 2
+            }
+            
+            MouseArea {
+                id: hueSatRect
+                width: parent.width
+                height: units.gridUnit * 6
+                
+                 //153 366 500
+                LinearGradient {
+                    anchors.fill: parent
+                    start: Qt.point(0, 0)
+                    end: Qt.point(hueSatRect.width, 0)
+                    gradient: Gradient {
+                        GradientStop { position: 0/6; color: "red" }
+                        GradientStop { position: 1/6; color: "magenta" }
+                        GradientStop { position: 2/6; color: "blue" }
+                        GradientStop { position: 3/6; color: "cyan" }
+                        GradientStop { position: 4/6; color: "lime" }
+                        GradientStop { position: 5/6; color: "yellow" }
+                        GradientStop { position: 6/6; color: "red" }
+                    }
+                }
+                
+                LinearGradient {
+                    anchors.fill: parent
+                    start: Qt.point(0, 0)
+                    end: Qt.point(0, hueSatRect.height)
+                    gradient: Gradient {
+                        GradientStop { position: 0/6; color: "#00ffffff" }
+                        GradientStop { position: 1/6; color: "#2affffff" }
+                        GradientStop { position: 2/6; color: "#54ffffff" }
+                        GradientStop { position: 3/6; color: "#7effffff" }
+                        GradientStop { position: 4/6; color: "#a8ffffff" }
+                        GradientStop { position: 5/6; color: "#d2ffffff" }
+                        GradientStop { position: 6/6; color: "#ffffffff" }
+                    }
+                }
+                
+                onReleased: {
+                    if(available) {
+                        var hue = Math.round(Math.min(65535 - ( (65535 / hueSatRect.width) * mouseX), 65535))
+                        var sat = Math.round(Math.min(254 - ( (254 / hueSatRect.height) * mouseY), 254))
+                        Hue.setLightColourHS(vuuid, hue, sat)
+                    }
+                }
+            }
+        }
         
         Item {
             id: lightInfoItem

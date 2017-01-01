@@ -97,6 +97,12 @@ function setGroupColourTemp(groupId, ct) {
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+function setGroupColourHS(groupId, hue, sat) {
+    var body = '{"hue":' + hue + ',"sat":' + sat + ',"colormode": "hs"}';
+    var myUrl = url + "groups/" + groupId + "/action";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+}
+
 // LIGHT SETTER
 
 function setLightBrightess(lightId, brightness) {
@@ -110,6 +116,13 @@ function setLightColourTemp(lightId, ct) {
     var myUrl = url + "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
+
+function setLightColourHS(lightId, hue, sat) {
+    var body = '{"hue":' + hue + ',"sat":' + sat + '}';
+    var myUrl = url + "lights/" + lightId + "/state";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+}
+
 
 // HELPERS 
 
