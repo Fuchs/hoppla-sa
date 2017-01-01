@@ -265,7 +265,6 @@ function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gF
         lSuccCb(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb);
     }
     request.open('POST', postUrl);
-    dbgPrint("Post attempt " + att + "/" + maxAtt + " " + postUrl + " with body " + body)
     request.send(body);
 }
 
