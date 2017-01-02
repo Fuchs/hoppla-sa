@@ -49,21 +49,24 @@ PlasmaComponents.ListItem {
 
         height: Math.max(units.iconSizes.medium, lightLabel.height + lightInfoLabel.height + slider.height) + Math.round(units.gridUnit / 2)
 
-        PlasmaCore.IconItem {
-            id: lightIcon
-
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-            }
-
+        HueColourItem {
+            id: colorItem
+            width: units.iconSizes.medium 
             height: units.iconSizes.medium
-            width: height
-            source: getIcon()
-
-            onSourceChanged: {
-                if (!valid && source != defaultIcon)
-                    source = defaultIcon;
+            
+            valOn: von
+            colourMode: vcolormode
+            valX: vx
+            valY: vy
+            valCt: vct
+            valSat: vsat
+            valHue: vhue
+            valBri: vbri
+            type: "bulb"
+            
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
             }
         }
 
@@ -71,8 +74,8 @@ PlasmaComponents.ListItem {
             id: lightLabel
 
             anchors {
-                bottom: lightIcon.verticalCenter
-                left: lightIcon.right
+                bottom: colorItem.verticalCenter
+                left: colorItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
             }
@@ -89,7 +92,7 @@ PlasmaComponents.ListItem {
             id: lightInfoLabel
 
             anchors {
-                left: lightIcon.right
+                left: colorItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
                 top: lightLabel.bottom
@@ -106,7 +109,7 @@ PlasmaComponents.ListItem {
          RowLayout {
             
             anchors {
-                    left: lightIcon.right
+                    left: colorItem.right
                     rightMargin: Math.round(units.gridUnit)
                     right: lightOnOffButton.left
                     top: lightInfoLabel.bottom
@@ -148,7 +151,7 @@ PlasmaComponents.ListItem {
             anchors {
                 right: parent.right
                 rightMargin: Math.round(units.gridUnit / 2)
-                verticalCenter: lightIcon.verticalCenter
+                verticalCenter: colorItem.verticalCenter
             }
 
             checked: von
@@ -226,15 +229,16 @@ PlasmaComponents.ListItem {
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: "#b4ffff" }
                         GradientStop { position: 0.4; color: "#ffffff" }
-                        GradientStop { position: 1.0; color: "#ffffb4" }
+                        GradientStop { position: 1.0; color: "#ff9500" }
                     }
                 }
                 
                 onReleased: {
-                    if(available) {
+                    if(available && von) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
-                        var ct = Math.round(Math.min(153 + ( (347 / whiteTempRect.width) * mouseX), 500))
-                        Hue.setLightColourTemp(vuuid, ct)
+                        var ct = Math.round(Math.min(153 + ( (347 / whiteTempRect.width) * mouseX), 500));
+                        Hue.setLightColourTemp(vuuid, ct);
+                        colorItem.setColourCT(ct);
                     }
                 }
             }
@@ -291,10 +295,11 @@ PlasmaComponents.ListItem {
                 }
                 
                 onReleased: {
-                    if(available) {
+                    if(available && von) {
                         var hue = Math.round(Math.min(65535 - ( (65535 / hueSatRect.width) * mouseX), 65535))
                         var sat = Math.round(Math.min(254 - ( (254 / hueSatRect.height) * mouseY), 254))
                         Hue.setLightColourHS(vuuid, hue, sat)
+                        colorItem.setColourHS(hue, sat);
                     }
                 }
             }

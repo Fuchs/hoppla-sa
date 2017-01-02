@@ -56,21 +56,24 @@ PlasmaComponents.ListItem {
 
         height: Math.max(units.iconSizes.medium, groupLabel.height + groupInfoLabel.height + groupBrightnessSlider.height) + Math.round(units.gridUnit / 2)
 
-        PlasmaCore.IconItem {
-            id: groupIcon
-
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-            }
-
+        HueColourItem {
+            id: colorItem
+            width: units.iconSizes.medium 
             height: units.iconSizes.medium
-            width: height
-            source: getIcon()
-
-            onSourceChanged: {
-                if (!valid && source != defaultIcon)
-                    source = defaultIcon;
+            
+            valOn: vany_on
+            colourMode: vcolormode
+            valX: vx
+            valY: vy
+            valCt: vct
+            valSat: vsat
+            valHue: vhue
+            valBri: vbri
+            type: "group"
+            
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
             }
         }
         
@@ -78,8 +81,8 @@ PlasmaComponents.ListItem {
             id: groupLabel
 
             anchors {
-                bottom: groupIcon.verticalCenter
-                left: groupIcon.right
+                bottom: colorItem.verticalCenter
+                left: colorItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
             }
@@ -96,7 +99,7 @@ PlasmaComponents.ListItem {
             id: groupInfoLabel
 
             anchors {
-                left: groupIcon.right
+                left: colorItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
                 top: groupLabel.bottom
@@ -117,7 +120,7 @@ PlasmaComponents.ListItem {
             anchors {
                 right: parent.right
                 rightMargin: Math.round(units.gridUnit / 2)
-                verticalCenter: groupIcon.verticalCenter
+                verticalCenter: colorItem.verticalCenter
             }
 
             checked: vany_on
@@ -129,7 +132,7 @@ PlasmaComponents.ListItem {
         RowLayout {
             
             anchors {
-                    left: groupIcon.right
+                    left: colorItem.right
                     rightMargin: Math.round(units.gridUnit)
                     right: groupOnOffButton.left
                     top: groupInfoLabel.bottom
@@ -265,16 +268,17 @@ PlasmaComponents.ListItem {
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: "#b4ffff" }
                         GradientStop { position: 0.4; color: "#ffffff" }
-                        GradientStop { position: 1.0; color: "#ffffb4" }
+                        GradientStop { position: 1.0; color: "#ff9500" }
                     }
                 }
                 
                 onReleased: {
-                    if(available) {
+                    if(available && vany_on) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var ct = Math.round(Math.min(153 + ( (347 / whiteTempRect.width) * mouseX), 500))
                         Hue.setGroupColourTemp(vuuid, ct)
                         updateChildren();
+                        colorItem.setColourCT(ct);
                     }
                 }
             }
@@ -331,12 +335,13 @@ PlasmaComponents.ListItem {
                 }
                 
                 onReleased: {
-                    if(available) {
+                    if(available && vany_on) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var hue = Math.round(Math.min(65535 - ( (65535 / hueSatRect.width) * mouseX), 65535))
                         var sat = Math.round(Math.min(254 - ( (254 / hueSatRect.height) * mouseY), 254))
                         Hue.setGroupColourHS(vuuid, hue, sat)
                         updateChildren();
+                        colorItem.setColourHS(hue, sat);
                     }
                 }
             }
@@ -471,7 +476,7 @@ PlasmaComponents.ListItem {
         else if(vcolormode === 'hs') {
              myColor = i18n("Colour in HS, hue: ") + vhue + i18n(" sat: ") + vsat;
         }
-        else if(vcolormode === 'hs') {
+        else if(vcolormode === 'ct') {
             myColor = "White by temperature: " + vct;
         }
         
