@@ -9,6 +9,7 @@
 
 * Auto-discover Hue bridge
 * Alternative hue bridge with username / password for out-of-home connections
+* Provide some dark and bright icons for bulbs and most, if not all group types
 
 # Possible future features
 
