@@ -2,7 +2,8 @@
 
 * Update items when children are updated
 * Update items regularly
-* Show current colour / temperature in icon
+* Refactor code: move duplicate stuff out to separate files and include them
+* Fix code: get rid of the tons of plasma / qml / Qt warnings
 
 # Nice to have features for next release (1.0)
 
