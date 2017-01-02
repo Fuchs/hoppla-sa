@@ -474,7 +474,7 @@ PlasmaComponents.ListItem {
         else if(vcolormode === 'hs') {
              myColor = i18n("Colour in HS, hue: ") + vhue + i18n(" sat: ") + vsat;
         }
-        else if(vcolormode === 'hs') {
+        else if(vcolormode === 'ct') {
             myColor = "White by temperature: " + vct;
         }
         
