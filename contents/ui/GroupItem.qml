@@ -61,7 +61,7 @@ PlasmaComponents.ListItem {
             width: units.iconSizes.medium 
             height: units.iconSizes.medium
             
-            valOn: von
+            valOn: vany_on
             colourMode: vcolormode
             valX: vx
             valY: vy
@@ -273,11 +273,12 @@ PlasmaComponents.ListItem {
                 }
                 
                 onReleased: {
-                    if(available) {
+                    if(available && vany_on) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var ct = Math.round(Math.min(153 + ( (347 / whiteTempRect.width) * mouseX), 500))
                         Hue.setGroupColourTemp(vuuid, ct)
                         updateChildren();
+                        colorItem.setColourCT(ct);
                     }
                 }
             }
@@ -334,12 +335,13 @@ PlasmaComponents.ListItem {
                 }
                 
                 onReleased: {
-                    if(available) {
+                    if(available && vany_on) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var hue = Math.round(Math.min(65535 - ( (65535 / hueSatRect.width) * mouseX), 65535))
                         var sat = Math.round(Math.min(254 - ( (254 / hueSatRect.height) * mouseY), 254))
                         Hue.setGroupColourHS(vuuid, hue, sat)
                         updateChildren();
+                        colorItem.setColourHS(hue, sat);
                     }
                 }
             }
