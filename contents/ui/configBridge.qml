@@ -127,6 +127,8 @@ Item {
         CheckBox {
             id: altConnectionCb
             text: i18n("Use a fallback connection when the bridge is out of reach")
+            // TODO: make visible once implemented
+            visible: false
         }
         
         GroupBox {
