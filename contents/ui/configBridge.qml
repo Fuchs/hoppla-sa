@@ -97,6 +97,8 @@ Item {
                 
                 Button {
                     id: btnFindBridge
+                    //TODO: re-add once implemented
+                    enabled: false
                     text: i18n("Find bridge")
                     onClicked: findBridge()
                 }
