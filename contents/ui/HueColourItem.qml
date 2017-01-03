@@ -26,6 +26,7 @@ import "hue.js" as Hue
 
 Item {
     property string id
+    property var supportedClasses : ["livingroom","kitchen","dining","bedroom","kidsbedroom","bathroom","nursery","recreation","office","gym","hallway","toilet","frontdoor","garage","terrace","garden","driveway","carport","other","bulb"]
 
     property string colourMode
     property string type
@@ -36,10 +37,10 @@ Item {
     property int valX 
     property int valY
     property int valBri
+    property string valClass
     
     Component.onCompleted: {
         setColour();
-        setIconColour();
     }
     
     Rectangle {
@@ -50,7 +51,7 @@ Item {
         }
         
         width: parent.width < parent.height ? parent.width : parent.height 
-        height: width
+        height: width 
         color: "#DD1F374E"
         border.color: "#99999999"
         border.width: 1
@@ -71,7 +72,7 @@ Item {
             horizontalCenter: parent.horizontalCenter
         }
         
-        height: units.iconSizes.medium
+        height: units.iconSizes.medium - units.smallSpacing * 2
         width: height
         svg: mySvg
     }
@@ -82,6 +83,7 @@ Item {
         if(!valOn) {
             // transparent gray
             circle.color = "#DD1F374E";
+            setIcon();
             return;
         }
         
@@ -102,20 +104,15 @@ Item {
     }
     
     function setColourHS(phue, psat) {
-        
-        debugPrint("Set to hue/sat: " + phue + "/" + psat);
         // qt expects hue and saturation as 0..1 value, so we have to convert
         var hue = 0.00001525902 * phue
         var sat = 0.003937 * psat;
         
         circle.color = Qt.hsva(hue, sat, 1, 1)
-        setIconColour()
+        setIcon()
     }
     
      function setColourCT(pct) {
-         
-         debugPrint("Set to ct: " + pct);
-         
         if(pct < 190) {
             circle.color = "#94feff";  
         }
@@ -138,21 +135,30 @@ Item {
             circle.color = "#ff9500";  
         }
         
-        setIconColour()
+        setIcon()
     }
     
-    function setIconColour() {
+    function setIcon() {
         var red = circle.color.r * 255;
         var green = circle.color.g * 255;
         var blue = circle.color.b * 255;
         
+        var iconName = "bulb";
+        
+        if(type === "group") {
+            var itemType = valClass.replace(' ','').toLowerCase();
+            if(supportedClasses.indexOf(itemType) >= 0) {
+                iconName = itemType;
+            }
+        }
+        
         var perceptedBrightness = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
 
         if (perceptedBrightness < 0.5) {
-            mySvg.imagePath = Qt.resolvedUrl("../images/" + type + "-dark.svg");
+            mySvg.imagePath = Qt.resolvedUrl("../images/" + iconName + "-dark.svg");
         }
         else {
-            mySvg.imagePath = Qt.resolvedUrl("../images/" + type + "-light.svg");
+            mySvg.imagePath = Qt.resolvedUrl("../images/" + iconName + "-light.svg");
         }
     }
 }
