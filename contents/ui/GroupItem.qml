@@ -38,10 +38,16 @@ PlasmaComponents.ListItem {
     property string defaultIcon : "help-about"
     property bool available : true
     
+    property bool updating:  true
+    
     
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
+    
+    Component.onCompleted: {
+            updating = false;
+    }
     
     MouseArea {
         id: groupItemBase
@@ -57,7 +63,7 @@ PlasmaComponents.ListItem {
         height: Math.max(units.iconSizes.medium, groupLabel.height + groupInfoLabel.height + groupBrightnessSlider.height) + Math.round(units.gridUnit / 2)
         
         HueColourItem {
-            id: colorItem
+            id: colourItem
             width: units.iconSizes.medium 
             height: units.iconSizes.medium
             
@@ -82,8 +88,8 @@ PlasmaComponents.ListItem {
             id: groupLabel
             
             anchors {
-                bottom: colorItem.verticalCenter
-                left: colorItem.right
+                bottom: colourItem.verticalCenter
+                left: colourItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
             }
@@ -100,7 +106,7 @@ PlasmaComponents.ListItem {
             id: groupInfoLabel
             
             anchors {
-                left: colorItem.right
+                left: colourItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
                 top: groupLabel.bottom
@@ -121,7 +127,7 @@ PlasmaComponents.ListItem {
             anchors {
                 right: parent.right
                 rightMargin: Math.round(units.gridUnit / 2)
-                verticalCenter: colorItem.verticalCenter
+                verticalCenter: colourItem.verticalCenter
             }
             
             checked: vany_on
@@ -133,7 +139,7 @@ PlasmaComponents.ListItem {
         RowLayout {
             
             anchors {
-                left: colorItem.right
+                left: colourItem.right
                 rightMargin: Math.round(units.gridUnit)
                 right: groupOnOffButton.left
                 top: groupInfoLabel.bottom
@@ -158,12 +164,14 @@ PlasmaComponents.ListItem {
                 updateValueWhileDragging : false
                 stepSize: 1
                 visible: expanded
-                enabled: vany_on || vall_on
+                enabled: vany_on
                 value: vbrigthness
                 
                 onValueChanged: {
-                    Hue.setGroupBrightness(vuuid, value);
-                    updateChildren();
+                    if(!updating) {
+                        Hue.setGroupBrightness(vuuid, value);
+                        updateChildren();
+                    }
                 }
             }
         }
@@ -240,6 +248,16 @@ PlasmaComponents.ListItem {
             currentIndex: -1
             model: groupLightModel
             delegate: LightItem { }
+            
+            function getDelegateInstanceAt(index) {
+                var len = contentItem.children.length;
+                if(len > 0 && index > -1 && index < len) {
+                    return contentItem.children[index];
+                } else {
+                    return undefined;
+                }
+            }
+            
         }
         
         Item {
@@ -265,7 +283,7 @@ PlasmaComponents.ListItem {
                         var ct = Math.round(Math.min(153 + ( (347 / tempChooser.rectWidth) * mouseX), 500))
                         Hue.setGroupColourTemp(vuuid, ct)
                         updateChildren();
-                        colorItem.setColourCT(ct);
+                        colourItem.setColourCT(ct);
                     }
                 }
             }
@@ -298,7 +316,7 @@ PlasmaComponents.ListItem {
                         var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254))
                         Hue.setGroupColourHS(vuuid, hue, sat)
                         updateChildren();
-                        colorItem.setColourHS(hue, sat);
+                        colourItem.setColourHS(hue, sat);
                     }
                 }
             }
@@ -373,15 +391,6 @@ PlasmaComponents.ListItem {
         return i18n("No");
     }
     
-    function getIcon() {
-        if(vicon) {
-            return vicon;
-        }
-        else {
-            return defaultIcon;
-        }
-    }
-    
     function getSubtext() {
         var amount = vlights.count;
         if (amount == 1) {
@@ -394,8 +403,29 @@ PlasmaComponents.ListItem {
     
     function toggleOnOff() {
         Hue.switchGroup(vuuid, groupOnOffButton.checked);
-        groupBrightnessSlider.enabled = groupOnOffButton.checked;
+        updateSelf();
         updateChildren();
+    }
+    
+    function updateSelf() {
+        //TODO: fetch stuff from Hue
+        groupOnOffButton.checked = vany_on;
+        groupOnOffButton.enabled = available;
+        groupBrightnessSlider.enabled =  vany_on;
+        
+        if(vany_on) {
+            if(vcolormode == "ct") {
+                colourItem.setColourCT(vct);
+            }
+            else {
+                colourItem.setColourHS(vhue, vsat);
+            }
+        }
+        else {
+            colourItem.setColourOff();
+        }
+        
+        currentGroupDetails : createCurrentGroupDetails()
     }
     
     function getGroupLights() {
@@ -450,8 +480,9 @@ PlasmaComponents.ListItem {
     }
     
     function updateChildren() {
-        for(var index = 0; index < groupLightModel.count; ++index) {
-            Hue.updateLight(groupLightModel.get(index));
+        for(var index = 0; index < groupLightsView.count; ++index) {
+            var light = groupLightsView.getDelegateInstanceAt(index);
+            light.updateSelf()
         }
     }
     

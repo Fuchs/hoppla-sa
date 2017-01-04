@@ -17,14 +17,12 @@
  */
 
 //TODO: This seems to not work when being called from the config UI, find out why and fix
-var base = plasmoid.configuration.baseURL 
-var auth = plasmoid.configuration.authToken
-var url = base + "/api/" + auth + "/" 
+
 
 // GETTERS
 
 function getHueConfigured() {
-    reloadConfig()
+    var base = plasmoid.configuration.baseURL 
     if (!base.trim()) {
         // is empty or whitespace
         return false;
@@ -33,22 +31,25 @@ function getHueConfigured() {
 }
 
 function getLights(myModel) {
-    var myUrl = url + "lights";
+    var myUrl = "lights";
     getJsonFromHue(myUrl, parseLightsToModel, baseFail, myModel, "");
 }
 
 function getLight(myModel, lightId) {
-    var myUrl = url + "lights/" + lightId;
+    var myUrl = "lights/" + lightId;
     getJsonFromHue(myUrl, parseLightToModel, baseFail, myModel, lightId);
 }
 
 function updateLight(myLight) {
-    var myUrl = url + "lights/" + myLight.vuuid;
+    debugPrint("UUUUPDATE LIGHT: " + myLight)
+    for(var bla in myLight) {
+        debugPrint("YOOOOO: " + bla);
+    }
     getJsonFromHue(myUrl, parseLightToObject, baseFail, myLight, myLight.vuuid);
 }
 
 function getGroups(myModel) {
-    var myUrl = url + "groups";
+    var myUrl = "groups";
     getJsonFromHue(myUrl, parseGroupsToModel, baseFail, myModel, "");
 }
 
@@ -63,7 +64,7 @@ function getGroupLights(myList, myLights) {
 }
 
 function updateGroup(myGroup) {
-    var myUrl = url + "groups/" + myGroup.vuuid;
+    var myUrl = "groups/" + myGroup.vuuid;
     getJsonFromHue(myUrl, parseGroupToObject, baseFail, myGroup, myGroup.vuuid);
 }
 
@@ -71,13 +72,13 @@ function updateGroup(myGroup) {
 
 function switchLight(lightId, on) {
     var body = on ? '{"on":true}' : '{"on":false}';
-    var myUrl = url + "lights/" + lightId + "/state";
+    var myUrl = "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 function switchGroup(groupId, on) {
     var body = on ? '{"on":true}' : '{"on":false}';
-    var myUrl = url + "groups/" + groupId + "/action";
+    var myUrl = "groups/" + groupId + "/action";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
@@ -85,19 +86,19 @@ function switchGroup(groupId, on) {
 
 function setGroupBrightness(groupId, brightness) {
     var body = '{"bri":' + brightness + '}';
-    var myUrl = url + "groups/" + groupId + "/action";
+    var myUrl = "groups/" + groupId + "/action";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 function setGroupColourTemp(groupId, ct) {
     var body = '{"ct":' + ct + ',"colormode": "ct"}';
-    var myUrl = url + "groups/" + groupId + "/action";
+    var myUrl = "groups/" + groupId + "/action";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 function setGroupColourHS(groupId, hue, sat) {
     var body = '{"hue":' + hue + ',"sat":' + sat + ',"colormode": "hs"}';
-    var myUrl = url + "groups/" + groupId + "/action";
+    var myUrl = "groups/" + groupId + "/action";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
@@ -105,19 +106,19 @@ function setGroupColourHS(groupId, hue, sat) {
 
 function setLightBrightess(lightId, brightness) {
     var body = '{"bri":' + brightness + '}';
-    var myUrl = url + "lights/" + lightId + "/state";
+    var myUrl = "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 function setLightColourTemp(lightId, ct) {
     var body = '{"ct":' + ct + '}';
-    var myUrl = url + "lights/" + lightId + "/state";
+    var myUrl = "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
 function setLightColourHS(lightId, hue, sat) {
     var body = '{"hue":' + hue + ',"sat":' + sat + '}';
-    var myUrl = url + "lights/" + lightId + "/state";
+    var myUrl = "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
@@ -198,50 +199,108 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
 
 // HELPERS 
 
-function reloadConfig() {
-    base = plasmoid.configuration.baseURL 
-    auth = plasmoid.configuration.authToken
-    url = base + "/api/" + auth + "/" 
+function getBaseUrlRequest(pUrl, pType) {
+    var base = plasmoid.configuration.baseURL 
+    var auth = plasmoid.configuration.authToken
+    var url = base + "/api/" + auth + "/" + pUrl
+    var request = new XMLHttpRequest();
+    request.timeout = 2000;
+    if(!plasmoid.configuration.useAuth) {
+        request.open(pType, url);
+    }
+    else {
+        request.open(pType, url, true, plasmoid.configuration.username, plasmoid.configuration.password);
+    }
+    return request;
 }
 
-function getJsonFromHue(getUrl, successCallback, failCallback, object, name) {
+function getAltUrlRequest(pUrl, pType) {
+    var base = plasmoid.configuration.altURL
+    var auth = plasmoid.configuration.authToken
+    var url = base + "/api/" + auth + "/" + pUrl
     var request = new XMLHttpRequest();
+    request.timeout = 5000;
+    if(!plasmoid.configuration.altUseAuth) {
+        debugPrint("Not using authentication");
+        request.open(pType, url);
+    }
+    else {
+        debugPrint("Using authentication");
+        request.open(pType, url, true, plasmoid.configuration.altUsername, plasmoid.configuration.altPassword);
+    }
+    return request;
+}
+
+function getJsonFromHue(getUrl, successCallback, failureCallback, object, name) {
+    var request = getBaseUrlRequest(getUrl, 'GET');
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
             return;
         }
         
         if (request.status !== 200) {
-            failureCallback();
-            return;
+            if(plasmoid.configuration.useAltURL) {
+                debugPrint("Request to " + getUrl + " failed, trying alt URL")
+                var altRequest = getAltUrlRequest(getUrl, 'GET');
+                altRequest.onreadystatechange = function () {
+                    if (altRequest.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    if (altRequest.status !== 200) {
+                        debugPrint("Request to " + getUrl + " failed with alt URL as well")
+                        failureCallback(altRequest);
+                    }
+                    
+                    var json = altRequest.responseText;
+                    successCallback(json, object, name);
+                }
+                altRequest.send();
+            }
+            else {
+                debugPrint("Request to " + getUrl + " failed, no alt Url specified")
+                failureCallback(request);
+            }
         }
-        
         var json = request.responseText;
         successCallback(json, object, name);
     }
-    request.open('GET', getUrl);
     request.send();
 }
 
-function putJsonToHue(putUrl, payload, successCallback, object, name) {
-    var request = new XMLHttpRequest();
+function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
+    var request = getBaseUrlRequest(putUrl, 'PUT');
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
             return;
         }
-        
         if (request.status !== 200) {
-            debugPrint('ERROR - status: ' + request.status)
-            debugPrint('ERROR - responseText: ' + request.responseText)
-            failureCallback();
-            return;
+            if(plasmoid.configuration.useAltURL) {
+                debugPrint("Request to " + putUrl + " failed, trying alt URL")
+                var altRequest = getAltUrlRequest(putUrl, 'PUT');
+                altRequest.onreadystatechange = function () {
+                    if (altRequest.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    
+                    if (altRequest.status !== 200) {
+                        debugPrint("Request to " + putUrl + " failed with alt URL as well")
+                        failureCallback(altRequest);
+                    }
+                    
+                    var json = altRequest.responseText;
+                    successCallback(json, name);
+                }
+                altRequest.send();
+            }
+            else {
+                debugPrint("Request to " + putUrl + " failed, no alt Url specified")
+                failureCallback(request);
+            }
         }
-        
-        var json = request.responseText;
-        
-        successCallback(json, name);
+
+            var json = request.responseText;
+            successCallback(json, name);
     }
-    request.open('PUT', putUrl);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send(payload);
 }
@@ -272,7 +331,14 @@ function baseSuccess(json, name) {
     
 }
 
-function baseFail () {
+function baseFail (request) {
+    debugPrint("Communicating with hue failed");
+    if(request.status) {
+        debugPrint("Status: " + request.status);
+    }
+    if(request.responseText) {
+        debugPrint("Response: " + request.responseText);
+    }
 }
 
 function parseGroupsToModel(json, listModel, name) {
@@ -298,8 +364,7 @@ function parseGroupsToModel(json, listModel, name) {
             vy: cgroup.action.xy[1],
             vct: cgroup.action.ct,
             valert: cgroup.action.alert,
-            vcolormode: cgroup.action.colormode,
-            vicon: "go-home"
+            vcolormode: cgroup.action.colormode
         };
         
         listModel.append(myGroup);
@@ -326,7 +391,6 @@ function parseGroupToObject(json, myObject, name) {
     myObject.vct = cgroup.action.ct;
     myObject.valert = cgroup.action.alert;
     myObject.vcolormode = cgroup.action.colormode;
-    myObject.vicon = "go-home"
 }
 
 function parseLightsToModel(json, listModel, name) {
@@ -354,8 +418,7 @@ function parseLightsToModel(json, listModel, name) {
             vuniqueid: clight.uniqueid,
             vswversion: clight.swversion,
             vswconfigid: clight.swconfigid,
-            vproductid: clight.productid,
-            vicon: "im-jabber"
+            vproductid: clight.productid
         };
         listModel.append(myLight);
     }
@@ -383,8 +446,7 @@ function parseLightToModel(json, listModel, lightName) {
         vuniqueid: clight.uniqueid,
         vswversion: clight.swversion,
         vswconfigid: clight.swconfigid,
-        vproductid: clight.productid,
-        vicon: "im-jabber"
+        vproductid: clight.productid
     };
     listModel.append(myLight);
 }
@@ -411,7 +473,6 @@ function parseLightToObject(json, myObject, lightName) {
     myObject.vswversion = clight.swversion;
     myObject.vswconfigid = clight.swconfigid;
     myObject.vproductid = clight.productid;
-    myObject.vicon = "im-jabber"
 }
 
 function dbgPrint(msg) {

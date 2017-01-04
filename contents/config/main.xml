@@ -23,11 +23,11 @@
       <default>false</default>
     </entry>
     <entry name="username" type="string">
-      <label>Username for the alternative URL</label>
+      <label>Username for the main URL</label>
       <default></default>
     </entry>
     <entry name="password" type="string">
-      <label>Password for the alternative URL</label>
+      <label>Password for the main URL</label>
       <default></default>
     </entry>
     <entry name="altUseAuth" type="Bool">

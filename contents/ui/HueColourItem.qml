@@ -27,7 +27,7 @@ import "hue.js" as Hue
 Item {
     property string id
     property var supportedClasses : ["livingroom","kitchen","dining","bedroom","kidsbedroom","bathroom","nursery","recreation","office","gym","hallway","toilet","frontdoor","garage","terrace","garden","driveway","carport","other","bulb"]
-
+    
     property string colourMode
     property string type
     property bool valOn
@@ -99,8 +99,13 @@ Item {
                 break;
             default:
                 circle.color = "#DD1F374E";
-            }
-       
+        }
+        
+    }
+    
+    function setColourOff() {
+        circle.color = "#DD1F374E";
+        setIcon();
     }
     
     function setColourHS(phue, psat) {
@@ -112,7 +117,7 @@ Item {
         setIcon()
     }
     
-     function setColourCT(pct) {
+    function setColourCT(pct) {
         if(pct < 190) {
             circle.color = "#94feff";  
         }
@@ -153,7 +158,7 @@ Item {
         }
         
         var perceptedBrightness = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
-
+        
         if (perceptedBrightness < 0.5) {
             mySvg.imagePath = Qt.resolvedUrl("../images/" + iconName + "-dark.svg");
         }

@@ -29,14 +29,17 @@ Item {
     KCoreAddons.KUser {
         id: kuser
     }
-
     
     property alias cfg_baseURL: baseURL.text
     property alias cfg_authToken: authToken.text
     property alias cfg_useAltURL: altConnectionCb.checked
+    property alias cfg_altURL: altUrl.text
     property alias cfg_altUsername: username.text
     property alias cfg_altPassword: password.text
     property alias cfg_altUseAuth: altRequireAuth.checked
+    property string infoColour: "#5555ff"
+    property string errorColour: "#ff0000"
+    property string successColour: "#00aa00"
     
     width: parent.width
     anchors.left: parent.left
@@ -53,25 +56,39 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             flat: true
+            visible: false
             
-            GridLayout {
-                id: grdStatus
-                visible: false
-                anchors.left: parent.left
-                anchors.right: parent.right
-                columns: 2
-                Layout.fillWidth: true
-                
-                PlasmaCore.IconItem  {
-                    id: "statusIcon"
-                    Layout.maximumHeight: lblStatus.height
-                    Layout.maximumWidth: lblStatus.height
-                    source: "contrast"
+            Rectangle {
+                id: rctStatus
+                width: parent.width
+                height: (units.gridUnit * 2.5) + units.smallSpacing
+                color: "#00000000"
+                border.color: "black"
+                border.width: 1
+                radius: 5
+            }
+            
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
+                    topMargin: units.smallSpacing
                 }
-                
-                Label {
-                    id: lblStatus
+                id: lblStatusTitle
+                color: "white"
+                text: "Test"
+                font.bold: true
+            }
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: lblStatusTitle.bottom
+                    topMargin: units.smallSpacing
                 }
+                id: lblStatusText
+                color: "white"
+                text: "Test"
+                font.bold: true
             }
         }
         
@@ -97,7 +114,6 @@ Item {
                 
                 Button {
                     id: btnFindBridge
-                    //TODO: re-add once implemented
                     enabled: false
                     text: i18n("Find bridge")
                     onClicked: findBridge()
@@ -129,8 +145,6 @@ Item {
         CheckBox {
             id: altConnectionCb
             text: i18n("Use a fallback connection when the bridge is out of reach")
-            // TODO: make visible once implemented
-            visible: false
         }
         
         GroupBox {
@@ -159,7 +173,7 @@ Item {
                 
                 Label {
                     Layout.alignment: Qt.AlignRight
-                    text: i18n("Requires Authentication:")
+                    text: i18n("Requires basic authentication:")
                 }
                 
                 CheckBox {
@@ -195,14 +209,17 @@ Item {
     }
     
     function findBridge() {
-        lblStatus.text = i18n("Trying to find a bridge ...");
-        grdStatus.visible = true;
+        lblStatusTitle.text = i18n("Trying to find a bridge ...");
+        lblStatusText.text = i18n("Please wait while we try to find your Hue bridge");
+        rctStatus.color = infoColour;
+        grpStatus.visible = true;
     }
     
     function authenticate() {
-        //TODO: Use something prettier for status
-        lblStatus.text = i18n("Push the authenticate button on your Hue bridge within 30 seconds");
-        grdStatus.visible = true;
+        lblStatusTitle.text = i18n("Trying to authenticate with your bridge ...");
+        lblStatusText.text = i18n("Push the authenticate button on your Hue bridge within 30 seconds");
+        rctStatus.color = infoColour;
+        grpStatus.visible = true;
         var hostname = kuser.host;
         // This is debatable UX wise, we fetch the bridge URL from the text field instead of the config
         // so when a user just entered it but didn't save yet it works regardless. 
@@ -211,13 +228,17 @@ Item {
     }
     
     function authenticateSuccess(token) {
-        //TODO: Use something prettier for status
-        lblStatus.text = i18n("Successfully authenticated, please save the configuration");
+        lblStatusTitle.text = i18n("Authenticated with your bridge");
+        lblStatusText.text = i18n("Successfully authenticated, please apply the configuration");
+        rctStatus.color = successColour;
+        grpStatus.visible = true;
         authToken.text = token;
     }
     
-        function authenticateFail(message) {
-        //TODO: Use something prettier for status
-        lblStatus.text = i18n("Failed to authenticate: " + i18n(message));
+    function authenticateFail(message) {
+        lblStatusTitle.text = i18n("Failed to authenticate with your bridge");
+        lblStatusText.text = i18n("Make sure the bridge is reachable and the button clicked");
+        rctStatus.color = errorColour;
+        grpStatus.visible = true;
     }
 }

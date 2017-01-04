@@ -49,9 +49,5 @@ ConfigModel {
 //         icon: "clock"
 //         source: "configSchedules.qml"
 //     }
-    
-    Component.onCompleted: {
-        Hue.reloadConfig();
-    }
 
 }

@@ -33,9 +33,15 @@ PlasmaComponents.ListItem {
     property string defaultIcon : "help-about"
     property bool available : vreachable
     
+    property bool updating:  true
+    
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
+    
+    Component.onCompleted: {
+            updating = false;
+    }
     
     MouseArea {
         id: lightItemBase
@@ -50,7 +56,7 @@ PlasmaComponents.ListItem {
         height: Math.max(units.iconSizes.medium, lightLabel.height + lightInfoLabel.height + slider.height) + Math.round(units.gridUnit / 2)
         
         HueColourItem {
-            id: colorItem
+            id: colourItem
             width: units.iconSizes.medium 
             height: units.iconSizes.medium
             
@@ -74,8 +80,8 @@ PlasmaComponents.ListItem {
             id: lightLabel
             
             anchors {
-                bottom: colorItem.verticalCenter
-                left: colorItem.right
+                bottom: colourItem.verticalCenter
+                left: colourItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
             }
@@ -92,7 +98,7 @@ PlasmaComponents.ListItem {
             id: lightInfoLabel
             
             anchors {
-                left: colorItem.right
+                left: colourItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
                 right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
                 top: lightLabel.bottom
@@ -109,7 +115,7 @@ PlasmaComponents.ListItem {
         RowLayout {
             
             anchors {
-                left: colorItem.right
+                left: colourItem.right
                 rightMargin: Math.round(units.gridUnit)
                 right: lightOnOffButton.left
                 top: lightInfoLabel.bottom
@@ -139,7 +145,9 @@ PlasmaComponents.ListItem {
                 
                 
                 onValueChanged: {
-                    Hue.setLightBrightess(vuuid, value);
+                    if(!updating) {
+                        Hue.setLightBrightess(vuuid, value);
+                    }
                 }
             }
         }
@@ -151,7 +159,7 @@ PlasmaComponents.ListItem {
             anchors {
                 right: parent.right
                 rightMargin: Math.round(units.gridUnit / 2)
-                verticalCenter: colorItem.verticalCenter
+                verticalCenter: colourItem.verticalCenter
             }
             
             checked: von
@@ -224,7 +232,7 @@ PlasmaComponents.ListItem {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var ct = Math.round(Math.min(153 + ( (347 / tempChooser.rectWidth) * mouseX), 500));
                         Hue.setLightColourTemp(vuuid, ct);
-                        colorItem.setColourCT(ct);
+                        colourItem.setColourCT(ct);
                     }
                 }
             }
@@ -254,7 +262,7 @@ PlasmaComponents.ListItem {
                         var hue = Math.round(Math.min(65535 - ( (65535 / colorChooser.rectWidth) * mouseX), 65535))
                         var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254))
                         Hue.setLightColourHS(vuuid, hue, sat)
-                        colorItem.setColourHS(hue, sat);
+                        colourItem.setColourHS(hue, sat);
                     }
                 }
             }
@@ -298,18 +306,27 @@ PlasmaComponents.ListItem {
         }
     }
     
-    function getIcon() {
-        if(vicon) {
-            return vicon;
-        }
-        else {
-            return defaultIcon;
-        }
-    }
-    
     function toggleOnOff() {
         Hue.switchLight(vuuid, lightOnOffButton.checked);
-        slider.enabled = available && lightOnOffButton.checked;
+        updateSelf();
+    }
+    
+    function updateSelf() {
+        lightOnOffButton.checked = von;
+        lightOnOffButton.enabled = available;
+        slider.enabled = available && von;
+        
+        if(available && von) {
+            if(vcolormode == "ct") {
+                colourItem.setColourCT(vct);
+            }
+            else {
+                colourItem.setColourHS(vhue, vsat);
+            }
+        }
+        else {
+            colourItem.setColourOff();
+        }
     }
     
     function createCurrentLightDetails() {
