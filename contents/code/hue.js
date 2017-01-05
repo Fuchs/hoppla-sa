@@ -32,7 +32,7 @@ function getHueConfigured() {
 
 function getLights(myModel) {
     var myUrl = "lights";
-    getJsonFromHue(myUrl, parseLightsToModel, baseFail, myModel, "");
+    getJsonFromHue(myUrl, parseAllLightsToModel, baseFail, myModel, "");
 }
 
 function getLight(myModel, lightId) {
@@ -392,9 +392,11 @@ function parseGroupToObject(json, myObject, name) {
     myObject.vLastUpdated = getCurrentTime();
 }
 
-function parseLightsToModel(json, listModel, name) {
+function parseAllLightsToModel(json, listModel, name) {
     var myLights = JSON.parse(json);
     listModel.clear();
+    var total = 0; 
+    var on = 0;
     for(var lightName in myLights) {
         var clight = myLights[lightName];
         var myLight = {
@@ -421,7 +423,13 @@ function parseLightsToModel(json, listModel, name) {
             vLastUpdated: getCurrentTime()
         };
         listModel.append(myLight);
+        total++;
+        if(clight.state.on) {
+            on++;
+        }
     }
+        
+    plasmoid.toolTipSubText = on + "/" + total + i18n(" lights on");
 }
 
 function parseLightToModel(json, listModel, lightName) {

@@ -1,6 +1,7 @@
 # Must have features for next release (1.0)
 
 * Update items regularly
+* Better solution for Alt URL
 
 # Nice to have features for next release (1.0)
 

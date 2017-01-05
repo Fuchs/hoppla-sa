@@ -29,17 +29,12 @@ Item {
     property bool debug: true
     
     Plasmoid.toolTipMainText: i18n("Philips Hue lights")
-    Plasmoid.toolTipSubText: i18n("5 Lampen aktiv")
     Plasmoid.icon: Logic.icon()
     
     Plasmoid.compactRepresentation: CompactRepresentation { }
     Plasmoid.fullRepresentation: FullRepresentation { }
     
-    function getActiveLampsText() {
-        //TODO: implement me
-        return "5 Lampen aktiv";
-    }
-    
+
     function debugPrint(msg) {
         if(!debug) {
             return;
