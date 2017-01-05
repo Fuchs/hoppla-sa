@@ -11,6 +11,5 @@ include(KDECMakeSettings)
 include(KDECompilerSettings)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Quick)
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Plasma)
 
 add_subdirectory(translations)
