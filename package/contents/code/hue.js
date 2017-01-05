@@ -87,6 +87,7 @@ function getGroups(myModel) {
     getJsonFromHue(myUrl, parseGroupsToModel, baseFail, myModel, "");
 }
 
+
 /**
  * Get all lights for a specific group from the hue bridge and
  * fills them into a ListModel
@@ -314,13 +315,13 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
 
 // HELPERS 
 
-function getRequest(pUrl, pType) {
+function getRequest(pUrl, pType, forceBase, forceAlt) {
     var request = new XMLHttpRequest();
     var base = "";
     var useAuth = false;
     var username = "";
     var password = "";
-    if(useAltConnection) {
+    if((!forceBase && useAltConnection) || forceAlt) {
         base = plasmoid.configuration.altURL
         useAuth = plasmoid.configuration.altUseAuth
         username = plasmoid.configuration.altUsername
@@ -336,7 +337,7 @@ function getRequest(pUrl, pType) {
     }
     var auth = plasmoid.configuration.authToken
     var url = base + "/api/" + auth + "/" + pUrl
-
+    
     if(!useAuth) {
         request.open(pType, url, true, username, password);
     }
@@ -352,6 +353,72 @@ function isUsingAltConnection() {
 
 function setUsingAltConnection(useAlt) {
     useAltConnection = useAlt;
+}
+
+/**
+ * Helper function to check hue connection
+ * @param {Function} callback to be called passing a string and boolean
+ */
+function checkHueConnection (callback, enforce) {
+    var getUrl  = "groups" // this is for authed users only
+    var request = getRequest(getUrl, 'GET', true, false);
+    // should be sufficient for a home connection
+    request.timeout = 1000;
+    request.onreadystatechange = function () {
+        if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (request.status !== 200) {
+            if(altConnectionEnabled) {
+                var altRequest = getRequest(getUrl, 'GET', false, true);
+                altRequest.onreadystatechange = function () {
+                    if (altRequest.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    if (altRequest.status !== 200) {
+                        callback("none", enforce);
+                        return;
+                    }
+                    
+                    var json = altRequest.responseText;
+                    var myResult = JSON.parse(json);
+                    if(!myResult[0]) {
+                        callback("alt", enforce);
+                        useAltConnection = true;
+                        return;
+                    }
+                    
+                    if(myResult[0].error) {
+                        if(myResult[0].error.type == 1) {
+                            callback("unauth", enforce);
+                            useAltConnection = true;
+                            return;
+                        }
+                    }
+                }
+                altRequest.send();
+            }
+            else {
+                // No alt configuration configured, main is failing
+                callback("none", enforce);
+            }
+        }
+        var json = request.responseText;
+        var myResult = JSON.parse(json);
+        if(!myResult[0]) {
+            callback("main", enforce);
+            useAltConnection = false;
+            return;
+        }
+        if(myResult[0].error) {
+            if(myResult[0].error.type == 1) {
+                callback("unauth", enforce);
+                useAltConnection = false;
+                return;
+            }
+        }
+    }
+    request.send();
 }
 
 function getJsonFromHue(getUrl, successCallback, failureCallback, object, name) {
@@ -429,10 +496,10 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
                 noConnection = true;
             }
         }
-
-            var json = request.responseText;
-            successCallback(json);
-            noConnection = false;
+        
+        var json = request.responseText;
+        successCallback(json);
+        noConnection = false;
     }
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send(payload);
@@ -600,7 +667,7 @@ function parseAllLightsToModel(json, listModel, name) {
             on++;
         }
     }
-        
+    
     plasmoid.toolTipSubText = on + "/" + total + i18n(" lights on");
 }
 

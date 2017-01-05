@@ -58,7 +58,7 @@ FocusScope {
                 iconSource: "view-refresh"
                 tooltip: i18n("Refresh")
                 onClicked: {
-                    reInit();
+                    reInit(false);
                 }
             }
             
@@ -284,9 +284,9 @@ FocusScope {
     }
     
     Component.onCompleted: {
-        reInit();
+        reInit(false);
         var myTimer = getTimer();
-        myTimer.interval = 5000;
+        myTimer.interval = 30000;
         myTimer.repeat = true;
         myTimer.triggered.connect(updateLoop);
         myTimer.start();
@@ -311,13 +311,16 @@ FocusScope {
     // as it fetches all lights and groups together, instead of updating each.
     // This leads to side effects such as closing the current expanded selection, 
     // but this should be acceptable, else updateGroups and updateLights can be used.
-    function reInit() {
+    function reInit(initial) {
+        //TODO: add a nice overlay while loading
         hueNotConfiguredView.visible = !getHueConfigured();
         hueNotConnectedView.visible = getHueConfigured() && hueNotConnected;
         tabView.visible = getHueConfigured() && !hueNotConnected;
+        if(initial) {
+            checkHueConnection(updatedConnection, true);
+        }
         getGroups(groupModel);
         getLights(lightModel);
-        //TODO: add a nice overlay for the enforced one
     }
     
     /**
@@ -345,19 +348,21 @@ FocusScope {
         if(connection === "none") {
             hueNotConnected = true;
             hueUnauthenticated = false;
-            reInit();
+            reInit(false);
             return;
         }
         
         if(connection === "unauth") {
             hueNotConnected = true;
             hueUnauthenticated = true;
-            reInit();
+            reInit(false);
             return;
         }
 
         if(connection === "main" || connection === "alt") {
-            reInit();
+            hueNotConnected = false;
+            hueUnauthenticated = false;
+            reInit(false);
         }
     }
     

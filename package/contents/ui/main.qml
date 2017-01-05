@@ -52,7 +52,7 @@ Item {
     }
     
     function checkHueConnection(callback, enforce) {
-        callback("main", enforce);
+        Hue.checkHueConnection(callback, enforce);
     }
     
     function getGroups(model) {

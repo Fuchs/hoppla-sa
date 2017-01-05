@@ -1,12 +1,8 @@
-# Must have features for next release (1.0)
-
-* Update items regularly
-* Better solution for Alt URL
-
 # Nice to have features for next release (1.0)
 
 * Auto-discover Hue bridge
 * Provide better dark and bright icons for bulbs and group types
+* Nice loading overlay for plasmoid
 
 # Possible future features
 
