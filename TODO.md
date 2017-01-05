@@ -1,6 +1,5 @@
 # Must have features for next release (1.0)
 
-* Update items when children are updated
 * Update items regularly
 
 # Nice to have features for next release (1.0)

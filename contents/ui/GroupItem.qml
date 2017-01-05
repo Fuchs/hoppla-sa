@@ -54,7 +54,7 @@ PlasmaComponents.ListItem {
             id: lastUpdated
             visible: false;
             text: vLastUpdated
-            onTextChanged : updateGui()
+            onTextChanged : updateMe()
         }
         
         anchors {
@@ -400,6 +400,15 @@ PlasmaComponents.ListItem {
         Hue.switchGroup(vuuid, groupOnOffButton.checked);
         updateSelf();
         updateChildren();
+    }
+    
+    function updateMe() {
+        updateGui();
+        for(var i = 0; i < groupLightModel.count; ++i) {
+            var child = groupLightModel.get(i);
+            Hue.updateLight(child);
+        }
+        
     }
     
     function updateSelf() {
