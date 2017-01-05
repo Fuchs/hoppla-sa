@@ -26,8 +26,8 @@ FocusScope {
     id: mainView
     
     property bool noHueConfigured: !getHueConfigured()
-    //TODO: set me correctly and update me periodically
-    property bool noHueConnected: false
+    property bool hueNotConnected: false
+    property bool hueUnauthenticated: false
     
     Item {
         id: toolBar
@@ -156,23 +156,23 @@ FocusScope {
         id: hueNotConnectedView
         
         anchors.fill: parent
-        visible: !noHueConfigured && noHueConnected
+        visible: false
         
         PlasmaExtras.Heading {
-            id: noHueConnectedHeading
+            id: hueNotConnectedHeading
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                bottom: noHueConnectedLabel.top
+                bottom: hueNotConnectedLabel.top
                 bottomMargin: units.smallSpacing
             }
             
             level: 3
             opacity: 0.6
-            text: i18n("No Hue bridge connected")
+            text: hueUnauthenticated ?  i18n("Not authenticated") : i18n("Hue not reachable")
         }
         
         PlasmaComponents.Label {
-            id: noHueConnectedLabel
+            id: hueNotConnectedLabel
             
             anchors {
                 horizontalCenter: parent.horizontalCenter
@@ -184,7 +184,7 @@ FocusScope {
             height: paintedHeight
             elide: Text.ElideRight
             font.pointSize: theme.smallestFont.pointSize
-            text : i18n("Check if your Hue bridge is configured and reachable")
+            text : hueUnauthenticated ? i18n("Authenticate with your bridge") : i18n("Check if your Hue bridge is configured and reachable") 
             textFormat: Text.PlainText
         }
         
@@ -215,7 +215,7 @@ FocusScope {
         
         PlasmaExtras.ScrollArea {
             id: actionScrollView
-            visible: tabBar.currentTab == actionsTab && !noHueConfigured && !noHueConnected
+            visible: tabBar.currentTab == actionsTab && !noHueConfigured && !hueNotConnected && !hueUnauthenticated
             
             anchors {
                 top: parent.top
@@ -238,7 +238,7 @@ FocusScope {
         
         PlasmaExtras.ScrollArea {
             id: groupScrollView
-            visible: tabBar.currentTab == groupsTab && !noHueConfigured && !noHueConnected
+            visible: tabBar.currentTab == groupsTab && !noHueConfigured && !hueNotConnected
             
             anchors {
                 top: parent.top
@@ -261,7 +261,7 @@ FocusScope {
         
         PlasmaExtras.ScrollArea {
             id: lightScrollView
-            visible: tabBar.currentTab == lightsTab && !noHueConfigured && !noHueConnected
+            visible: tabBar.currentTab == lightsTab && !noHueConfigured && !hueNotConnected
             
             anchors {
                 top: parent.top
@@ -285,6 +285,25 @@ FocusScope {
     
     Component.onCompleted: {
         reInit();
+        var myTimer = getTimer();
+        myTimer.interval = 5000;
+        myTimer.repeat = true;
+        myTimer.triggered.connect(updateLoop);
+        myTimer.start();
+    }
+    
+    Connections {
+        target: plasmoid.configuration
+
+        onBaseURLChanged: {
+            initHueConfig();
+            checkHueConnection(updatedConnection, true);
+        }
+        
+        onAuthTokenChanged: {
+            initHueConfig();
+            checkHueConnection(updatedConnection, true);
+        }
     }
     
     // Method to re-init the plasmoid. 
@@ -294,10 +313,56 @@ FocusScope {
     // but this should be acceptable, else updateGroups and updateLights can be used.
     function reInit() {
         hueNotConfiguredView.visible = !getHueConfigured();
-        hueNotConnectedView.visible = !getHueConfigured() && noHueConnected;
-        tabView.visible = getHueConfigured();
+        hueNotConnectedView.visible = getHueConfigured() && hueNotConnected;
+        tabView.visible = getHueConfigured() && !hueNotConnected;
         getGroups(groupModel);
         getLights(lightModel);
+        //TODO: add a nice overlay for the enforced one
+    }
+    
+    /**
+     * Helper function executed periodically.
+     * Checks the connection and, if the plasmoid is not expanded
+     * and there is a connection to the main or alt bridge,
+     * updates all items
+     */
+    function updateLoop() {
+        // Check connection state
+        checkHueConnection(updatedConnection, false);
+    }
+    
+    /**
+     * Helper to check the updated connection
+     * @param {String} connection the connection state
+     * @param {bool} enforce update shall be enforced despite expanded plasmoid
+     */
+    function updatedConnection(connection, enforce) {
+        if(plasmoid.expanded && !enforce) {
+            // Don't interrupt the user
+            return;
+        }
+        
+        if(connection === "none") {
+            hueNotConnected = true;
+            hueUnauthenticated = false;
+            reInit();
+            return;
+        }
+        
+        if(connection === "unauth") {
+            hueNotConnected = true;
+            hueUnauthenticated = true;
+            reInit();
+            return;
+        }
+
+        if(connection === "main" || connection === "alt") {
+            reInit();
+        }
+    }
+    
+    function getTimer() {
+        return Qt.createQmlObject("import QtQuick 2.0; Timer {}", hopplaApplet);
     }
     
     

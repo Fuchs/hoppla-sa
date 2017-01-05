@@ -18,8 +18,17 @@
 
 //TODO: This seems to not work when being called from the config UI, find out why and fix
 
+var useAltConnection = false;
+var altConnectionEnabled = false;
+var noConnection = false;
 
 // GETTERS
+
+function initHueConfig() {
+    useAltConnection = false;
+    altConnectionEnabled = plasmoid.configuration.useAltURL
+    noConnection = false;
+}
 
 /**
  * Checks whether the hue bridge is configured
@@ -219,6 +228,14 @@ function setLightColourHS(lightId, hue, sat) {
 
 // Authenticate
 
+/**
+ * Helper function to authenticate with a hue bridge
+ * @param {String} bridgeUrl url of the bridge, including protocol (e.g. http://1.2.3.4)
+ * @param {String} hostname the Hostname passed to hue, set to "unknowndevice" if empty
+ * @param {Function} sCb callback function in case of successful authentication
+ * @param {Function} fCb callback function in case of a failure
+ * 
+ */
 function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
     var appname = "Hoppla-SA";
     // https://www.developers.meethue.com/documentation/configuration-api#71_create_user
@@ -235,11 +252,13 @@ function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
     var body =  '{"devicetype":"' + appname + '#' + hostname + '"}'
     var attempt = 1; 
     var attempts = 12;
-    var postUrl = bridgeUrl + "/api";
+    var postUrl = bridgeUrl + "/api";;
     postJsonToHue(postUrl, body, attempt, attempts, authSuccess, authFail, sCb, fCb)
 }
 
-
+/**
+ * Helper function for authentication, failure case
+ */
 function authFail(postUrl, body, att, maxAtt, request, gSuccCb, gFailCb) {
     var attempt = ++att;
     var mytimer = new Timer();
@@ -252,6 +271,9 @@ function authFail(postUrl, body, att, maxAtt, request, gSuccCb, gFailCb) {
     gFailCb("unknown error");
 }
 
+/**
+ * Helper function for authentication, success case
+ */
 function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb) {
     if(!json) {
         return;
@@ -271,7 +293,6 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
                 postJsonToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
             })
             mytimer.start();
-            gFailCb(myResult[0].error.description);
             return;
         }
     }
@@ -289,89 +310,102 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
     })
     mytimer.start();
     gFailCb("unknown error");
-    
 }
 
 // HELPERS 
 
-function getBaseUrlRequest(pUrl, pType) {
-    var base = plasmoid.configuration.baseURL 
-    var auth = plasmoid.configuration.authToken
-    var url = base + "/api/" + auth + "/" + pUrl
+function getRequest(pUrl, pType) {
     var request = new XMLHttpRequest();
-    request.timeout = 2000;
-    if(!plasmoid.configuration.useAuth) {
-        request.open(pType, url);
+    var base = "";
+    var useAuth = false;
+    var username = "";
+    var password = "";
+    if(useAltConnection) {
+        base = plasmoid.configuration.altURL
+        useAuth = plasmoid.configuration.altUseAuth
+        username = plasmoid.configuration.altUsername
+        password = plasmoid.configuration.altPassword
+        request.timeout = 8000;
     }
     else {
-        request.open(pType, url, true, plasmoid.configuration.username, plasmoid.configuration.password);
+        base = plasmoid.configuration.baseURL
+        useAuth = plasmoid.configuration.useAuth
+        username = plasmoid.configuration.username
+        password = plasmoid.configuration.password
+        request.timeout = 2000;
+    }
+    var auth = plasmoid.configuration.authToken
+    var url = base + "/api/" + auth + "/" + pUrl
+
+    if(!useAuth) {
+        request.open(pType, url, true, username, password);
+    }
+    else {
+        request.open(pType, url);
     }
     return request;
 }
 
-function getAltUrlRequest(pUrl, pType) {
-    var base = plasmoid.configuration.altURL
-    var auth = plasmoid.configuration.authToken
-    var url = base + "/api/" + auth + "/" + pUrl
-    var request = new XMLHttpRequest();
-    request.timeout = 5000;
-    if(!plasmoid.configuration.altUseAuth) {
-        debugPrint("Not using authentication");
-        request.open(pType, url);
-    }
-    else {
-        debugPrint("Using authentication");
-        request.open(pType, url, true, plasmoid.configuration.altUsername, plasmoid.configuration.altPassword);
-    }
-    return request;
+function isUsingAltConnection() {
+    return useAltConnection;
+}
+
+function setUsingAltConnection(useAlt) {
+    useAltConnection = useAlt;
 }
 
 function getJsonFromHue(getUrl, successCallback, failureCallback, object, name) {
-    var request = getBaseUrlRequest(getUrl, 'GET');
+    var request = getRequest(getUrl, 'GET');
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
             return;
         }
         
         if (request.status !== 200) {
-            if(plasmoid.configuration.useAltURL) {
+            if(!useAltConnection && altConnectionEnabled) {
                 debugPrint("Request to " + getUrl + " failed, trying alt URL")
-                var altRequest = getAltUrlRequest(getUrl, 'GET');
+                useAltConnection = true;
+                var altRequest = getRequest(getUrl, 'GET');
                 altRequest.onreadystatechange = function () {
                     if (altRequest.readyState !== XMLHttpRequest.DONE) {
                         return;
                     }
                     if (altRequest.status !== 200) {
                         debugPrint("Request to " + getUrl + " failed with alt URL as well")
+                        noConnection = true;
                         failureCallback(altRequest);
                     }
                     
                     var json = altRequest.responseText;
                     successCallback(json, object, name);
+                    noConnection = false;
                 }
                 altRequest.send();
             }
             else {
-                debugPrint("Request to " + getUrl + " failed, no alt Url specified")
+                debugPrint("Request to " + getUrl + " failed, with alt connection or no alt configured")
                 failureCallback(request);
+                noConnection = true;
             }
         }
         var json = request.responseText;
         successCallback(json, object, name);
+        noConnection = false;
     }
     request.send();
 }
 
 function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
-    var request = getBaseUrlRequest(putUrl, 'PUT');
+    var request = getRequest(putUrl, 'PUT');
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
             return;
         }
         if (request.status !== 200) {
-            if(plasmoid.configuration.useAltURL) {
+            if(!useAltConnection && altConnectionEnabled) {
                 debugPrint("Request to " + putUrl + " failed, trying alt URL")
-                var altRequest = getAltUrlRequest(putUrl, 'PUT');
+                useAltConnection = true;
+                var altRequest = getRequest(getUrl, 'PUT');
                 altRequest.onreadystatechange = function () {
                     if (altRequest.readyState !== XMLHttpRequest.DONE) {
                         return;
@@ -380,21 +414,25 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
                     if (altRequest.status !== 200) {
                         debugPrint("Request to " + putUrl + " failed with alt URL as well")
                         failureCallback(altRequest);
+                        noConnection = true;
                     }
                     
                     var json = altRequest.responseText;
                     successCallback(json, name);
+                    noConnection = false;
                 }
                 altRequest.send();
             }
             else {
-                debugPrint("Request to " + putUrl + " failed, no alt Url specified")
+                debugPrint("Request to " + putUrl + " failed with alt URL or no alt Url specified")
                 failureCallback(request);
+                noConnection = true;
             }
         }
 
             var json = request.responseText;
             successCallback(json);
+            noConnection = false;
     }
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send(payload);
@@ -402,6 +440,7 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
 
 function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gFailCb) {
     if(att > maxAtt) {
+        gFailCb("Timeout");
         return;
     }
     var request = new XMLHttpRequest();
@@ -438,7 +477,20 @@ function baseFail (request) {
 
 function parseGroupsToModel(json, listModel, name) {
     var myGroups = JSON.parse(json);
+    // Delete current list, even in case of errors 
+    // we do not want a cached one
     listModel.clear();
+    if(myGroups[0]) {
+        if(myGroups[0].error) {
+            if(myGroups[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myGroups[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
         var myGroup = {
@@ -469,6 +521,17 @@ function parseGroupsToModel(json, listModel, name) {
 
 function parseGroupToObject(json, myObject, name) {
     var cgroup = JSON.parse(json);
+    if(cgroup[0]) {
+        if(cgroup[0].error) {
+            if(myGroups[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myGroups[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
     myObject.vuuid = name;
     myObject.vname = cgroup.name;
     myObject.vtype = cgroup.type;
@@ -493,6 +556,17 @@ function parseGroupToObject(json, myObject, name) {
 function parseAllLightsToModel(json, listModel, name) {
     var myLights = JSON.parse(json);
     listModel.clear();
+    if(myLights[0]) {
+        if(myLights[0].error) {
+            if(myGroups[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myGroups[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
     var total = 0; 
     var on = 0;
     for(var lightName in myLights) {
@@ -532,6 +606,16 @@ function parseAllLightsToModel(json, listModel, name) {
 
 function parseLightToModel(json, listModel, lightName) {
     var clight = JSON.parse(json);
+    if(clight[0]) {
+        if(clight[0].error) {
+            if(myGroups[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myGroups[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
     var myLight = {
         vuuid: lightName,
         vname: clight.name,
@@ -560,6 +644,16 @@ function parseLightToModel(json, listModel, lightName) {
 
 function parseLightToObject(json, myObject, lightName) {
     var clight = JSON.parse(json);
+    if(clight[0]) {
+        if(clight[0].error) {
+            if(myGroups[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myGroups[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
     myObject.vuuid = lightName;
     myObject.vname = clight.name;
     myObject.von = clight.state.on;

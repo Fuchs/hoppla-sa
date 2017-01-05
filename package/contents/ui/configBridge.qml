@@ -217,7 +217,7 @@ Item {
     
     function authenticate() {
         lblStatusTitle.text = i18n("Trying to authenticate with your bridge ...");
-        lblStatusText.text = i18n("Push the authenticate button on your Hue bridge within 30 seconds");
+        lblStatusText.text = i18n("Push the authenticate button on your Hue bridge within 60 seconds");
         rctStatus.color = infoColour;
         grpStatus.visible = true;
         var hostname = kuser.host;

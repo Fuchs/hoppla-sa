@@ -35,6 +35,7 @@ Item {
     Plasmoid.fullRepresentation: FullRepresentation { }
     
 
+
     function debugPrint(msg) {
         if(!debug) {
             return;
@@ -42,8 +43,16 @@ Item {
         print('[Hoppla] ' + msg)
     }
     
+    function initHueConfig() {
+        Hue.initHueConfig();
+    }
+    
     function getHueConfigured() {
         return Hue.getHueConfigured();
+    }
+    
+    function checkHueConnection(callback, enforce) {
+        callback("main", enforce);
     }
     
     function getGroups(model) {
@@ -97,4 +106,5 @@ Item {
     function updateLight(light) {
         Hue.updateLight(light);
     }
+
 }
