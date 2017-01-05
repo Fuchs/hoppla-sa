@@ -41,10 +41,7 @@ function getLight(myModel, lightId) {
 }
 
 function updateLight(myLight) {
-    debugPrint("UUUUPDATE LIGHT: " + myLight)
-    for(var bla in myLight) {
-        debugPrint("YOOOOO: " + bla);
-    }
+    var myUrl = "lights/" + myLight.vuuid;
     getJsonFromHue(myUrl, parseLightToObject, baseFail, myLight, myLight.vuuid);
 }
 
@@ -299,7 +296,7 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
         }
 
             var json = request.responseText;
-            successCallback(json, name);
+            successCallback(json);
     }
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send(payload);
@@ -364,7 +361,8 @@ function parseGroupsToModel(json, listModel, name) {
             vy: cgroup.action.xy[1],
             vct: cgroup.action.ct,
             valert: cgroup.action.alert,
-            vcolormode: cgroup.action.colormode
+            vcolormode: cgroup.action.colormode,
+            vLastUpdated: getCurrentTime()
         };
         
         listModel.append(myGroup);
@@ -391,6 +389,7 @@ function parseGroupToObject(json, myObject, name) {
     myObject.vct = cgroup.action.ct;
     myObject.valert = cgroup.action.alert;
     myObject.vcolormode = cgroup.action.colormode;
+    myObject.vLastUpdated = getCurrentTime();
 }
 
 function parseLightsToModel(json, listModel, name) {
@@ -418,7 +417,8 @@ function parseLightsToModel(json, listModel, name) {
             vuniqueid: clight.uniqueid,
             vswversion: clight.swversion,
             vswconfigid: clight.swconfigid,
-            vproductid: clight.productid
+            vproductid: clight.productid,
+            vLastUpdated: getCurrentTime()
         };
         listModel.append(myLight);
     }
@@ -446,7 +446,8 @@ function parseLightToModel(json, listModel, lightName) {
         vuniqueid: clight.uniqueid,
         vswversion: clight.swversion,
         vswconfigid: clight.swconfigid,
-        vproductid: clight.productid
+        vproductid: clight.productid,
+        vLastUpdated: getCurrentTime()
     };
     listModel.append(myLight);
 }
@@ -473,6 +474,12 @@ function parseLightToObject(json, myObject, lightName) {
     myObject.vswversion = clight.swversion;
     myObject.vswconfigid = clight.swconfigid;
     myObject.vproductid = clight.productid;
+    myObject.vLastUpdated = getCurrentTime();
+}
+
+function getCurrentTime() {
+    var date = new Date();
+    return date.getMilliseconds(); 
 }
 
 function dbgPrint(msg) {

@@ -37,9 +37,7 @@ PlasmaComponents.ListItem {
     property var currentGroupLights : []
     property string defaultIcon : "help-about"
     property bool available : true
-    
     property bool updating:  true
-    
     
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
@@ -52,6 +50,12 @@ PlasmaComponents.ListItem {
     MouseArea {
         id: groupItemBase
         
+        PlasmaComponents.Label {
+            id: lastUpdated
+            visible: false;
+            text: vLastUpdated
+            onTextChanged : updateGui()
+        }
         
         anchors {
             left: parent.left
@@ -170,6 +174,7 @@ PlasmaComponents.ListItem {
                 onValueChanged: {
                     if(!updating) {
                         Hue.setGroupBrightness(vuuid, value);
+                        updateSelf();
                         updateChildren();
                     }
                 }
@@ -248,16 +253,6 @@ PlasmaComponents.ListItem {
             currentIndex: -1
             model: groupLightModel
             delegate: LightItem { }
-            
-            function getDelegateInstanceAt(index) {
-                var len = contentItem.children.length;
-                if(len > 0 && index > -1 && index < len) {
-                    return contentItem.children[index];
-                } else {
-                    return undefined;
-                }
-            }
-            
         }
         
         Item {
@@ -282,8 +277,8 @@ PlasmaComponents.ListItem {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var ct = Math.round(Math.min(153 + ( (347 / tempChooser.rectWidth) * mouseX), 500))
                         Hue.setGroupColourTemp(vuuid, ct)
+                        updateSelf();
                         updateChildren();
-                        colourItem.setColourCT(ct);
                     }
                 }
             }
@@ -312,11 +307,11 @@ PlasmaComponents.ListItem {
                 onReleased: {
                     if(available && vany_on) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
-                        var hue = Math.round(Math.min(65535 - ( (65535 / colorChooser.rectWidth) * mouseX), 65535))
-                        var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254))
-                        Hue.setGroupColourHS(vuuid, hue, sat)
+                        var hue = Math.round(Math.min(65535 - ( (65535 / colorChooser.rectWidth) * mouseX), 65535));
+                        var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254));
+                        Hue.setGroupColourHS(vuuid, hue, sat);
+                        updateSelf();
                         updateChildren();
-                        colourItem.setColourHS(hue, sat);
                     }
                 }
             }
@@ -408,7 +403,15 @@ PlasmaComponents.ListItem {
     }
     
     function updateSelf() {
-        //TODO: fetch stuff from Hue
+        for(var i = 0; i < groupModel.count; ++i) {
+            var child = groupModel.get(i);
+            if(child.vuuid == vuuid) {
+                Hue.updateGroup(child);
+            }
+        }
+    }
+    
+    function updateGui() {
         groupOnOffButton.checked = vany_on;
         groupOnOffButton.enabled = available;
         groupBrightnessSlider.enabled =  vany_on;
@@ -425,7 +428,7 @@ PlasmaComponents.ListItem {
             colourItem.setColourOff();
         }
         
-        currentGroupDetails : createCurrentGroupDetails()
+        currentGroupDetails = createCurrentGroupDetails()
     }
     
     function getGroupLights() {
@@ -480,9 +483,17 @@ PlasmaComponents.ListItem {
     }
     
     function updateChildren() {
-        for(var index = 0; index < groupLightsView.count; ++index) {
-            var light = groupLightsView.getDelegateInstanceAt(index);
-            light.updateSelf()
+        var children = []
+        for(var i = 0; i < groupLightModel.count; ++i) {
+            var child = groupLightModel.get(i);
+            Hue.updateLight(child);
+            children.push(child.vuuid);
+        }
+        for(var i = 0; i < lightModel.count; ++i) {
+            var child = lightModel.get(i);
+            if(children.indexOf(child.vuuid) >= 0) {
+                Hue.updateLight(child);
+            }
         }
     }
     

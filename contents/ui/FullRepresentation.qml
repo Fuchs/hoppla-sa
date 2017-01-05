@@ -257,15 +257,6 @@ FocusScope {
                 boundsBehavior: Flickable.StopAtBounds
                 model: groupModel
                 delegate: GroupItem { }
-                
-                function getDelegateInstanceAt(index) {
-                    var len = contentItem.children.length;
-                    if(len > 0 && index > -1 && index < len) {
-                        return contentItem.children[index];
-                    } else {
-                        return undefined;
-                    }
-                }
             }
         }
         
@@ -289,15 +280,6 @@ FocusScope {
                 boundsBehavior: Flickable.StopAtBounds
                 model: lightModel
                 delegate: LightItem { }
-                
-                function getDelegateInstanceAt(index) {
-                    var len = contentItem.children.length;
-                    if(len > 0 && index > -1 && index < len) {
-                        return contentItem.children[index];
-                    } else {
-                        return undefined;
-                    }
-                }
             }
         }
     }

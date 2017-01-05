@@ -32,7 +32,6 @@ PlasmaComponents.ListItem {
     property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
     property bool available : vreachable
-    
     property bool updating:  true
     
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
@@ -45,6 +44,13 @@ PlasmaComponents.ListItem {
     
     MouseArea {
         id: lightItemBase
+        
+        PlasmaComponents.Label {
+            id: lastUpdated
+            visible: false;
+            text: vLastUpdated
+            onTextChanged : updateGui()
+        }
         
         anchors {
             left: parent.left
@@ -147,6 +153,8 @@ PlasmaComponents.ListItem {
                 onValueChanged: {
                     if(!updating) {
                         Hue.setLightBrightess(vuuid, value);
+                        updateSelf();
+                        updateParents();
                     }
                 }
             }
@@ -232,7 +240,8 @@ PlasmaComponents.ListItem {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var ct = Math.round(Math.min(153 + ( (347 / tempChooser.rectWidth) * mouseX), 500));
                         Hue.setLightColourTemp(vuuid, ct);
-                        colourItem.setColourCT(ct);
+                        updateSelf();
+                        updateParents();
                     }
                 }
             }
@@ -262,7 +271,8 @@ PlasmaComponents.ListItem {
                         var hue = Math.round(Math.min(65535 - ( (65535 / colorChooser.rectWidth) * mouseX), 65535))
                         var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254))
                         Hue.setLightColourHS(vuuid, hue, sat)
-                        colourItem.setColourHS(hue, sat);
+                        updateSelf();
+                        updateParents();
                     }
                 }
             }
@@ -309,9 +319,29 @@ PlasmaComponents.ListItem {
     function toggleOnOff() {
         Hue.switchLight(vuuid, lightOnOffButton.checked);
         updateSelf();
+        updateParents();
+    }
+    
+    function updateParents() {
+        for(var i = 0; i < groupModel.count; ++i) {
+            var child = groupModel.get(i);
+            var children = child.slights.split(',');
+            if(children.indexOf(vuuid) >= 0) {
+                Hue.updateGroup(child);
+            }
+        }
     }
     
     function updateSelf() {
+        for(var i = 0; i < lightModel.count; ++i) {
+            var child = lightModel.get(i);
+            if(child.vuuid == vuuid) {
+                Hue.updateLight(child);
+            }
+        }
+    }
+    
+    function updateGui() {
         lightOnOffButton.checked = von;
         lightOnOffButton.enabled = available;
         slider.enabled = available && von;
@@ -327,6 +357,10 @@ PlasmaComponents.ListItem {
         else {
             colourItem.setColourOff();
         }
+        
+        colourItem.update();
+        
+        currentLightDetails = createCurrentLightDetails();
     }
     
     function createCurrentLightDetails() {
