@@ -22,10 +22,12 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import "hue.js" as Hue
 
 Item {
     property string id
+    // All supported classes by hue groups as of now (January 2017)
+    // Limit it to these even when new ones get added, so we are sure we 
+    // have an icon for it, otherwise fall back to the default icon
     property var supportedClasses : ["livingroom","kitchen","dining","bedroom","kidsbedroom","bathroom","nursery","recreation","office","gym","hallway","toilet","frontdoor","garage","terrace","garden","driveway","carport","other","bulb"]
     
     property string colourMode
@@ -143,6 +145,14 @@ Item {
         setIcon()
     }
     
+    /**
+     * Helper to set the icon. 
+     * This does two things: first it calculates the percepted brightness
+     * of the background, so we can decide whether we need a bright or a 
+     * dark icon for contrast. 
+     * Then it fetches the correct icon based on the type (see beginning of file) 
+     * and assigns the dark or bright one to the SVG
+     */
     function setIcon() {
         var red = circle.color.r * 255;
         var green = circle.color.g * 255;

@@ -19,7 +19,6 @@
 import QtQuick 2.0
 
 import org.kde.plasma.configuration 2.0
-import "../code/hue.js" as Hue
 
 ConfigModel {
     id: configModel

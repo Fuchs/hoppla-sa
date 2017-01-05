@@ -21,35 +21,70 @@
 
 // GETTERS
 
+/**
+ * Checks whether the hue bridge is configured
+ * @return {bool} True if auth and bridge are set, otherwise false
+ */
 function getHueConfigured() {
     var base = plasmoid.configuration.baseURL 
-    if (!base.trim()) {
+    var auth = plasmoid.configuration.authToken
+    if (!base.trim() || !auth.trim()) {
         // is empty or whitespace
         return false;
     }
     return true;
 }
 
+/**
+ * Get all lights from the hue bridge and
+ * fills them into a ListModel
+ *
+ * @param {ListModel} myModel The model to fill with hue lights.
+ */
 function getLights(myModel) {
     var myUrl = "lights";
     getJsonFromHue(myUrl, parseAllLightsToModel, baseFail, myModel, "");
 }
 
+/**
+ * Get one lights from the hue bridge and fill them into a ListModel
+ *
+ * @param {ListModel} myList The model to fill with the hue light.
+ * @param {string} lightId hue id of the light
+ */
 function getLight(myModel, lightId) {
     var myUrl = "lights/" + lightId;
     getJsonFromHue(myUrl, parseLightToModel, baseFail, myModel, lightId);
 }
 
+/**
+ * Update a specific light with values from hue
+ *
+ * @param {object} myLight a light entry from the model of a ListView
+ */
 function updateLight(myLight) {
     var myUrl = "lights/" + myLight.vuuid;
     getJsonFromHue(myUrl, parseLightToObject, baseFail, myLight, myLight.vuuid);
 }
 
+/**
+ * Get all groups from the hue bridge and
+ * fills them into a ListModel
+ *
+ * @param {ListModel} myModel The model to fill with hue groups.
+ */
 function getGroups(myModel) {
     var myUrl = "groups";
     getJsonFromHue(myUrl, parseGroupsToModel, baseFail, myModel, "");
 }
 
+/**
+ * Get all lights for a specific group from the hue bridge and
+ * fills them into a ListModel
+ *
+ * @param {ListModel} myList The model to fill with hue groups.
+ * @param {string} myLights comma separated string (array syntax) of hue light ids 
+ */
 function getGroupLights(myList, myLights) {
     if(myLights) {
         myList.clear();
@@ -60,6 +95,11 @@ function getGroupLights(myList, myLights) {
     }
 }
 
+/**
+ * Update a specific group with values from hue
+ *
+ * @param {object} myGroup a group entry from the model of a ListView
+ */
 function updateGroup(myGroup) {
     var myUrl = "groups/" + myGroup.vuuid;
     getJsonFromHue(myUrl, parseGroupToObject, baseFail, myGroup, myGroup.vuuid);
@@ -67,12 +107,24 @@ function updateGroup(myGroup) {
 
 // SWITCH
 
+/**
+ * Sets a certain hue light on or off
+ *
+ * @param {string} lightId The philips hue id of the light.
+ * @param {bool} on Whether the light should be on (true) or off (false)
+ */
 function switchLight(lightId, on) {
     var body = on ? '{"on":true}' : '{"on":false}';
     var myUrl = "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+/**
+ * Sets a certain hue group on or off
+ *
+ * @param {string} groupId The philips hue id of the group.
+ * @param {bool} on Whether the group should be on (true) or off (false)
+ */
 function switchGroup(groupId, on) {
     var body = on ? '{"on":true}' : '{"on":false}';
     var myUrl = "groups/" + groupId + "/action";
@@ -81,18 +133,41 @@ function switchGroup(groupId, on) {
 
 // GROUP SETTER
 
+/**
+ * Sets a certain hue group to a specific brightness
+ *
+ * @param {string} groupId The philips hue id of the group.
+ * @param {int} brightness brightness between 0 and 255, converted to 1-254 by hue
+ */
 function setGroupBrightness(groupId, brightness) {
     var body = '{"bri":' + brightness + '}';
     var myUrl = "groups/" + groupId + "/action";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+/**
+ * Sets a certain hue group to a specific white temperature.
+ * Will also set the colormode to "ct"
+ * See https://developers.meethue.com/documentation/core-concepts
+ *
+ * @param {string} groupId The philips hue id of the group.
+ * @param {int} ct Colour temperature between 153 and 500 mirek
+ */
 function setGroupColourTemp(groupId, ct) {
     var body = '{"ct":' + ct + ',"colormode": "ct"}';
     var myUrl = "groups/" + groupId + "/action";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+/**
+ * Sets a certain hue group to a specific colour.
+ * Will also set the colormode to "hs"
+ * See https://developers.meethue.com/documentation/core-concepts
+ *
+ * @param {string} groupId The philips hue id of the group.
+ * @param {int} hue Hue value between 0 and 65535
+ * @param {int} sat Saturation value between 0 and 254
+ */
 function setGroupColourHS(groupId, hue, sat) {
     var body = '{"hue":' + hue + ',"sat":' + sat + ',"colormode": "hs"}';
     var myUrl = "groups/" + groupId + "/action";
@@ -101,18 +176,41 @@ function setGroupColourHS(groupId, hue, sat) {
 
 // LIGHT SETTER
 
+/**
+ * Sets a certain hue light to a specific brightness
+ *
+ * @param {string} lightId The philips hue id of the light.
+ * @param {int} brightness brightness between 0 and 255, converted to 1-254 by hue
+ */
 function setLightBrightess(lightId, brightness) {
     var body = '{"bri":' + brightness + '}';
     var myUrl = "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+/**
+ * Sets a certain hue light to a specific white temperature.
+ * Will also set the colormode to "ct"
+ * See https://developers.meethue.com/documentation/core-concepts
+ *
+ * @param {string} lightId The philips hue id of the light.
+ * @param {int} ct Colour temperature between 153 and 500 mirek
+ */
 function setLightColourTemp(lightId, ct) {
     var body = '{"ct":' + ct + '}';
     var myUrl = "lights/" + lightId + "/state";
     putJsonToHue(myUrl, body, baseSuccess, baseFail);
 }
 
+/**
+ * Sets a certain hue light to a specific colour.
+ * Will also set the colormode to "hs"
+ * See https://developers.meethue.com/documentation/core-concepts
+ *
+ * @param {string} lightId The philips hue id of the light.
+ * @param {int} hue Hue value between 0 and 65535
+ * @param {int} sat Saturation value between 0 and 254
+ */
 function setLightColourHS(lightId, hue, sat) {
     var body = '{"hue":' + hue + ',"sat":' + sat + '}';
     var myUrl = "lights/" + lightId + "/state";

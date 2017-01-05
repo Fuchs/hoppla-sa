@@ -41,4 +41,60 @@ Item {
         }
         print('[Hoppla] ' + msg)
     }
+    
+    function getHueConfigured() {
+        return Hue.getHueConfigured();
+    }
+    
+    function getGroups(model) {
+        Hue.getGroups(model);
+    }
+    
+    function getLights(model) {
+        Hue.getLights(model);
+    }
+    
+    function getGroupLights(groupLightModel, slights) {
+         Hue.getGroupLights(groupLightModel, slights);
+    }
+    
+    function setGroupBrightness(vuuid, value) {
+        Hue.setGroupBrightness(vuuid, value);
+    }
+    
+    function setLightBrightess(vuuid, value) {
+        Hue.setLightBrightess(vuuid, value);
+    }
+    
+    function setGroupColourTemp(vuuid, ct) {
+        Hue.setGroupColourTemp(vuuid, ct);
+    }
+    
+    function setLightColourTemp(vuuid, ct) {
+        Hue.setLightColourTemp(vuuid, ct);
+    }
+    
+    function setGroupColourHS(vuuid, hue, sat) {
+        Hue.setGroupColourHS(vuuid, hue, sat);
+    }
+    
+    function setLightColourHS(vuuid, hue, sat) {
+        Hue.setLightColourHS(vuuid, hue, sat);
+    }
+    
+    function switchGroup(vuuid, val) {
+        Hue.switchGroup(vuuid, val);
+    }
+    
+    function switchLight(vuuid, val) {
+          Hue.switchLight(vuuid, val);
+    }
+    
+    function updateGroup(group) {
+        Hue.updateGroup(group);
+    }
+    
+    function updateLight(light) {
+        Hue.updateLight(light);
+    }
 }

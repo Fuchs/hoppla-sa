@@ -18,11 +18,8 @@
 
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
-import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-
-import "hue.js" as Hue
 
 PlasmaComponents.ListItem {
     id: lightItem
@@ -32,12 +29,14 @@ PlasmaComponents.ListItem {
     property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
     property bool available : vreachable
+    // Small elper to ignore initial values
     property bool updating:  true
     
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
     
+    // Disable updating helper once the component is created
     Component.onCompleted: {
             updating = false;
     }
@@ -45,6 +44,9 @@ PlasmaComponents.ListItem {
     MouseArea {
         id: lightItemBase
         
+        // Hidden value so we can have a timestamp of the last update,
+        // also used to update the GUI components when new values from hue arrive.
+        // Slightly hacky, but the best option as long as we don't want a proper data source.
         PlasmaComponents.Label {
             id: lastUpdated
             visible: false;
@@ -152,7 +154,7 @@ PlasmaComponents.ListItem {
                 
                 onValueChanged: {
                     if(!updating) {
-                        Hue.setLightBrightess(vuuid, value);
+                        setLightBrightess(vuuid, value);
                         updateSelf();
                         updateParents();
                     }
@@ -239,7 +241,7 @@ PlasmaComponents.ListItem {
                     if(available && von) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var ct = Math.round(Math.min(153 + ( (347 / tempChooser.rectWidth) * mouseX), 500));
-                        Hue.setLightColourTemp(vuuid, ct);
+                        setLightColourTemp(vuuid, ct);
                         updateSelf();
                         updateParents();
                     }
@@ -268,9 +270,9 @@ PlasmaComponents.ListItem {
                 
                 onReleased: {
                     if(available && von) {
-                        var hue = Math.round(Math.min(65535 - ( (65535 / colorChooser.rectWidth) * mouseX), 65535))
-                        var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254))
-                        Hue.setLightColourHS(vuuid, hue, sat)
+                        var hue = Math.round(Math.min(65535 - ( (65535 / colorChooser.rectWidth) * mouseX), 65535));
+                        var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254));
+                        setLightColourHS(vuuid, hue, sat);
                         updateSelf();
                         updateParents();
                     }
@@ -316,31 +318,50 @@ PlasmaComponents.ListItem {
         }
     }
     
+    /**
+     * Helper to switch the on/off state, will updateSelf() 
+     * and updateParents() once done to ensure the own values are correct
+     * and the state is propagated to parent groups
+     */
     function toggleOnOff() {
-        Hue.switchLight(vuuid, lightOnOffButton.checked);
+        switchLight(vuuid, lightOnOffButton.checked)
         updateSelf();
         updateParents();
     }
     
+    /**
+     * Helper to update all parent groups this light belongs to, 
+     * because setting light values can alter group values.
+     * This will also trigger an update of group children, 
+     * because we could be either in the list of all lights
+     * or in the list of group lights, so we have to ensure
+     * all GUI instances of ourselves are updated.
+     */
     function updateParents() {
         for(var i = 0; i < groupModel.count; ++i) {
             var child = groupModel.get(i);
             var children = child.slights.split(',');
             if(children.indexOf(vuuid) >= 0) {
-                Hue.updateGroup(child);
+                updateGroup(child);
             }
         }
     }
     
+    /**
+     * Helper to get our own values from hue and update ourselves
+     */
     function updateSelf() {
         for(var i = 0; i < lightModel.count; ++i) {
             var child = lightModel.get(i);
             if(child.vuuid == vuuid) {
-                Hue.updateLight(child);
+                updateLight(child);
             }
         }
     }
     
+    /**
+     * Helper to update our GUI controls once we get new values
+     */
     function updateGui() {
         lightOnOffButton.checked = von;
         lightOnOffButton.enabled = available;
@@ -363,6 +384,10 @@ PlasmaComponents.ListItem {
         currentLightDetails = createCurrentLightDetails();
     }
     
+    /**
+     * Helper to fill in an array of group details
+     * to be shown in the details tab
+     */
     function createCurrentLightDetails() {
         var lightDtls = [];
         

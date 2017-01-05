@@ -19,14 +19,10 @@
 
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
-import QtGraphicalEffects 1.0
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.2 as QtControls
-import QtQuick.Dialogs 1.0 as QtDialogs
 
-import "hue.js" as Hue
 
 PlasmaComponents.ListItem {
     id: groupItem
@@ -36,20 +32,26 @@ PlasmaComponents.ListItem {
     property var currentGroupDetails : createCurrentGroupDetails()
     property var currentGroupLights : []
     property string defaultIcon : "help-about"
+    // As for now, groups are always available when given by the bridge
     property bool available : true
+    // Small helper to ignore initial values
     property bool updating:  true
     
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
     
+    // Disable updating helper once the component is created
     Component.onCompleted: {
-            updating = false;
+        updating = false;
     }
     
     MouseArea {
         id: groupItemBase
         
+        // Hidden value so we can have a timestamp of the last update,
+        // also used to update the GUI components when new values from hue arrive.
+        // Slightly hacky, but the best option as long as we don't want a proper data source.
         PlasmaComponents.Label {
             id: lastUpdated
             visible: false;
@@ -171,9 +173,10 @@ PlasmaComponents.ListItem {
                 enabled: vany_on
                 value: vbrigthness
                 
+                // Ignore initial values
                 onValueChanged: {
                     if(!updating) {
-                        Hue.setGroupBrightness(vuuid, value);
+                        setGroupBrightness(vuuid, value);
                         updateSelf();
                         updateChildren();
                     }
@@ -186,7 +189,7 @@ PlasmaComponents.ListItem {
         }
         
         Component.onCompleted: {
-            getGroupLights();
+            getMyGroupLights();
         }
     }
     
@@ -275,8 +278,8 @@ PlasmaComponents.ListItem {
                 onReleased: {
                     if(available && vany_on) {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
-                        var ct = Math.round(Math.min(153 + ( (347 / tempChooser.rectWidth) * mouseX), 500))
-                        Hue.setGroupColourTemp(vuuid, ct)
+                        var ct = Math.round(Math.min(153 + ( (347 / tempChooser.rectWidth) * mouseX), 500));
+                        setGroupColourTemp(vuuid, ct);
                         updateSelf();
                         updateChildren();
                     }
@@ -309,7 +312,7 @@ PlasmaComponents.ListItem {
                         // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
                         var hue = Math.round(Math.min(65535 - ( (65535 / colorChooser.rectWidth) * mouseX), 65535));
                         var sat = Math.round(Math.min(254 - ( (254 / colorChooser.rectHeight) * mouseY), 254));
-                        Hue.setGroupColourHS(vuuid, hue, sat);
+                        setGroupColourHS(vuuid, hue, sat);
                         updateSelf();
                         updateChildren();
                     }
@@ -335,7 +338,7 @@ PlasmaComponents.ListItem {
         //                 height: paintedHeight
         //                 elide: Text.ElideRight
         //                 font.pointSize: theme.smallestFont.pointSize
-        //                 text : "TBI"
+        //                 text : "To be implemented"
         //                 textFormat: Text.PlainText
         //             }
         //         }
@@ -378,14 +381,9 @@ PlasmaComponents.ListItem {
         }
     }
     
-    function boolToString(v)
-    {
-        if (v) {
-            return i18n("Yes");
-        }
-        return i18n("No");
-    }
-    
+    /**
+     * Helper to get the subtext, based on the amount of lights in the group
+     */
     function getSubtext() {
         var amount = vlights.count;
         if (amount == 1) {
@@ -396,30 +394,46 @@ PlasmaComponents.ListItem {
         }
     }
     
+    /**
+     * Helper to switch the on/off state, will updateSelf() 
+     * and updateChildren() once done to ensure the own values are correct
+     * and the state is propagated to children
+     */
     function toggleOnOff() {
-        Hue.switchGroup(vuuid, groupOnOffButton.checked);
+        switchGroup(vuuid, groupOnOffButton.checked);
         updateSelf();
         updateChildren();
     }
     
+    /**
+     * Helper to be called when the timestamp updated, which means
+     * we should update our GUI and all children, but not our
+     * own values as we are just coming from there.
+     */
     function updateMe() {
         updateGui();
         for(var i = 0; i < groupLightModel.count; ++i) {
             var child = groupLightModel.get(i);
-            Hue.updateLight(child);
+            updateLight(child);
         }
         
     }
     
+    /**
+     * Helper to get our own values from hue and update ourselves
+     */
     function updateSelf() {
         for(var i = 0; i < groupModel.count; ++i) {
             var child = groupModel.get(i);
             if(child.vuuid == vuuid) {
-                Hue.updateGroup(child);
+                updateGroup(child);
             }
         }
     }
     
+    /**
+     * Helper to update our GUI controls once we get new values
+     */
     function updateGui() {
         groupOnOffButton.checked = vany_on;
         groupOnOffButton.enabled = available;
@@ -440,10 +454,17 @@ PlasmaComponents.ListItem {
         currentGroupDetails = createCurrentGroupDetails()
     }
     
-    function getGroupLights() {
-        Hue.getGroupLights(groupLightModel, slights);
+    /**
+     * Helper to get lights belonging to us
+     */
+    function getMyGroupLights() {
+        getGroupLights(groupLightModel, slights);
     }
     
+    /**
+     * Helper to fill in an array of group details
+     * to be shown in the details tab
+     */
     function createCurrentGroupDetails() {
         var groupDtls = [];
         
@@ -491,17 +512,26 @@ PlasmaComponents.ListItem {
         return groupDtls;
     }
     
+    /**
+     * Helpder to update all children belonging to us, 
+     * both in our own list and the general one
+     */
     function updateChildren() {
         var children = []
+        // First update our own list of children, 
+        // adding all their ids to the children array
         for(var i = 0; i < groupLightModel.count; ++i) {
             var child = groupLightModel.get(i);
-            Hue.updateLight(child);
+            updateLight(child);
             children.push(child.vuuid);
         }
+        // Now iterate over the list of all lights shown in the
+        // lights tab of the FullRepresentation, only update
+        // those that belong to this group by using the children array
         for(var i = 0; i < lightModel.count; ++i) {
             var child = lightModel.get(i);
             if(children.indexOf(child.vuuid) >= 0) {
-                Hue.updateLight(child);
+                updateLight(child);
             }
         }
     }

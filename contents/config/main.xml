@@ -19,7 +19,7 @@
       <default></default>
     </entry>
     <entry name="useAuth" type="Bool">
-      <label>Use Authentication for the alternative URL</label>
+      <label>Use Authentication for the base URL</label>
       <default>false</default>
     </entry>
     <entry name="username" type="string">

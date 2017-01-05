@@ -20,15 +20,13 @@ import QtQuick 2.2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import "logic.js" as Logic
-
 MouseArea {
     onClicked: plasmoid.expanded = !plasmoid.expanded
 
     PlasmaCore.IconItem {
         id: hopplaslIcon
         anchors.fill: parent
-        source: Logic.icon()
+        source: "im-jabber"
 
     }
 }

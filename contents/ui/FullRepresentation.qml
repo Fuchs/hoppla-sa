@@ -21,13 +21,12 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-import "../code/hue.js" as Hue
-
 FocusScope {
     focus: true
     id: mainView
     
-    property bool noHueConfigured: !Hue.getHueConfigured()
+    property bool noHueConfigured: !getHueConfigured()
+    //TODO: set me correctly and update me periodically
     property bool noHueConnected: false
     
     Item {
@@ -294,11 +293,11 @@ FocusScope {
     // This leads to side effects such as closing the current expanded selection, 
     // but this should be acceptable, else updateGroups and updateLights can be used.
     function reInit() {
-        hueNotConfiguredView.visible = !Hue.getHueConfigured();
-        hueNotConnectedView.visible = !Hue.getHueConfigured() && noHueConnected;
-        tabView.visible = Hue.getHueConfigured();
-        Hue.getGroups(groupModel);
-        Hue.getLights(lightModel);
+        hueNotConfiguredView.visible = !getHueConfigured();
+        hueNotConnectedView.visible = !getHueConfigured() && noHueConnected;
+        tabView.visible = getHueConfigured();
+        getGroups(groupModel);
+        getLights(lightModel);
     }
     
     
