@@ -110,5 +110,10 @@ Item {
     function getTimer() {
         return Qt.createQmlObject("import QtQuick 2.0; Timer {}", hopplaApplet);
     }
+    
+    // Apparently plasmoid is not available everywhere ...
+    function isPlasmoidExpanded() {
+        return plasmoid.expanded;
+    }
 
 }

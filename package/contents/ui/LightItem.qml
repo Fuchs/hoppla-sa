@@ -459,7 +459,7 @@ PlasmaComponents.ListItem {
     }
     
     function updateLoop() {
-        if(plasmoid.expanded)
+        if(isPlasmoidExpanded())
         {
             // Only update in background
             return;
