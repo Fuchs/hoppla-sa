@@ -51,6 +51,9 @@ function getHueConfigured() {
  * @param {ListModel} myModel The model to fill with hue lights.
  */
 function getLights(myModel) {
+    if(noConnection) {
+        return;
+    }
     var myUrl = "lights";
     getJsonFromHue(myUrl, parseAllLightsToModel, baseFail, myModel, "");
 }
@@ -62,6 +65,9 @@ function getLights(myModel) {
  * @param {string} lightId hue id of the light
  */
 function getLight(myModel, lightId) {
+    if(noConnection) {
+        return;
+    }
     var myUrl = "lights/" + lightId;
     getJsonFromHue(myUrl, parseLightToModel, baseFail, myModel, lightId);
 }
@@ -72,6 +78,9 @@ function getLight(myModel, lightId) {
  * @param {object} myLight a light entry from the model of a ListView
  */
 function updateLight(myLight) {
+    if(noConnection) {
+        return;
+    }
     var myUrl = "lights/" + myLight.vuuid;
     getJsonFromHue(myUrl, parseLightToObject, baseFail, myLight, myLight.vuuid);
 }
@@ -83,6 +92,9 @@ function updateLight(myLight) {
  * @param {ListModel} myModel The model to fill with hue groups.
  */
 function getGroups(myModel) {
+    if(noConnection) {
+        return;
+    }
     var myUrl = "groups";
     getJsonFromHue(myUrl, parseGroupsToModel, baseFail, myModel, "");
 }
@@ -96,6 +108,9 @@ function getGroups(myModel) {
  * @param {string} myLights comma separated string (array syntax) of hue light ids 
  */
 function getGroupLights(myList, myLights) {
+    if(noConnection) {
+        return;
+    }
     if(myLights) {
         myList.clear();
         var array = myLights.split(',');
@@ -111,6 +126,9 @@ function getGroupLights(myList, myLights) {
  * @param {object} myGroup a group entry from the model of a ListView
  */
 function updateGroup(myGroup) {
+    if(noConnection) {
+        return;
+    }
     var myUrl = "groups/" + myGroup.vuuid;
     getJsonFromHue(myUrl, parseGroupToObject, baseFail, myGroup, myGroup.vuuid);
 }
@@ -633,9 +651,6 @@ function parseAllLightsToModel(json, listModel, name) {
             }
         }
     }
-    
-    var total = 0; 
-    var on = 0;
     for(var lightName in myLights) {
         var clight = myLights[lightName];
         var myLight = {
@@ -662,13 +677,7 @@ function parseAllLightsToModel(json, listModel, name) {
             vLastUpdated: getCurrentTime()
         };
         listModel.append(myLight);
-        total++;
-        if(clight.state.on) {
-            on++;
-        }
     }
-    
-    plasmoid.toolTipSubText = on + "/" + total + i18n(" lights on");
 }
 
 function parseLightToModel(json, listModel, lightName) {

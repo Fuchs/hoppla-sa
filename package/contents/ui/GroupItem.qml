@@ -44,6 +44,14 @@ PlasmaComponents.ListItem {
     // Disable updating helper once the component is created
     Component.onCompleted: {
         updating = false;
+        var myTimer = getTimer();
+        // Check connection every 60 seconds 
+        // plus some extra time depending on the uuid, so not all 
+        // groups are updated at the same time, thus putting a huge load on the bridge
+        myTimer.interval = 60000 + ((vuuid % 10) * 500);
+        myTimer.repeat = true;
+        myTimer.triggered.connect(updateLoop);
+        myTimer.start();
     }
     
     MouseArea {
@@ -534,6 +542,16 @@ PlasmaComponents.ListItem {
                 updateLight(child);
             }
         }
+    }
+    
+    function updateLoop() {
+        if(plasmoid.expanded)
+        {
+            // Only update in background
+            return;
+        }
+        updateSelf();
+        updateChildren();
     }
     
     ListModel {

@@ -106,5 +106,9 @@ Item {
     function updateLight(light) {
         Hue.updateLight(light);
     }
+    
+    function getTimer() {
+        return Qt.createQmlObject("import QtQuick 2.0; Timer {}", hopplaApplet);
+    }
 
 }

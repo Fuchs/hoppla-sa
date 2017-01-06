@@ -58,7 +58,7 @@ FocusScope {
                 iconSource: "view-refresh"
                 tooltip: i18n("Refresh")
                 onClicked: {
-                    reInit(false);
+                    reInit(false, true);
                 }
             }
             
@@ -284,8 +284,9 @@ FocusScope {
     }
     
     Component.onCompleted: {
-        reInit(false);
+        reInit(false, true);
         var myTimer = getTimer();
+        // Check connection every 30 seconds
         myTimer.interval = 30000;
         myTimer.repeat = true;
         myTimer.triggered.connect(updateLoop);
@@ -311,7 +312,7 @@ FocusScope {
     // as it fetches all lights and groups together, instead of updating each.
     // This leads to side effects such as closing the current expanded selection, 
     // but this should be acceptable, else updateGroups and updateLights can be used.
-    function reInit(initial) {
+    function reInit(initial, fetchAll) {
         //TODO: add a nice overlay while loading
         hueNotConfiguredView.visible = !getHueConfigured();
         hueNotConnectedView.visible = getHueConfigured() && hueNotConnected;
@@ -319,8 +320,10 @@ FocusScope {
         if(initial) {
             checkHueConnection(updatedConnection, true);
         }
-        getGroups(groupModel);
-        getLights(lightModel);
+        if(fetchAll) {
+            getGroups(groupModel);
+            getLights(lightModel);
+        }
     }
     
     /**
@@ -348,26 +351,47 @@ FocusScope {
         if(connection === "none") {
             hueNotConnected = true;
             hueUnauthenticated = false;
-            reInit(false);
+            reInit(false, false);
+            plasmoid.toolTipSubText = i18n("Hue bridge not reachable");
             return;
         }
-        
-        if(connection === "unauth") {
+        else if(connection === "unauth") {
             hueNotConnected = true;
             hueUnauthenticated = true;
-            reInit(false);
+            reInit(false, false);          
+            plasmoid.toolTipSubText = i18n("Not authenticated with Hue bridge");
             return;
         }
-
-        if(connection === "main" || connection === "alt") {
+        else if(connection === "main") {
             hueNotConnected = false;
             hueUnauthenticated = false;
-            reInit(false);
+            reInit(false, false);
+            setLightsTooltip(i18n("Main connection"));
+        }
+        else if(connection === "alt") {
+            hueNotConnected = false;
+            hueUnauthenticated = false;
+            reInit(false, false);
+            setLightsTooltip(i18n("Alternative connection"));
         }
     }
     
-    function getTimer() {
-        return Qt.createQmlObject("import QtQuick 2.0; Timer {}", hopplaApplet);
+    /**
+     * Helper to set a tooltip with baseText: n/m lights on
+     * @param {String} baseText base text to use
+     */
+    function setLightsTooltip(baseText) {
+        var lightsTotal = lightModel.count;
+        var lightOn = 0;
+        
+        for(var i = 0; i < lightModel.count; ++i) {
+            if(lightModel.get(i).von) {
+                lightOn++;
+            }
+        }
+        
+        var tooltip = baseText + ": " + lightOn + "/" + lightsTotal + " " + i18n("lights on")
+        plasmoid.toolTipSubText = tooltip;
     }
     
     

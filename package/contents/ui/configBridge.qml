@@ -203,6 +203,7 @@ Item {
                     id: password
                     visible: altRequireAuth.checked
                     Layout.fillWidth: true
+                    echoMode: TextInput.Password
                 }
             }
         }
