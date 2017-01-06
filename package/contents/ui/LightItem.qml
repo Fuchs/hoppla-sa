@@ -170,6 +170,11 @@ PlasmaComponents.ListItem {
                         updateTimer.restart();
                     }
                 }
+                Keys.onReleased: {
+                    if (event.key == Qt.Key_Left || event.key == Qt.Key_Right) {
+                        updateTimer.restart();
+                    }
+                }
                 Timer {
                     id: updateTimer
                     interval: 200
