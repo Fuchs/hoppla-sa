@@ -29,20 +29,21 @@ PlasmaComponents.ListItem {
     property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
     property bool available : vreachable
-    // Small elper to ignore initial values
-    property bool updating:  true
     
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
     
-    // Disable updating helper once the component is created
+    // Set an auto updater
     Component.onCompleted: {
-        updating = false;
         var myTimer = getTimer();
-        // Check connection every 45 seconds 
-        // plus some extra time depending on the uuid, so not all 
-        // lights are updated at the same time, thus putting a huge load on the bridge
+        // Update all values every 45 seconds plus some extra time
+        // depending on the uuid, so not all lights are updated at
+        // the same time, thus putting a huge load on the bridge. 
+        // This is needed as other apps can make updates that we 
+        // would otherwise not notice and be out of sync. As this is
+        // an edge case, we handle it similar to the official app
+        // and update only in rare intervals.
         myTimer.interval = 45000 + ((vuuid % 10) * 300);;
         myTimer.repeat = true;
         myTimer.triggered.connect(updateLoop);
@@ -148,8 +149,6 @@ PlasmaComponents.ListItem {
             PlasmaComponents.Slider {
                 id: slider
                 
-                property bool ignoreValueChange: false
-                
                 Layout.fillWidth: true
                 minimumValue: 0
                 maximumValue: 254
@@ -158,11 +157,24 @@ PlasmaComponents.ListItem {
                 enabled: available && von
                 updateValueWhileDragging : false
                 value: vbri
-                
-                
-                onValueChanged: {
-                    if(!updating) {
-                        setLightBrightess(vuuid, value);
+
+                // This is a hack that is needed due to how
+                // oddly Hue manages brightness for groups and children.
+                // A group update and resulting child update can lead 
+                // to an endless loop or at least odd behaviour when 
+                // we automatically call Hue once the value of the slider
+                // changes. Thus we ensure that we only call Hue
+                // if the change was made manually
+                onPressedChanged: {
+                    if (!pressed) {
+                        updateTimer.restart();
+                    }
+                }
+                Timer {
+                    id: updateTimer
+                    interval: 200
+                    onTriggered: {
+                        setLightBrightess(vuuid, slider.value);
                         updateSelf();
                         updateParents();
                     }

@@ -34,16 +34,14 @@ PlasmaComponents.ListItem {
     property string defaultIcon : "help-about"
     // As for now, groups are always available when given by the bridge
     property bool available : true
-    // Small helper to ignore initial values
-    property bool updating:  true
+
     
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
     checked: containsMouse
     enabled: true
     
-    // Disable updating helper once the component is created
+    // Set an auto updater
     Component.onCompleted: {
-        updating = false;
         var myTimer = getTimer();
         // Check connection every 60 seconds 
         // plus some extra time depending on the uuid, so not all 
@@ -169,9 +167,7 @@ PlasmaComponents.ListItem {
             
             PlasmaComponents.Slider {
                 id: groupBrightnessSlider
-                
-                property bool ignoreValueChange: false
-                
+
                 Layout.fillWidth: true
                 minimumValue: 0
                 maximumValue: 255
@@ -181,10 +177,23 @@ PlasmaComponents.ListItem {
                 enabled: vany_on
                 value: vbrigthness
                 
-                // Ignore initial values
-                onValueChanged: {
-                    if(!updating) {
-                        setGroupBrightness(vuuid, value);
+                // This is a hack that is needed due to how
+                // oddly Hue manages brightness for groups and children.
+                // A group update and resulting child update can lead 
+                // to an endless loop or at least odd behaviour when 
+                // we automatically call Hue once the value of the slider
+                // changes. Thus we ensure that we only call Hue
+                // if the change was made manually
+                onPressedChanged: {
+                    if (!pressed) {
+                        updateTimer.restart();
+                    }
+                }
+                Timer {
+                    id: updateTimer
+                    interval: 200
+                    onTriggered: {
+                        setGroupBrightness(vuuid, groupBrightnessSlider.value);
                         updateSelf();
                         updateChildren();
                     }

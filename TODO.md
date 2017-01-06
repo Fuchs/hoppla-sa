@@ -1,6 +1,6 @@
 # Nice to have features for next release (1.0)
 
-* Auto-discover Hue bridge
+* Auto-discover Hue bridge (ssdp discovery needs to be implemented)
 * Provide better dark and bright icons for bulbs and group types
 * Nice loading overlay for plasmoid
 
