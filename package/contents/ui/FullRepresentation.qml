@@ -383,9 +383,10 @@ FocusScope {
      * @param {String} baseText base text to use
      */
     function setLightsTooltip(baseText) {
+
         var lightsTotal = lightModel.count;
         var lightOn = 0;
-        
+  
         for(var i = 0; i < lightModel.count; ++i) {
             if(lightModel.get(i).von) {
                 lightOn++;
@@ -422,6 +423,6 @@ FocusScope {
     }  
     
     Timer {
-        id: myTimer
+        id: fullTimer
     }
 }
