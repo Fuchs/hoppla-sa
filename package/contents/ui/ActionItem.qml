@@ -132,9 +132,15 @@ PlasmaComponents.ListItem {
     function execute() {
         if(action === 'allon') {
             Hue.switchGroup(0, true)
+            // If there are many lamps, it would be horrible performance wise
+            // on the Hue bridge to fetch each. Just fetch all.
+            reInit(false, true);
         }
         else if(action === 'alloff') {
             Hue.switchGroup(0, false)
+            // If there are many lamps, it would be horrible performance wise
+            // on the Hue bridge to fetch each. Just fetch all.
+            reInit(false, true);
         }
     }
     
