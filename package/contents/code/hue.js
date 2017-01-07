@@ -19,7 +19,7 @@
 //TODO: This seems to not work when being called from the config UI, find out why and fix
 
 var useAltConnection = false;
-var altConnectionEnabled = false;
+var altConnectionEnabled;
 var noConnection = false;
 
 // GETTERS
@@ -297,7 +297,13 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
     if(!json) {
         return;
     }
-    var myResult = JSON.parse(json);
+    try {
+        var myResult = JSON.parse(json);
+    }
+    catch(e) {
+        debugPrint("Failed to parse json: " + json);
+        return;
+    }
     if(!myResult[0]) {
         return;
     }
@@ -356,7 +362,7 @@ function getRequest(pUrl, pType, forceBase, forceAlt) {
     var auth = plasmoid.configuration.authToken
     var url = base + "/api/" + auth + "/" + pUrl
     
-    if(!useAuth) {
+    if(useAuth) {
         request.open(pType, url, true, username, password);
     }
     else {
@@ -399,7 +405,13 @@ function checkHueConnection (callback, enforce) {
                     }
                     
                     var json = altRequest.responseText;
-                    var myResult = JSON.parse(json);
+                    try {
+                        var myResult = JSON.parse(json);
+                    }
+                    catch(e) {
+                        debugPrint("Failed to parse json: " + json);
+                        return;
+                    }
                     if(!myResult[0]) {
                         callback("alt", enforce);
                         useAltConnection = true;
@@ -422,7 +434,13 @@ function checkHueConnection (callback, enforce) {
             }
         }
         var json = request.responseText;
-        var myResult = JSON.parse(json);
+        try {
+            var myResult = JSON.parse(json);
+        }
+        catch(e) {
+            debugPrint("Failed to parse json: " + json);
+            return;
+        }
         if(!myResult[0]) {
             callback("main", enforce);
             useAltConnection = false;
@@ -561,10 +579,16 @@ function baseFail (request) {
 }
 
 function parseGroupsToModel(json, listModel, name) {
-    var myGroups = JSON.parse(json);
     // Delete current list, even in case of errors 
     // we do not want a cached one
     listModel.clear();
+    try {
+        var myGroups = JSON.parse(json);
+    }
+    catch(e) {
+        debugPrint("Failed to parse json: " + json);
+        return;
+    }
     if(myGroups[0]) {
         if(myGroups[0].error) {
             if(myGroups[0].error.type == 1) {
@@ -605,7 +629,13 @@ function parseGroupsToModel(json, listModel, name) {
 }
 
 function parseGroupToObject(json, myObject, name) {
-    var cgroup = JSON.parse(json);
+    try {
+        var cgroup = JSON.parse(json);
+    }
+    catch(e) {
+        debugPrint("Failed to parse json: " + json);
+        return;
+    }
     if(cgroup[0]) {
         if(cgroup[0].error) {
             if(myGroups[0].error.type == 1) {
@@ -639,8 +669,14 @@ function parseGroupToObject(json, myObject, name) {
 }
 
 function parseAllLightsToModel(json, listModel, name) {
-    var myLights = JSON.parse(json);
     listModel.clear();
+    try {
+        var myLights = JSON.parse(json);
+     }
+    catch(e) {
+        debugPrint("Failed to parse json: " + json);
+        return;
+    }
     if(myLights[0]) {
         if(myLights[0].error) {
             if(myGroups[0].error.type == 1) {
@@ -681,7 +717,13 @@ function parseAllLightsToModel(json, listModel, name) {
 }
 
 function parseLightToModel(json, listModel, lightName) {
-    var clight = JSON.parse(json);
+    try {
+        var clight = JSON.parse(json);
+    }
+    catch(e) {
+        debugPrint("Failed to parse json: " + json);
+        return;
+    }
     if(clight[0]) {
         if(clight[0].error) {
             if(myGroups[0].error.type == 1) {
@@ -719,7 +761,13 @@ function parseLightToModel(json, listModel, lightName) {
 }
 
 function parseLightToObject(json, myObject, lightName) {
-    var clight = JSON.parse(json);
+    try {
+        var clight = JSON.parse(json);
+    }
+    catch(e) {
+        debugPrint("Failed to parse json: " + json);
+        return;
+    }
     if(clight[0]) {
         if(clight[0].error) {
             if(myGroups[0].error.type == 1) {
@@ -761,6 +809,7 @@ function getCurrentTime() {
 function dbgPrint(msg) {
     print('[Hoppla] ' + msg)
 }
+
 
 function Timer() {
     return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);

@@ -36,7 +36,7 @@ PlasmaComponents.ListItem {
     
     // Set an auto updater
     Component.onCompleted: {
-        var myTimer = getTimer();
+        lightTimer.stop();
         // Update all values every 45 seconds plus some extra time
         // depending on the uuid, so not all lights are updated at
         // the same time, thus putting a huge load on the bridge. 
@@ -44,10 +44,10 @@ PlasmaComponents.ListItem {
         // would otherwise not notice and be out of sync. As this is
         // an edge case, we handle it similar to the official app
         // and update only in rare intervals.
-        myTimer.interval = 45000 + ((vuuid % 10) * 300);;
-        myTimer.repeat = true;
-        myTimer.triggered.connect(updateLoop);
-        myTimer.start();
+        lightTimer.interval = 45000 + ((vuuid % 10) * 300);;
+        lightTimer.repeat = true;
+        lightTimer.triggered.connect(updateLoop);
+        lightTimer.start();
     }
     
     MouseArea {
@@ -459,12 +459,16 @@ PlasmaComponents.ListItem {
     }
     
     function updateLoop() {
-        if(isPlasmoidExpanded())
+        if(plasmoid.expanded)
         {
             // Only update in background
             return;
         }
         updateSelf();
+    }
+    
+    Timer {
+        id: lightTimer
     }
 }
 

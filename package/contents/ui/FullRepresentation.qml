@@ -284,13 +284,14 @@ FocusScope {
     }
     
     Component.onCompleted: {
-        reInit(false, true);
-        var myTimer = getTimer();
+        initHueConfig();
+        reInit(true, true);
+        fullTimer.stop();
         // Check connection every 30 seconds
-        myTimer.interval = 30000;
-        myTimer.repeat = true;
-        myTimer.triggered.connect(updateLoop);
-        myTimer.start();
+        fullTimer.interval = 30000;
+        fullTimer.repeat = true;
+        fullTimer.triggered.connect(updateLoop);
+        fullTimer.start();
     }
     
     Connections {
@@ -371,6 +372,7 @@ FocusScope {
         else if(connection === "alt") {
             hueNotConnected = false;
             hueUnauthenticated = false;
+            // re-fetch everything on change to alt connection
             reInit(false, false);
             setLightsTooltip(i18n("Alternative connection"));
         }
@@ -418,4 +420,8 @@ FocusScope {
     ListModel {
         id: lightModel
     }  
+    
+    Timer {
+        id: myTimer
+    }
 }

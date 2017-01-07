@@ -42,7 +42,7 @@ PlasmaComponents.ListItem {
     
     // Set an auto updater
     Component.onCompleted: {
-        var myTimer = getTimer();
+        myTimer.stop();
         // Check connection every 60 seconds 
         // plus some extra time depending on the uuid, so not all 
         // groups are updated at the same time, thus putting a huge load on the bridge
@@ -559,7 +559,7 @@ PlasmaComponents.ListItem {
     }
     
     function updateLoop() {
-        if(isPlasmoidExpanded())
+        if(plasmoid.expanded)
         {
             // Only update in background
             return;
@@ -571,4 +571,9 @@ PlasmaComponents.ListItem {
     ListModel {
         id: groupLightModel
     }
+    
+    Timer {
+        id: myTimer
+    }
+    
 }
