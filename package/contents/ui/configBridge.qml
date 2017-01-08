@@ -217,6 +217,7 @@ Item {
     }
     
     function authenticate() {
+        btnAuthenticate.enabled = false;
         lblStatusTitle.text = i18n("Trying to authenticate with your bridge ...");
         lblStatusText.text = i18n("Push the authenticate button on your Hue bridge within 60 seconds");
         rctStatus.color = infoColour;
@@ -229,6 +230,7 @@ Item {
     }
     
     function authenticateSuccess(token) {
+         btnAuthenticate.enabled = true;
         lblStatusTitle.text = i18n("Authenticated with your bridge");
         lblStatusText.text = i18n("Successfully authenticated, please apply the configuration");
         rctStatus.color = successColour;
@@ -237,6 +239,7 @@ Item {
     }
     
     function authenticateFail(message) {
+        btnAuthenticate.enabled = true;
         lblStatusTitle.text = i18n("Failed to authenticate with your bridge");
         lblStatusText.text = i18n("Make sure the bridge is reachable and the button clicked");
         rctStatus.color = errorColour;
