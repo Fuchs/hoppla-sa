@@ -25,7 +25,7 @@ ConfigModel {
 
     ConfigCategory {
          name: i18n("Bridge")
-         icon: "converseen"
+         icon: "/usr/share/plasma/plasmoids/ch.fuchsnet.plasma.hoppla-sa/contents/images/icon.svg"
          source: "configBridge.qml"
     }
 //     ConfigCategory {

@@ -4,7 +4,7 @@ Name[de]=Philips Hue Steuerung
 Comment=Philips Hue light control, stand alone
 Comment[de]=Philips Hue Lichtsteuerung, stand alone
 
-Icon=im-jabber
+Icon=/usr/share/plasma/plasmoids/ch.fuchsnet.plasma.hoppla-sa/contents/images/icon.svg
 Type=Service
 X-KDE-ServiceTypes=Plasma/Applet
 
