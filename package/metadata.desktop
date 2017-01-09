@@ -4,7 +4,6 @@ Name[de]=Hue Operation Plasmoid
 Comment=Philips Hue Lights Control
 Comment[de]=Philips Hue-Lichtsteuerung
 
-Icon=im-jabber
 Type=Service
 X-KDE-ServiceTypes=Plasma/Applet
 
