@@ -2,7 +2,11 @@ Most icons are created by Andrew Lake of the KDE VDG,
 licensed LGPL2 among the rest of this plasmoid, 
 see COPYING for details on that. 
 
-The group-{light,dark} and other-{light, dark} icons, 
+The kitchen-{light, dark} icon has been created by Christian Loosli,
+licensed LGPL2 among the rest of this plasmoid, 
+see COPYING for details on that. 
+
+The group-{light,dark}, recreation-{light,dark} and other-{light, dark} icons, 
 are taken from the breeze theme, licensed as followed: 
 
 
