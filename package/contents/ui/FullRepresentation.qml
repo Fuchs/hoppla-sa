@@ -322,6 +322,7 @@ FocusScope {
             checkHueConnection(updatedConnection, true);
         }
         if(fetchAll) {
+            addActions();
             getAll(groupModel, lightModel);
         }
     }
@@ -393,21 +394,29 @@ FocusScope {
         plasmoid.toolTipSubText = tooltip;
     }
     
+    /**
+     * Helper to add initial actions, later on also configured ones
+     */
+    function addActions() {
+        actionModel.clear();
+        actionModel.append( {
+            name: i18n("Switch all lights on"),
+            infoText: i18n("Switches all reachable lights on"),
+            icon: "im-jabber",
+            action: "allon"
+        })
+        actionModel.append( {
+             
+            name: i18n("Switch all lights off"),
+            infoText: i18n("Switches all reachable lights off"),
+            icon: "contrast",
+            action: "alloff"
+        })
+    }
+    
     
     ListModel {
         id: actionModel
-        ListElement {
-            name: "Switch all lights on"
-            infoText: "Switches all reachable lights on"
-            icon: "im-jabber"
-            action: "allon"
-        }
-        ListElement {
-            name: "Switch off all lights"
-            infoText: "Switches all reachable lights off"
-            icon: "contrast"
-            action: "alloff"
-        }
     }
     
     ListModel {
