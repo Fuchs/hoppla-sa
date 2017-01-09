@@ -38,6 +38,12 @@ FocusScope {
             right: parent.right
         }
         
+        PlasmaComponents.Label {
+            id: connectionType
+            text: "none"
+            visible: false;
+        }
+        
         PlasmaCore.Svg {
             id: lineSvg
             imagePath: "widgets/line"
@@ -285,7 +291,7 @@ FocusScope {
     
     Component.onCompleted: {
         initHueConfig();
-        reInit(true, true);
+        reInit(true, false);
         fullTimer.stop();
         // Check connection every 30 seconds
         fullTimer.interval = 30000;
@@ -354,26 +360,40 @@ FocusScope {
             hueUnauthenticated = false;
             reInit(false, false);
             plasmoid.toolTipSubText = i18n("Hue bridge not reachable");
+            connectionType.text = "none";
             return;
         }
         else if(connection === "unauth") {
             hueNotConnected = true;
             hueUnauthenticated = true;
-            reInit(false, false);          
+            reInit(false, false);
+            connectionType.text = "unauth";
             plasmoid.toolTipSubText = i18n("Not authenticated with Hue bridge");
             return;
         }
         else if(connection === "main") {
             hueNotConnected = false;
             hueUnauthenticated = false;
+            if(connectionType.text != "main") {
+                reInit(false, true)
+            }
+            else {
+                reInit(false, false)
+            }
+            connectionType.text = "main"
             reInit(false, false);
             setLightsTooltip(i18n("Main connection"));
         }
         else if(connection === "alt") {
             hueNotConnected = false;
             hueUnauthenticated = false;
-            // re-fetch everything on change to alt connection
-            reInit(false, false);
+            if(connectionType.text != "alt") {
+                reInit(false, true)
+            }
+            else {
+                reInit(false, false)
+            }
+            connectionType.text = "alt";
             setLightsTooltip(i18n("Alternative connection"));
         }
     }

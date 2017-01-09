@@ -602,27 +602,32 @@ function parseGroupsToModel(json, listModel, name) {
     
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
-        var myGroup = {
-            vuuid: groupName,
-            vname: cgroup.name,
-            vtype: cgroup.type,
-            vlights: cgroup.lights,
-            slights: "" + cgroup.lights,
-            vall_on: cgroup.state.all_on,
-            vany_on: cgroup.state.any_on,
-            vclass: cgroup.class,
-            von: cgroup.action.on,
-            vbri: cgroup.action.bri,
-            vhue: cgroup.action.hue,
-            vsat: cgroup.action.sat,
-            veffect: cgroup.action.effect,
-            vx: cgroup.action.xy[0],
-            vy: cgroup.action.xy[1],
-            vct: cgroup.action.ct,
-            valert: cgroup.action.alert,
-            vcolormode: cgroup.action.colormode,
-            vLastUpdated: getCurrentTime()
-        };
+        var myGroup = {};
+        myGroup.vuuid = groupName;
+        myGroup.vname = cgroup.name || i18n("Not available");
+        myGroup.vtype = cgroup.type || i18n("Not available");
+        myGroup.vlights = cgroup.lights || i18n("Not available");
+        myGroup.slights = "" + cgroup.lights || i18n("Not available");
+        myGroup.vall_on = cgroup.state.all_on || i18n("Not available");
+        myGroup.vany_on = cgroup.state.any_on || i18n("Not available");
+        myGroup.vclass = cgroup.class || i18n("Not available");
+        myGroup.von = cgroup.action.on || false;
+        myGroup.vbri = cgroup.action.bri || 0
+        myGroup.vhue = cgroup.action.hue || 0
+        myGroup.vsat = cgroup.action.sat || 0
+        myGroup.veffect = cgroup.action.effect || i18n("Not available");
+        if(cgroup.action.xy && cgroup.action.xy.length > 1) {
+            myGroup.vx = cgroup.action.xy[0] || i18n("Not available");
+            myGroup.vy = cgroup.action.xy[1]  || i18n("Not available");
+        }
+        else {
+            myGroup.vx = 0;
+            myGroup.xy = 0;
+        }
+        myGroup.vct = cgroup.action.ct  || 0;
+        myGroup.valert = cgroup.action.alert || i18n("Not available");
+        myGroup.vcolormode = cgroup.action.colormode  || "ct";
+        myGroup.vLastUpdated = getCurrentTime();
         
         listModel.append(myGroup);
     }
@@ -648,23 +653,29 @@ function parseGroupToObject(json, myObject, name) {
     }
     
     myObject.vuuid = name;
-    myObject.vname = cgroup.name;
-    myObject.vtype = cgroup.type;
-    myObject.vlights = cgroup.lights;
-    myObject.slights = "" + cgroup.lights;
-    myObject.vall_on = cgroup.state.all_on;
-    myObject.vany_on = cgroup.state.any_on;
-    myObject.vclass = cgroup.class;
-    myObject.von = cgroup.action.on;
-    myObject.vbri = cgroup.action.bri;
-    myObject.vhue = cgroup.action.hue;
-    myObject.vsat = cgroup.action.sat;
-    myObject.veffect = cgroup.action.effect;
-    myObject.vx = cgroup.action.xy[0];
-    myObject.vy = cgroup.action.xy[1];
-    myObject.vct = cgroup.action.ct;
-    myObject.valert = cgroup.action.alert;
-    myObject.vcolormode = cgroup.action.colormode;
+    myObject.vname = cgroup.name || i18n("Not available");
+    myObject.vtype = cgroup.type || i18n("Not available");
+    myObject.vlights = cgroup.lights || i18n("Not available");
+    myObject.slights = "" + cgroup.lights || i18n("Not available");
+    myObject.vall_on = cgroup.state.all_on || i18n("Not available");
+    myObject.vany_on = cgroup.state.any_on || i18n("Not available");
+    myObject.vclass = cgroup.class || i18n("Not available");
+    myObject.von = cgroup.action.on || false;
+    myObject.vbri = cgroup.action.bri || 0
+    myObject.vhue = cgroup.action.hue || 0
+    myObject.vsat = cgroup.action.sat || 0
+    myObject.veffect = cgroup.action.effect || i18n("Not available");
+    if(cgroup.action.xy && cgroup.action.xy.length > 1) {
+        myObject.vx = cgroup.action.xy[0] || i18n("Not available");
+        myObject.vy = cgroup.action.xy[1]  || i18n("Not available");
+    }
+    else {
+        myObject.vx = 0;
+        myObject.xy = 0;
+    }
+    myObject.vct = cgroup.action.ct  || 0;
+    myObject.valert = cgroup.action.alert || i18n("Not available");
+    myObject.vcolormode = cgroup.action.colormode  || "ct";
     myObject.vLastUpdated = getCurrentTime();
 }
 
@@ -689,29 +700,34 @@ function parseAllLightsToModel(json, listModel, name) {
     }
     for(var lightName in myLights) {
         var clight = myLights[lightName];
-        var myLight = {
-            vuuid: lightName,
-            vname: clight.name,
-            von: clight.state.on,
-            vbri: clight.state.bri,
-            vhue: clight.state.hue,
-            vsat: clight.state.sat,
-            veffect: clight.state.effect,
-            vx: clight.state.xy[0],
-            vy: clight.state.xy[1],
-            vct: clight.state.ct,
-            valert: clight.state.alert,
-            vcolormode: clight.state.colormode,
-            vreachable: clight.state.reachable,
-            vtype: clight.type,
-            vmanufacturername: clight.manufacturername,
-            vmodelid: clight.modelid,
-            vuniqueid: clight.uniqueid,
-            vswversion: clight.swversion,
-            vswconfigid: clight.swconfigid,
-            vproductid: clight.productid,
-            vLastUpdated: getCurrentTime()
-        };
+        var myLight = {}
+        myLight.vuuid = lightName;
+        myLight.vname = clight.name || i18n("Not available");
+        myLight.von = clight.state.on || false;
+        myLight.vbri = clight.state.bri || 0;
+        myLight.vhue = clight.state.hue || 0;
+        myLight.vsat = clight.state.sat || 0;
+        myLight.veffect = clight.state.effect || i18n("Not available");
+        if(clight.state.xy && clight.state.xy.length > 1) {
+            myLight.vx = clight.state.xy[0];
+            myLight.vy = clight.state.xy[1];
+        }
+        else {
+            myLight.vx = 0;
+            myLight.vy = 0;
+        }
+        myLight.vct = clight.state.ct || 0;
+        myLight.valert = clight.state.alert || i18n("Not available");
+        myLight.vcolormode = clight.state.colormode || "ct";
+        myLight.vreachable = clight.state.reachable || false;
+        myLight.vtype = clight.type || i18n("Not available");
+        myLight.vmanufacturername = clight.manufacturername || i18n("Not available");
+        myLight.vmodelid = clight.modelid || i18n("Not available");
+        myLight.vuniqueid = clight.uniqueid || i18n("Not available");
+        myLight.vswversion = clight.swversion || i18n("Not available");
+        myLight.vswconfigid = clight.swconfigid || i18n("Not available");
+        myLight.vproductid = clight.productid || i18n("Not available");
+        myLight.vLastUpdated = getCurrentTime();
         listModel.append(myLight);
     }
 }
@@ -734,29 +750,35 @@ function parseLightToModel(json, listModel, lightName) {
             }
         }
     }
-    var myLight = {
-        vuuid: lightName,
-        vname: clight.name,
-        von: clight.state.on,
-        vbri: clight.state.bri,
-        vhue: clight.state.hue,
-        vsat: clight.state.sat,
-        veffect: clight.state.effect,
-        vx: clight.state.xy[0],
-        vy: clight.state.xy[1],
-        vct: clight.state.ct,
-        valert: clight.state.alert,
-        vcolormode: clight.state.colormode,
-        vreachable: clight.state.reachable,
-        vtype: clight.type,
-        vmanufacturername: clight.manufacturername,
-        vmodelid: clight.modelid,
-        vuniqueid: clight.uniqueid,
-        vswversion: clight.swversion,
-        vswconfigid: clight.swconfigid,
-        vproductid: clight.productid,
-        vLastUpdated: getCurrentTime()
-    };
+    var myLight = {};
+    myLight.vuuid = lightName;
+    myLight.vname = clight.name || i18n("Not available");
+    myLight.von = clight.state.on || false;
+    myLight.vbri = clight.state.bri || 0;
+    myLight.vhue = clight.state.hue || 0;
+    myLight.vsat = clight.state.sat || 0;
+    myLight.veffect = clight.state.effect || i18n("Not available");
+    if(clight.state.xy && clight.state.xy.length > 1) {
+        myLight.vx = clight.state.xy[0];
+        myLight.vy = clight.state.xy[1];
+    }
+    else {
+        myLight.vx = 0;
+        myLight.vy = 0;
+    }
+    myLight.vct = clight.state.ct || 0;
+    myLight.valert = clight.state.alert || i18n("Not available");
+    myLight.vcolormode = clight.state.colormode || "ct";
+    myLight.vreachable = clight.state.reachable || false;
+    myLight.vtype = clight.type || i18n("Not available");
+    myLight.vmanufacturername = clight.manufacturername || i18n("Not available");
+    myLight.vmodelid = clight.modelid || i18n("Not available");
+    myLight.vuniqueid = clight.uniqueid || i18n("Not available");
+    myLight.vswversion = clight.swversion || i18n("Not available");
+    myLight.vswconfigid = clight.swconfigid || i18n("Not available");
+    myLight.vproductid = clight.productid || i18n("Not available");
+    myLight.vLastUpdated = getCurrentTime();
+
     listModel.append(myLight);
 }
 
@@ -779,25 +801,31 @@ function parseLightToObject(json, myObject, lightName) {
         }
     }
     myObject.vuuid = lightName;
-    myObject.vname = clight.name;
-    myObject.von = clight.state.on;
-    myObject.vbri = clight.state.bri;
-    myObject.vhue = clight.state.hue;
-    myObject.vsat = clight.state.sat;
-    myObject.veffect = clight.state.effect;
-    myObject.vx = clight.state.xy[0];
-    myObject.vy = clight.state.xy[1];
-    myObject.vct = clight.state.ct;
-    myObject.valert = clight.state.alert;
-    myObject.vcolormode = clight.state.colormode;
-    myObject.vreachable = clight.state.reachable;
-    myObject.vtype = clight.type;
-    myObject.vmanufacturername = clight.manufacturername;
-    myObject.vmodelid = clight.modelid;
-    myObject.vuniqueid = clight.uniqueid;
-    myObject.vswversion = clight.swversion;
-    myObject.vswconfigid = clight.swconfigid;
-    myObject.vproductid = clight.productid;
+    myObject.vname = clight.name || i18n("Not available");
+    myObject.von = clight.state.on || false;
+    myObject.vbri = clight.state.bri || 0;
+    myObject.vhue = clight.state.hue || 0;
+    myObject.vsat = clight.state.sat || 0;
+    myObject.veffect = clight.state.effect || i18n("Not available");
+    if(clight.state.xy && clight.state.xy.length > 1) {
+        myObject.vx = clight.state.xy[0];
+        myObject.vy = clight.state.xy[1];
+    }
+    else {
+        myObject.vx = 0;
+        myObject.vy = 0;
+    }
+    myObject.vct = clight.state.ct || 0;
+    myObject.valert = clight.state.alert || i18n("Not available");
+    myObject.vcolormode = clight.state.colormode || "ct";
+    myObject.vreachable = clight.state.reachable || false;
+    myObject.vtype = clight.type || i18n("Not available");
+    myObject.vmanufacturername = clight.manufacturername || i18n("Not available");
+    myObject.vmodelid = clight.modelid || i18n("Not available");
+    myObject.vuniqueid = clight.uniqueid || i18n("Not available");
+    myObject.vswversion = clight.swversion || i18n("Not available");
+    myObject.vswconfigid = clight.swconfigid || i18n("Not available");
+    myObject.vproductid = clight.productid || i18n("Not available");
     myObject.vLastUpdated = getCurrentTime();
 }
 
