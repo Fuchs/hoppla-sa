@@ -608,8 +608,8 @@ function parseGroupsToModel(json, listModel, name) {
         myGroup.vtype = cgroup.type || i18n("Not available");
         myGroup.vlights = cgroup.lights || i18n("Not available");
         myGroup.slights = "" + cgroup.lights || i18n("Not available");
-        myGroup.vall_on = cgroup.state.all_on || i18n("Not available");
-        myGroup.vany_on = cgroup.state.any_on || i18n("Not available");
+        myGroup.vall_on = cgroup.state.all_on || false;
+        myGroup.vany_on = cgroup.state.any_on || false;
         myGroup.vclass = cgroup.class || i18n("Not available");
         myGroup.von = cgroup.action.on || false;
         myGroup.vbri = cgroup.action.bri || 0
@@ -657,8 +657,8 @@ function parseGroupToObject(json, myObject, name) {
     myObject.vtype = cgroup.type || i18n("Not available");
     myObject.vlights = cgroup.lights || i18n("Not available");
     myObject.slights = "" + cgroup.lights || i18n("Not available");
-    myObject.vall_on = cgroup.state.all_on || i18n("Not available");
-    myObject.vany_on = cgroup.state.any_on || i18n("Not available");
+    myObject.vall_on = cgroup.state.all_on || false;
+    myObject.vany_on = cgroup.state.any_on || false;
     myObject.vclass = cgroup.class || i18n("Not available");
     myObject.von = cgroup.action.on || false;
     myObject.vbri = cgroup.action.bri || 0
