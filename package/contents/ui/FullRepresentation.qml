@@ -398,14 +398,14 @@ FocusScope {
     ListModel {
         id: actionModel
         ListElement {
-            name: i18n("Switch all lights on") 
-            infoText: i18n("Switches all reachable lights on")
+            name: "Switch all lights on"
+            infoText: "Switches all reachable lights on"
             icon: "im-jabber"
             action: "allon"
         }
         ListElement {
-            name: i18n("Switch off all lights")
-            infoText: i18n("Switches all reachable lights off")
+            name: "Switch off all lights"
+            infoText: "Switches all reachable lights off"
             icon: "contrast"
             action: "alloff"
         }
