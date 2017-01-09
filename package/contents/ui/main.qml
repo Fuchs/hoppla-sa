@@ -29,7 +29,7 @@ Item {
     property bool debug: true
     
     Plasmoid.toolTipMainText: i18n("Philips Hue lights")
-    Plasmoid.icon: Logic.icon()
+    Plasmoid.icon: "im-jabber"
     
     Plasmoid.compactRepresentation: CompactRepresentation { }
     Plasmoid.fullRepresentation: FullRepresentation { }

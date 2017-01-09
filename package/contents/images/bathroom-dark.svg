@@ -1,13 +1,165 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <defs id="defs3051">
-    <style type="text/css" id="current-color-scheme">
-      .ColorScheme-Text {
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg:svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="22"
+   height="22"
+   viewBox="0 0 21.999999 21.999999"
+   id="svg7888"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="philips-hue-room-bathroom.svg"
+   inkscape:export-filename="/home/jamboarder/Projects/KDE VDG/Phillips Hue Plasmoid/philips-hue-bulb-fill.png"
+   inkscape:export-xdpi="523.63635"
+   inkscape:export-ydpi="523.63635">
+  <svg:defs
+     id="defs7890">
+    <svg:linearGradient
+       id="linearGradient4178">
+      <svg:stop
+         id="stop4180"
+         offset="0"
+         style="stop-color:#3c3c3c;stop-opacity:0.24313726" />
+      <svg:stop
+         id="stop4182"
+         offset="1"
+         style="stop-color:#232629;stop-opacity:0.01176471" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient4172">
+      <svg:stop
+         id="stop4174"
+         offset="0"
+         style="stop-color:#252525;stop-opacity:0.24313726" />
+      <svg:stop
+         id="stop4176"
+         offset="1"
+         style="stop-color:#232629;stop-opacity:0.01176471" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient4165">
+      <svg:stop
+         id="stop4167"
+         offset="0"
+         style="stop-color:#1d2023;stop-opacity:0.24313726" />
+      <svg:stop
+         id="stop4169"
+         offset="1"
+         style="stop-color:#232629;stop-opacity:0.00392157" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient7348">
+      <svg:stop
+         style="stop-color:#232629;stop-opacity:0.20588236"
+         offset="0"
+         id="stop7350" />
+      <svg:stop
+         style="stop-color:#232629;stop-opacity:0.01176471"
+         offset="1"
+         id="stop7352" />
+    </svg:linearGradient>
+    <style
+       type="text/css"
+       id="current-color-scheme">
+        .ColorScheme-Text {
         color:#4d4d4d;
       }
-      </style>
-  </defs>
- <path style="fill:#4d4d4d;fill-opacity:1;stroke:none" 
-     d="M 12 4 L 11.292969 4.7070312 L 4 12 L 4.7070312 12.707031 L 5 12.414062 L 5 20 L 6 20 L 11 20 L 14 20 L 19 20 L 19 19 L 19 12.414062 L 19.292969 12.707031 L 20 12 L 17 9 L 17 6 L 14 6 L 12.707031 4.7070312 L 12 4 z M 12 5.4140625 L 18 11.414062 L 18 19 L 14 19 L 14 14 L 11 14 L 10 14 L 10 19 L 6 19 L 6 11.414062 L 12 5.4140625 z "
-     class="ColorScheme-Text"
-     />
-</svg>
+    </style>
+  </svg:defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="32"
+     inkscape:cx="12.000711"
+     inkscape:cy="11.676664"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4243"
+     showgrid="true"
+     units="px"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-midpoints="true"
+     inkscape:object-paths="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-nodes="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1365"
+     inkscape:window-height="1011"
+     inkscape:window-x="555"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:snap-global="true"
+     inkscape:snap-smooth-nodes="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid7896"
+       empspacing="4"
+       originx="0"
+       originy="0"
+       color="#0000ff"
+       opacity="0.12156863" />
+    <sodipodi:guide
+       position="-4.9999998,19.999999"
+       orientation="0,1"
+       id="guide8012" />
+    <sodipodi:guide
+       position="18.999999,5.9999997"
+       orientation="1,0"
+       id="guide8018" />
+    <sodipodi:guide
+       position="2.9999999,2.9999999"
+       orientation="0,1"
+       id="guide8022" />
+    <sodipodi:guide
+       position="2.9999999,5.9999997"
+       orientation="1,0"
+       id="guide8024" />
+    <sodipodi:guide
+       position="10.999999,0"
+       orientation="1,0"
+       id="guide4302" />
+  </sodipodi:namedview>
+  <svg:metadata
+     id="metadata7893">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </svg:metadata>
+  <svg:g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1030.3622)">
+    <svg:g
+       id="g7642"
+       transform="matrix(0.42207789,0,0,0.42207789,227.63636,597.49519)">
+      <svg:g
+         id="g4243"
+         transform="translate(-2.3692258,2.3690477)">
+        <svg:path
+           style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.24861881;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+           d="M 5.5742188 3 C 4.8512077 3.0261688 3.9577573 3.7006035 4.0019531 4.4960938 L 4.0019531 11 L 3 11 L 4.6621094 15.988281 C 4.9066867 16.576573 5.5177506 17.000042 6 17 L 7 17 L 7 18 L 8 18 L 8 17 L 11 17 L 14 17 L 14 18 L 15 18 L 15 17 L 16 17 C 16.541779 16.992403 17.154671 16.418632 17.314453 15.988281 L 19 11 L 5.0019531 11 L 5.0019531 4.9082031 C 5.0019531 4.3336706 5.2744731 4.1208671 5.5566406 4.1113281 C 6.1605244 4.0910684 6.5253906 4.75 6.5253906 4.75 L 6.015625 5.2597656 L 6.7226562 5.9667969 L 7.46875 5.2226562 L 8.7226562 3.9667969 L 8.015625 3.2597656 L 7.2695312 4.0058594 C 7.2695312 4.0058594 6.4958344 2.9667825 5.5742188 3 z M 8.9589844 4.6933594 L 8.3574219 5.4941406 L 9.1582031 6.09375 L 9.7578125 5.2949219 L 8.9589844 4.6933594 z M 8.0585938 5.7929688 L 7.2578125 6.3945312 L 7.859375 7.1933594 L 8.6582031 6.59375 L 8.0585938 5.7929688 z M 10.558594 5.8925781 L 9.9589844 6.6933594 L 10.757812 7.2949219 L 11.357422 6.4941406 L 10.558594 5.8925781 z M 12.158203 7.09375 L 11.558594 7.8925781 L 12.357422 8.4941406 L 12.958984 7.6933594 L 12.158203 7.09375 z M 9.2578125 7.3945312 L 8.4570312 7.9941406 L 9.0585938 8.7929688 L 9.859375 8.1933594 L 9.2578125 7.3945312 z M 10.457031 8.9941406 L 9.6582031 9.59375 L 10.257812 10.394531 L 11.058594 9.7929688 L 10.457031 8.9941406 z M 4.7519531 12 L 17.292969 12 L 16.513672 14.994141 C 16.30763 16.030089 15.988118 16 15 16 L 11 16 L 7 16 C 5.9453243 16.110416 5.9626699 15.898611 5.6191406 14.972656 L 4.7519531 12 z "
+           transform="matrix(2.3692307,0,0,2.3692307,-536.95388,1023.1929)"
+           id="rect4154" />
+      </svg:g>
+    </svg:g>
+  </svg:g>
+</svg:svg>

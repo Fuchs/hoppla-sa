@@ -1,11 +1,9 @@
-Most of these icons are taken from the breeze icons, 
-licensed as below. 
-
-Some are created by Andrew Lake of the KDE VDG, 
+Most icons are created by Andrew Lake of the KDE VDG, 
 licensed LGPL2 among the rest of this plasmoid, 
 see COPYING for details on that. 
 
-Breeze Icons:
+The group-{light,dark} and other-{light, dark} icons, 
+are taken from the breeze theme, licensed as followed: 
 
 
 The Breeze Icon Theme in icons/

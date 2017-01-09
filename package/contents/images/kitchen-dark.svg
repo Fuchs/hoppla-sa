@@ -1,14 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-  <defs id="defs3051">
-    <style type="text/css" id="current-color-scheme">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 22 22"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="kitchen-dark.svg">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1360"
+     inkscape:window-height="708"
+     id="namedview8"
+     showgrid="true"
+     showguides="false"
+     inkscape:zoom="22.627417"
+     inkscape:cx="6.509065"
+     inkscape:cy="11.501356"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4142" />
+  </sodipodi:namedview>
+  <defs
+     id="defs3051">
+    <style
+       type="text/css"
+       id="current-color-scheme">
       .ColorScheme-Text {
-        color:#4d4d4d;
+        color:#4d4d4d
       }
       </style>
   </defs>
- <path 
-    style="fill:#4d4d4d;fill-opacity:1;stroke:none" 
-    d="M 8 3 L 8 4 L 8 5 L 9 5 L 9 4 L 13 4 L 13 5 L 14 5 L 14 4 L 14 3 L 8 3 z M 4 6 L 4 7 L 18 7 L 18 6 L 4 6 z M 6 8 L 6 19 L 7 19 L 16 19 L 16 18 L 16 8 L 15 8 L 15 18 L 7 18 L 7 8 L 6 8 z "
-	class="ColorScheme-Text"
-    />  
+  <rect
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#4d4d4d;stroke-width:0.88776511;stroke-opacity:1"
+     id="rect4150"
+     width="2.2515664"
+     height="2.6475098"
+     x="2.9746492"
+     y="8.7116337" />
+  <rect
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#4d4d4d;stroke-width:0.88776511;stroke-opacity:1"
+     id="rect4150-7"
+     width="2.2515664"
+     height="2.6475098"
+     x="16.766487"
+     y="8.7062483" />
+  <rect
+     style="opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:#4d4d4d;stroke-width:0.95456564;stroke-opacity:1"
+     id="rect4182"
+     width="11.770211"
+     height="0.49974397"
+     x="5.0778117"
+     y="5.8342834" />
+  <rect
+     style="opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:#4d4d4d;stroke-width:0.53408736;stroke-opacity:1"
+     id="rect4182-5"
+     width="1.4973756"
+     height="1.2297421"
+     x="10.422544"
+     y="3.9969769" />
+  <rect
+     style="opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:#4d4d4d;stroke-width:0.94382435;stroke-opacity:1"
+     id="rect4201"
+     width="11.664996"
+     height="8.9347754"
+     x="5.1276436"
+     y="8.7469759" />
 </svg>

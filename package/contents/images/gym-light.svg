@@ -1,14 +1,165 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-  <defs id="defs3051">
-    <style type="text/css" id="current-color-scheme">
-      .ColorScheme-Text {
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg:svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="22"
+   height="22"
+   viewBox="0 0 21.999999 21.999999"
+   id="svg7888"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="philips-hue-room-gym.svg"
+   inkscape:export-filename="/home/jamboarder/Projects/KDE VDG/Phillips Hue Plasmoid/philips-hue-bulb-fill.png"
+   inkscape:export-xdpi="523.63635"
+   inkscape:export-ydpi="523.63635">
+  <svg:defs
+     id="defs7890">
+    <svg:linearGradient
+       id="linearGradient4178">
+      <svg:stop
+         id="stop4180"
+         offset="0"
+         style="stop-color:#3c3c3c;stop-opacity:0.24313726" />
+      <svg:stop
+         id="stop4182"
+         offset="1"
+         style="stop-color:#232629;stop-opacity:0.01176471" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient4172">
+      <svg:stop
+         id="stop4174"
+         offset="0"
+         style="stop-color:#252525;stop-opacity:0.24313726" />
+      <svg:stop
+         id="stop4176"
+         offset="1"
+         style="stop-color:#232629;stop-opacity:0.01176471" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient4165">
+      <svg:stop
+         id="stop4167"
+         offset="0"
+         style="stop-color:#1d2023;stop-opacity:0.24313726" />
+      <svg:stop
+         id="stop4169"
+         offset="1"
+         style="stop-color:#232629;stop-opacity:0.00392157" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient7348">
+      <svg:stop
+         style="stop-color:#232629;stop-opacity:0.20588236"
+         offset="0"
+         id="stop7350" />
+      <svg:stop
+         style="stop-color:#232629;stop-opacity:0.01176471"
+         offset="1"
+         id="stop7352" />
+    </svg:linearGradient>
+    <style
+       type="text/css"
+       id="current-color-scheme">
+        .ColorScheme-Text {
         color:#f2f2f2;
       }
-      </style>
-  </defs>
- <path 
-    style="fill:#f2f2f2;fill-opacity:1;stroke:none" 
-    d="M 15.978516 3 C 14.465022 3.4377241 12.748442 3.6693848 11 3.671875 C 9.251603 3.6707433 7.5343535 3.4404299 6.0195312 3.0039062 C 6.0416342 3.6933546 6.0966507 4.3493587 6.15625 5 L 6 5 C 6 4 5 4 5 4 L 4 4 L 3 4 L 3 6 L 3.0078125 6 C 3.0072569 6.0337531 3 6.0657146 3 6.0996094 C 3 9.812041 5.506106 12.909543 8.9238281 13.820312 C 9.264788 14.22506 9.624017 14.538585 10 14.736328 L 10 17 L 9 17 L 9 18 L 8 18 L 8 19 L 14 19 L 14 18 L 13 18 L 13 17 L 12 17 L 12 14.736328 C 12.375468 14.53846 12.733706 14.224629 13.074219 13.820312 C 16.492875 12.91016 19 9.812702 19 6.0996094 C 19 6.0657146 18.992743 6.0337531 18.992188 6 L 19 6 L 19 4 L 18 4 L 17 4 L 16.984375 4 C 16.984375 4 16.278145 4.0051 16 4.9570312 L 16 5 L 15.984375 5 L 15.841797 5 C 15.901507 4.3481803 15.956448 3.6907471 15.978516 3 z M 4.09375 5 L 5 5 C 5.26795 6 6 6 6 6 L 6.2636719 6 C 6.5888438 8.6160501 7.2011571 10.849622 8.0136719 12.427734 C 5.6395546 11.310166 4 8.906602 4 6.0996094 C 4 5.7241857 4.0373785 5.3591067 4.09375 5 z M 11 5 L 11.619141 6.3164062 L 13 6.5273438 L 12 7.5527344 L 12.236328 9 L 11 8.3164062 L 9.7636719 9 L 10 7.5527344 L 9 6.5273438 L 10.380859 6.3164062 L 11 5 z M 17 5 L 17.90625 5 C 17.962621 5.3591067 18 5.7241857 18 6.0996094 C 18 8.908793 16.357592 11.313268 13.980469 12.429688 C 14.793939 10.851297 15.408955 8.6180147 15.734375 6 L 16 6 C 16 6 17 6 17 5 z "
-    class="ColorScheme-Text"
-    />  
-</svg>
+    </style>
+  </svg:defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="16"
+     inkscape:cx="22.403335"
+     inkscape:cy="0.27971523"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4243"
+     showgrid="true"
+     units="px"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-midpoints="true"
+     inkscape:object-paths="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-nodes="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1365"
+     inkscape:window-height="1011"
+     inkscape:window-x="555"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:snap-global="true"
+     inkscape:snap-smooth-nodes="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid7896"
+       empspacing="4"
+       originx="0"
+       originy="0"
+       color="#0000ff"
+       opacity="0.12156863" />
+    <sodipodi:guide
+       position="-4.9999998,19.999999"
+       orientation="0,1"
+       id="guide8012" />
+    <sodipodi:guide
+       position="18.999999,5.9999997"
+       orientation="1,0"
+       id="guide8018" />
+    <sodipodi:guide
+       position="2.9999999,2.9999999"
+       orientation="0,1"
+       id="guide8022" />
+    <sodipodi:guide
+       position="2.9999999,5.9999997"
+       orientation="1,0"
+       id="guide8024" />
+    <sodipodi:guide
+       position="10.999999,0"
+       orientation="1,0"
+       id="guide4302" />
+  </sodipodi:namedview>
+  <svg:metadata
+     id="metadata7893">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </svg:metadata>
+  <svg:g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1030.3622)">
+    <svg:g
+       id="g7642"
+       transform="matrix(0.42207789,0,0,0.42207789,227.63636,597.49519)">
+      <svg:g
+         id="g4243"
+         transform="translate(-2.3692258,2.3690477)">
+        <svg:path
+           style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#f2f2f2;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1, 1;stroke-dashoffset:0;stroke-opacity:0.24861881;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+           d="M 5 5 L 5 7 L 4 7 L 4 9 L 3 9 L 3 12 L 4 12 L 4 14 L 5 14 L 5 16 L 7 16 L 7 12 L 15 12 L 15 16 L 17 16 L 17 14 L 18 14 L 18 12 L 19 12 L 19 9 L 18 9 L 18 7 L 17 7 L 17 5 L 15 5 L 15 9 L 7 9 L 7 5 L 5 5 z M 7 10 L 15 10 L 15 11 L 7 11 L 7 10 z "
+           transform="matrix(2.3692307,0,0,2.3692307,-536.95388,1023.1929)"
+           id="rect4154" />
+      </svg:g>
+    </svg:g>
+  </svg:g>
+</svg:svg>
