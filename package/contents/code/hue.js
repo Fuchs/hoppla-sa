@@ -44,6 +44,14 @@ function getHueConfigured() {
     return true;
 }
 
+function getAll(groupModel, lightModel) {
+    if(noConnection) {
+        return;
+    }
+    var myUrl = "";
+    getJsonFromHue(myUrl, parseAll, baseFail, groupModel, lightModel);
+}
+
 /**
  * Get all lights from the hue bridge and
  * fills them into a ListModel
@@ -457,7 +465,7 @@ function checkHueConnection (callback, enforce) {
     request.send();
 }
 
-function getJsonFromHue(getUrl, successCallback, failureCallback, object, name) {
+function getJsonFromHue(getUrl, successCallback, failureCallback, object, object2) {
     var request = getRequest(getUrl, 'GET');
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -480,7 +488,7 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, object, name) 
                     }
                     
                     var json = altRequest.responseText;
-                    successCallback(json, object, name);
+                    successCallback(json, object, object2);
                     noConnection = false;
                 }
                 altRequest.send();
@@ -492,7 +500,7 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, object, name) 
             }
         }
         var json = request.responseText;
-        successCallback(json, object, name);
+        successCallback(json, object, object2);
         noConnection = false;
     }
     request.send();
@@ -575,6 +583,104 @@ function baseFail (request) {
     }
     if(request.responseText) {
         debugPrint("Response: " + request.responseText);
+    }
+}
+
+function parseAll(json, groupModel, lightModel) {
+    // Delete current list, even in case of errors 
+    // we do not want a cached one
+    groupModel.clear();
+    lightModel.clear();
+    try {
+        var myResult = JSON.parse(json);
+    }
+    catch(e) {
+        debugPrint("Failed to parse json: " + json);
+        return;
+    }
+    if(myResult[0]) {
+        if(myResult[0].error) {
+            if(myResult[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myResult[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
+    for(var resultName in myResult) {
+        if(resultName === "groups") {
+            var myGroups = myResult[resultName];
+            for(var groupName in myGroups) {
+                var cgroup = myGroups[groupName];
+                var myGroup = {};
+                myGroup.vuuid = groupName;
+                myGroup.vname = cgroup.name || i18n("Not available");
+                myGroup.vtype = cgroup.type || i18n("Not available");
+                myGroup.vlights = cgroup.lights || i18n("Not available");
+                myGroup.slights = "" + cgroup.lights || i18n("Not available");
+                myGroup.vall_on = cgroup.state.all_on || false;
+                myGroup.vany_on = cgroup.state.any_on || false;
+                myGroup.vclass = cgroup.class || i18n("Not available");
+                myGroup.von = cgroup.action.on || false;
+                myGroup.vbri = cgroup.action.bri || 0
+                myGroup.vhue = cgroup.action.hue || 0
+                myGroup.vsat = cgroup.action.sat || 0
+                myGroup.veffect = cgroup.action.effect || i18n("Not available");
+                if(cgroup.action.xy && cgroup.action.xy.length > 1) {
+                    myGroup.vx = cgroup.action.xy[0] || i18n("Not available");
+                    myGroup.vy = cgroup.action.xy[1]  || i18n("Not available");
+                }
+                else {
+                    myGroup.vx = 0;
+                    myGroup.xy = 0;
+                }
+                myGroup.vct = cgroup.action.ct  || 0;
+                myGroup.valert = cgroup.action.alert || i18n("Not available");
+                myGroup.vcolormode = cgroup.action.colormode  || "ct";
+                myGroup.vLastUpdated = getCurrentTime();
+                
+                groupModel.append(myGroup);
+            }
+        }
+        else if (resultName === "lights") {
+            var myLights = myResult[resultName];
+            for(var lightName in myLights) {
+                var clight = myLights[lightName];
+                var myLight = {}
+                myLight.vuuid = lightName;
+                myLight.vname = clight.name || i18n("Not available");
+                myLight.von = clight.state.on || false;
+                myLight.vbri = clight.state.bri || 0;
+                myLight.vhue = clight.state.hue || 0;
+                myLight.vsat = clight.state.sat || 0;
+                myLight.veffect = clight.state.effect || i18n("Not available");
+                if(clight.state.xy && clight.state.xy.length > 1) {
+                    myLight.vx = clight.state.xy[0];
+                    myLight.vy = clight.state.xy[1];
+                }
+                else {
+                    myLight.vx = 0;
+                    myLight.vy = 0;
+                }
+                myLight.vct = clight.state.ct || 0;
+                myLight.valert = clight.state.alert || i18n("Not available");
+                myLight.vcolormode = clight.state.colormode || "ct";
+                myLight.vreachable = clight.state.reachable || false;
+                myLight.vtype = clight.type || i18n("Not available");
+                myLight.vmanufacturername = clight.manufacturername || i18n("Not available");
+                myLight.vmodelid = clight.modelid || i18n("Not available");
+                myLight.vuniqueid = clight.uniqueid || i18n("Not available");
+                myLight.vswversion = clight.swversion || i18n("Not available");
+                myLight.vswconfigid = clight.swconfigid || i18n("Not available");
+                myLight.vproductid = clight.productid || i18n("Not available");
+                myLight.vLastUpdated = getCurrentTime();
+                lightModel.append(myLight);
+            }
+        }
+        
+        //TODO: config, schedules, scenes, rules, sensors once we support them
     }
 }
 

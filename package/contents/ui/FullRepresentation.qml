@@ -322,8 +322,7 @@ FocusScope {
             checkHueConnection(updatedConnection, true);
         }
         if(fetchAll) {
-            getGroups(groupModel);
-            getLights(lightModel);
+            getAll(groupModel, lightModel);
         }
     }
     
