@@ -1,13 +1,11 @@
 # Nice to have features for next release (1.0)
 
 * Auto-discover Hue bridge (ssdp discovery needs to be implemented)
-* Provide better dark and bright icons for bulbs and group types
-* Nice loading overlay for plasmoid
+* Nice loading overlay for plasmoid for reInit (initial fetch, forced update)
 
 # Possible future features
 
 * Scenes based on image files
 * Manage actions: some sort of scripting language
-* Better colour management
 * Read out properties of lamps, adapt UI (colour, light, possibilities ...) accordingly
-* Manage lights, groups and schedules
+* Manage lights, groups and schedules in the config dialogue
