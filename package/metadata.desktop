@@ -4,7 +4,7 @@ Name[de]=Hue Operation Plasmoid
 Comment=Philips Hue Lights Control
 Comment[de]=Philips Hue-Lichtsteuerung
 
-Icon=/usr/share/plasma/plasmoids/ch.fuchsnet.plasma.hoppla-sa/contents/images/icon.svg
+Icon=im-jabber
 Type=Service
 X-KDE-ServiceTypes=Plasma/Applet
 
