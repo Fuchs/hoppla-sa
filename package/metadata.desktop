@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Philips Hue Control 
-Name[de]=Philips Hue Steuerung
-Comment=Philips Hue light control, stand alone
-Comment[de]=Philips Hue Lichtsteuerung, stand alone
+Name=Hue Operation Plasmoid
+Name[de]=Hue Operation Plasmoid
+Comment=Philips Hue Lights Control
+Comment[de]=Philips Hue-Lichtsteuerung
 
 Icon=/usr/share/plasma/plasmoids/ch.fuchsnet.plasma.hoppla-sa/contents/images/icon.svg
 Type=Service
@@ -18,6 +18,6 @@ X-KDE-PluginInfo-Name=ch.fuchsnet.plasma.hoppla-sa
 X-KDE-PluginInfo-Category=System Information
 X-KDE-PluginInfo-Author=Christian Loosli
 X-KDE-PluginInfo-Email=develop@fuchsnet.ch
-X-KDE-PluginInfo-Version=0.1.0
-X-KDE-PluginInfo-Website=
+X-KDE-PluginInfo-Version=0.9.0
+X-KDE-PluginInfo-Website=https://github.com/Fuchs/hoppla-sa
 X-KDE-PluginInfo-License=LGPL
