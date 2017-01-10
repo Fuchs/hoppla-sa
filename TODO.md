@@ -6,5 +6,4 @@
 
 * Scenes based on image files
 * Manage actions: some sort of scripting language
-* Read out properties of lamps, adapt UI (colour, light, possibilities ...) accordingly
 * Manage lights, groups and schedules in the config dialogue
