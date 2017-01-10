@@ -1,7 +1,6 @@
 # Nice to have features for next release (1.0)
 
 * Auto-discover Hue bridge (ssdp discovery needs to be implemented)
-* Nice loading overlay for plasmoid for reInit (initial fetch, forced update)
 
 # Possible future features
 
