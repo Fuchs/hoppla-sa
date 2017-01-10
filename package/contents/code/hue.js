@@ -772,6 +772,13 @@ function parseGroupsToModel(json, listModel, name) {
             myGroup.vHasColour = false;
         }
         
+        if(cgroup.action.ct) {
+            myGroup.vHasTemperature = true;
+        }
+        else {
+             myGroup.vHasTemperature = false;
+        }
+        
         listModel.append(myGroup);
     }
 }
@@ -817,6 +824,11 @@ function parseGroupToObject(json, myObject, name) {
         myObject.xy = 0;
     }
     
+    myObject.vct = cgroup.action.ct  || 0;
+    myObject.valert = cgroup.action.alert || i18n("Not available");
+    myObject.vcolormode = cgroup.action.colormode  || "ct";
+    myObject.vLastUpdated = getCurrentTime();
+
     if(cgroup.action.hue || cgroup.action.sat || cgroup.action.xy) {
         myObject.vHasColour = true;
     }
@@ -824,10 +836,13 @@ function parseGroupToObject(json, myObject, name) {
         myObject.vHasColour = false;
     }
     
-    myObject.vct = cgroup.action.ct  || 0;
-    myObject.valert = cgroup.action.alert || i18n("Not available");
-    myObject.vcolormode = cgroup.action.colormode  || "ct";
-    myObject.vLastUpdated = getCurrentTime();
+    if(cgroup.action.ct) {
+        myObject.vHasTemperature = true;
+    }
+    else {
+        myObject.vHasTemperature = false;
+    }
+    
 }
 
 function parseAllLightsToModel(json, listModel, name) {
@@ -887,6 +902,14 @@ function parseAllLightsToModel(json, listModel, name) {
         myLight.vswconfigid = clight.swconfigid || i18n("Not available");
         myLight.vproductid = clight.productid || i18n("Not available");
         myLight.vLastUpdated = getCurrentTime();
+        
+        if(clight.state.ct){
+            myLight.vHasTemperature = true;
+        }
+        else {
+            myLight.vHasTemperature = false;
+        }
+        
         listModel.append(myLight);
     }
 }
@@ -926,14 +949,6 @@ function parseLightToModel(json, listModel, lightName) {
         myLight.vy = 0;
     }
     
-            
-    if(clight.state.hue || clight.state.sat || clight.state.xy) {
-        myLight.vHasColour = true;
-    }
-    else {
-        myLight.vHasColour = false;
-    }
-    
     myLight.vct = clight.state.ct || 0;
     myLight.valert = clight.state.alert || i18n("Not available");
     myLight.vcolormode = clight.state.colormode || "ct";
@@ -946,6 +961,20 @@ function parseLightToModel(json, listModel, lightName) {
     myLight.vswconfigid = clight.swconfigid || i18n("Not available");
     myLight.vproductid = clight.productid || i18n("Not available");
     myLight.vLastUpdated = getCurrentTime();
+    
+    if(clight.state.hue || clight.state.sat || clight.state.xy) {
+        myLight.vHasColour = true;
+    }
+    else {
+        myLight.vHasColour = false;
+    }
+    
+    if(clight.state.ct){
+        myLight.vHasTemperature = true;
+    }
+    else {
+        myLight.vHasTemperature = false;
+    }
 
     listModel.append(myLight);
 }
@@ -984,14 +1013,6 @@ function parseLightToObject(json, myObject, lightName) {
         myObject.vy = 0;
     }
     
-            
-    if(clight.state.hue || clight.state.sat || clight.state.xy) {
-        myObject.vHasColour = true;
-    }
-    else {
-        myObject.vHasColour = false;
-    }
-    
     myObject.vct = clight.state.ct || 0;
     myObject.valert = clight.state.alert || i18n("Not available");
     myObject.vcolormode = clight.state.colormode || "ct";
@@ -1004,6 +1025,20 @@ function parseLightToObject(json, myObject, lightName) {
     myObject.vswconfigid = clight.swconfigid || i18n("Not available");
     myObject.vproductid = clight.productid || i18n("Not available");
     myObject.vLastUpdated = getCurrentTime();
+    
+    if(clight.state.hue || clight.state.sat || clight.state.xy) {
+        myObject.vHasColour = true;
+    }
+    else {
+        myObject.vHasColour = false;
+    }
+
+    if(clight.state.ct){
+        myObject.vHasTemperature = true;
+    }
+    else {
+        myObject.vHasTemperature = false;
+    }
 }
 
 function getCurrentTime() {
