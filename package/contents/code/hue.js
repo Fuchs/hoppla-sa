@@ -735,6 +735,13 @@ function parseGroupsToModel(json, listModel, name) {
         myGroup.vcolormode = cgroup.action.colormode  || "ct";
         myGroup.vLastUpdated = getCurrentTime();
         
+        if(cgroup.action.hue || cgroup.action.sat || cgroup.action.xy) {
+            myGroup.vHasColour = true;
+        }
+        else {
+            myGroup.vHasColour = false;
+        }
+        
         listModel.append(myGroup);
     }
 }
@@ -779,6 +786,14 @@ function parseGroupToObject(json, myObject, name) {
         myObject.vx = 0;
         myObject.xy = 0;
     }
+    
+    if(cgroup.action.hue || cgroup.action.sat || cgroup.action.xy) {
+        myObject.vHasColour = true;
+    }
+    else {
+        myObject.vHasColour = false;
+    }
+    
     myObject.vct = cgroup.action.ct  || 0;
     myObject.valert = cgroup.action.alert || i18n("Not available");
     myObject.vcolormode = cgroup.action.colormode  || "ct";
@@ -822,6 +837,14 @@ function parseAllLightsToModel(json, listModel, name) {
             myLight.vx = 0;
             myLight.vy = 0;
         }
+        
+        if(clight.state.hue || clight.state.sat || clight.state.xy) {
+            myLight.vHasColour = true;
+        }
+        else {
+            myLight.vHasColour = false;
+        }
+        
         myLight.vct = clight.state.ct || 0;
         myLight.valert = clight.state.alert || i18n("Not available");
         myLight.vcolormode = clight.state.colormode || "ct";
@@ -872,6 +895,15 @@ function parseLightToModel(json, listModel, lightName) {
         myLight.vx = 0;
         myLight.vy = 0;
     }
+    
+            
+    if(clight.state.hue || clight.state.sat || clight.state.xy) {
+        myLight.vHasColour = true;
+    }
+    else {
+        myLight.vHasColour = false;
+    }
+    
     myLight.vct = clight.state.ct || 0;
     myLight.valert = clight.state.alert || i18n("Not available");
     myLight.vcolormode = clight.state.colormode || "ct";
@@ -921,6 +953,15 @@ function parseLightToObject(json, myObject, lightName) {
         myObject.vx = 0;
         myObject.vy = 0;
     }
+    
+            
+    if(clight.state.hue || clight.state.sat || clight.state.xy) {
+        myObject.vHasColour = true;
+    }
+    else {
+        myObject.vHasColour = false;
+    }
+    
     myObject.vct = clight.state.ct || 0;
     myObject.valert = clight.state.alert || i18n("Not available");
     myObject.vcolormode = clight.state.colormode || "ct";

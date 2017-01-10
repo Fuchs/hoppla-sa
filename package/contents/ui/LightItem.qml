@@ -237,6 +237,7 @@ PlasmaComponents.ListItem {
             PlasmaComponents.TabButton {
                 id: lightColoursTab
                 iconSource: "color-management"
+                visible: vHasColour
             }
             
             PlasmaComponents.TabButton {

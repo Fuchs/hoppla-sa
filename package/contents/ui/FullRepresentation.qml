@@ -366,11 +366,13 @@ FocusScope {
         else if(connection === "main") {
             hueNotConnected = false;
             hueUnauthenticated = false;
+            reInit(false, false);
             setLightsTooltip(i18n("Main connection"));
         }
         else if(connection === "alt") {
             hueNotConnected = false;
             hueUnauthenticated = false;
+            reInit(false, false);
             setLightsTooltip(i18n("Alternative connection"));
         }
     }
