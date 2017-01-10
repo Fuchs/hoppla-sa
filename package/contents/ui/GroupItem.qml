@@ -244,6 +244,7 @@ PlasmaComponents.ListItem {
             PlasmaComponents.TabButton {
                 id: groupWhitesTab
                 iconSource: "color-picker-white"
+                visible: vHasTemperature
             }
             
             PlasmaComponents.TabButton {

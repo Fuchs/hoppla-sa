@@ -636,6 +636,21 @@ function parseAll(json, groupModel, lightModel) {
                     myGroup.vx = 0;
                     myGroup.xy = 0;
                 }
+                
+                if(cgroup.action.hue || cgroup.action.sat || cgroup.action.xy) {
+                    myGroup.vHasColour = true;
+                }
+                else {
+                    myGroup.vHasColour = false;
+                }
+                
+                if(cgroup.action.ct) {
+                    myGroup.vHasTemperature = true;
+                }
+                else {
+                    myGroup.vHasTemperature = false;
+                }
+                
                 myGroup.vct = cgroup.action.ct  || 0;
                 myGroup.valert = cgroup.action.alert || i18n("Not available");
                 myGroup.vcolormode = cgroup.action.colormode  || "ct";
@@ -664,6 +679,21 @@ function parseAll(json, groupModel, lightModel) {
                     myLight.vx = 0;
                     myLight.vy = 0;
                 }
+                
+                if(clight.state.hue || clight.state.sat || clight.state.xy) {
+                    myLight.vHasColour = true;
+                }
+                else {
+                    myLight.vHasColour = false;
+                }
+                
+                if(clight.state.ct){
+                    myLight.vHasTemperature = true;
+                }
+                else {
+                    myLight.vHasTemperature = false;
+                }
+        
                 myLight.vct = clight.state.ct || 0;
                 myLight.valert = clight.state.alert || i18n("Not available");
                 myLight.vcolormode = clight.state.colormode || "ct";
