@@ -44,12 +44,12 @@ function getHueConfigured() {
     return true;
 }
 
-function getAll(groupModel, lightModel) {
+function getAll(groupModel, lightModel, doneCallback) {
     if(noConnection) {
         return;
     }
     var myUrl = "";
-    getJsonFromHue(myUrl, parseAll, baseFail, groupModel, lightModel);
+    getJsonFromHue(myUrl, parseAll, baseFail, doneCallback, groupModel, lightModel);
 }
 
 /**
@@ -63,7 +63,7 @@ function getLights(myModel) {
         return;
     }
     var myUrl = "lights";
-    getJsonFromHue(myUrl, parseAllLightsToModel, baseFail, myModel, "");
+    getJsonFromHue(myUrl, parseAllLightsToModel, baseFail, baseDone, myModel, "");
 }
 
 /**
@@ -77,7 +77,7 @@ function getLight(myModel, lightId) {
         return;
     }
     var myUrl = "lights/" + lightId;
-    getJsonFromHue(myUrl, parseLightToModel, baseFail, myModel, lightId);
+    getJsonFromHue(myUrl, parseLightToModel, baseFail, baseDone, myModel, lightId);
 }
 
 /**
@@ -90,7 +90,7 @@ function updateLight(myLight) {
         return;
     }
     var myUrl = "lights/" + myLight.vuuid;
-    getJsonFromHue(myUrl, parseLightToObject, baseFail, myLight, myLight.vuuid);
+    getJsonFromHue(myUrl, parseLightToObject, baseFail, baseDone, myLight, myLight.vuuid);
 }
 
 /**
@@ -104,7 +104,7 @@ function getGroups(myModel) {
         return;
     }
     var myUrl = "groups";
-    getJsonFromHue(myUrl, parseGroupsToModel, baseFail, myModel, "");
+    getJsonFromHue(myUrl, parseGroupsToModel, baseFail, baseDone, myModel, "");
 }
 
 
@@ -138,7 +138,7 @@ function updateGroup(myGroup) {
         return;
     }
     var myUrl = "groups/" + myGroup.vuuid;
-    getJsonFromHue(myUrl, parseGroupToObject, baseFail, myGroup, myGroup.vuuid);
+    getJsonFromHue(myUrl, parseGroupToObject, baseFail, baseDone, myGroup, myGroup.vuuid);
 }
 
 // SWITCH
@@ -152,7 +152,7 @@ function updateGroup(myGroup) {
 function switchLight(lightId, on) {
     var body = on ? '{"on":true}' : '{"on":false}';
     var myUrl = "lights/" + lightId + "/state";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 /**
@@ -164,7 +164,7 @@ function switchLight(lightId, on) {
 function switchGroup(groupId, on) {
     var body = on ? '{"on":true}' : '{"on":false}';
     var myUrl = "groups/" + groupId + "/action";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 // GROUP SETTER
@@ -178,7 +178,7 @@ function switchGroup(groupId, on) {
 function setGroupBrightness(groupId, brightness) {
     var body = '{"bri":' + brightness + '}';
     var myUrl = "groups/" + groupId + "/action";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 /**
@@ -192,7 +192,7 @@ function setGroupBrightness(groupId, brightness) {
 function setGroupColourTemp(groupId, ct) {
     var body = '{"ct":' + ct + ',"colormode": "ct"}';
     var myUrl = "groups/" + groupId + "/action";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 /**
@@ -207,7 +207,7 @@ function setGroupColourTemp(groupId, ct) {
 function setGroupColourHS(groupId, hue, sat) {
     var body = '{"hue":' + hue + ',"sat":' + sat + ',"colormode": "hs"}';
     var myUrl = "groups/" + groupId + "/action";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 // LIGHT SETTER
@@ -221,7 +221,7 @@ function setGroupColourHS(groupId, hue, sat) {
 function setLightBrightess(lightId, brightness) {
     var body = '{"bri":' + brightness + '}';
     var myUrl = "lights/" + lightId + "/state";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 /**
@@ -235,7 +235,7 @@ function setLightBrightess(lightId, brightness) {
 function setLightColourTemp(lightId, ct) {
     var body = '{"ct":' + ct + '}';
     var myUrl = "lights/" + lightId + "/state";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 /**
@@ -250,7 +250,7 @@ function setLightColourTemp(lightId, ct) {
 function setLightColourHS(lightId, hue, sat) {
     var body = '{"hue":' + hue + ',"sat":' + sat + '}';
     var myUrl = "lights/" + lightId + "/state";
-    putJsonToHue(myUrl, body, baseSuccess, baseFail);
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
 // Authenticate
@@ -465,7 +465,7 @@ function checkHueConnection (callback, enforce) {
     request.send();
 }
 
-function getJsonFromHue(getUrl, successCallback, failureCallback, object, object2) {
+function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, object, object2) {
     var request = getRequest(getUrl, 'GET');
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -484,29 +484,29 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, object, object
                     if (altRequest.status !== 200) {
                         debugPrint("Request to " + getUrl + " failed with alt URL as well")
                         noConnection = true;
-                        failureCallback(altRequest);
+                        failureCallback(altRequest, doneCallback);
                     }
                     
                     var json = altRequest.responseText;
-                    successCallback(json, object, object2);
+                    successCallback(json, object, object2, doneCallback);
                     noConnection = false;
                 }
                 altRequest.send();
             }
             else {
                 debugPrint("Request to " + getUrl + " failed, with alt connection or no alt configured")
-                failureCallback(request);
+                failureCallback(request, doneCallback);
                 noConnection = true;
             }
         }
         var json = request.responseText;
-        successCallback(json, object, object2);
+        successCallback(json, object, object2, doneCallback);
         noConnection = false;
     }
     request.send();
 }
 
-function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
+function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCallback) {
     var request = getRequest(putUrl, 'PUT');
     request.onreadystatechange = function () {
         if (request.readyState !== XMLHttpRequest.DONE) {
@@ -524,25 +524,25 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback) {
                     
                     if (altRequest.status !== 200) {
                         debugPrint("Request to " + putUrl + " failed with alt URL as well")
-                        failureCallback(altRequest);
+                        failureCallback(altRequest, doneCallback);
                         noConnection = true;
                     }
                     
                     var json = altRequest.responseText;
-                    successCallback(json, name);
+                    successCallback(json, name, doneCallback);
                     noConnection = false;
                 }
                 altRequest.send();
             }
             else {
                 debugPrint("Request to " + putUrl + " failed with alt URL or no alt Url specified")
-                failureCallback(request);
+                failureCallback(request, doneCallback);
                 noConnection = true;
             }
         }
         
         var json = request.responseText;
-        successCallback(json);
+        successCallback(json, doneCallback);
         noConnection = false;
     }
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -572,11 +572,14 @@ function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gF
     request.send(body);
 }
 
-function baseSuccess(json, name) {
-    
+function baseSuccess(json, name, doneCallback) {
+    doneCallback();
 }
 
-function baseFail (request) {
+function baseDone () {
+}
+
+function baseFail (request, doneCallback) {
     debugPrint("Communicating with hue failed");
     if(request.status) {
         debugPrint("Status: " + request.status);
@@ -584,9 +587,11 @@ function baseFail (request) {
     if(request.responseText) {
         debugPrint("Response: " + request.responseText);
     }
+    
+    doneCallback();
 }
 
-function parseAll(json, groupModel, lightModel) {
+function parseAll(json, groupModel, lightModel, doneCallback) {
     // Delete current list, even in case of errors 
     // we do not want a cached one
     groupModel.clear();
@@ -596,6 +601,7 @@ function parseAll(json, groupModel, lightModel) {
     }
     catch(e) {
         debugPrint("Failed to parse json: " + json);
+        doneCallback();
         return;
     }
     if(myResult[0]) {
@@ -712,9 +718,11 @@ function parseAll(json, groupModel, lightModel) {
         
         //TODO: config, schedules, scenes, rules, sensors once we support them
     }
+    
+    doneCallback();
 }
 
-function parseGroupsToModel(json, listModel, name) {
+function parseGroupsToModel(json, listModel, name, doneCallback) {
     // Delete current list, even in case of errors 
     // we do not want a cached one
     listModel.clear();
@@ -723,6 +731,7 @@ function parseGroupsToModel(json, listModel, name) {
     }
     catch(e) {
         debugPrint("Failed to parse json: " + json);
+        doneCallback();
         return;
     }
     if(myGroups[0]) {
@@ -781,14 +790,16 @@ function parseGroupsToModel(json, listModel, name) {
         
         listModel.append(myGroup);
     }
+    doneCallback();
 }
 
-function parseGroupToObject(json, myObject, name) {
+function parseGroupToObject(json, myObject, name, doneCallback) {
     try {
         var cgroup = JSON.parse(json);
     }
     catch(e) {
         debugPrint("Failed to parse json: " + json);
+        doneCallback();
         return;
     }
     if(cgroup[0]) {
@@ -843,15 +854,18 @@ function parseGroupToObject(json, myObject, name) {
         myObject.vHasTemperature = false;
     }
     
+    doneCallback();
+    
 }
 
-function parseAllLightsToModel(json, listModel, name) {
+function parseAllLightsToModel(json, listModel, name, doneCallback) {
     listModel.clear();
     try {
         var myLights = JSON.parse(json);
      }
     catch(e) {
         debugPrint("Failed to parse json: " + json);
+        doneCallback();
         return;
     }
     if(myLights[0]) {
@@ -912,14 +926,17 @@ function parseAllLightsToModel(json, listModel, name) {
         
         listModel.append(myLight);
     }
+    
+    doneCallback();
 }
 
-function parseLightToModel(json, listModel, lightName) {
+function parseLightToModel(json, listModel, lightName, doneCallback) {
     try {
         var clight = JSON.parse(json);
     }
     catch(e) {
         debugPrint("Failed to parse json: " + json);
+        doneCallback();
         return;
     }
     if(clight[0]) {
@@ -977,14 +994,17 @@ function parseLightToModel(json, listModel, lightName) {
     }
 
     listModel.append(myLight);
+    
+    doneCallback();
 }
 
-function parseLightToObject(json, myObject, lightName) {
+function parseLightToObject(json, myObject, lightName, doneCallback) {
     try {
         var clight = JSON.parse(json);
     }
     catch(e) {
         debugPrint("Failed to parse json: " + json);
+        doneCallback();
         return;
     }
     if(clight[0]) {
@@ -1039,6 +1059,8 @@ function parseLightToObject(json, myObject, lightName) {
     else {
         myObject.vHasTemperature = false;
     }
+    
+    doneCallback();
 }
 
 function getCurrentTime() {

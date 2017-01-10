@@ -29,6 +29,21 @@ FocusScope {
     property bool hueNotConnected: false
     property bool hueUnauthenticated: false
     
+    PlasmaComponents.BusyIndicator {
+        id: busyOverlay
+        anchors.centerIn: parent
+        //whilst the model is loading, stay visible
+        //we use opacity rather than visible to force an animation
+        opacity: 0
+
+        Behavior on opacity {
+            PropertyAnimation {
+                //this comes from PlasmaCore
+                duration: units.shortDuration
+            }
+        }
+    }
+    
     Item {
         id: toolBar
         height: openSettingsButton.height
@@ -285,6 +300,7 @@ FocusScope {
     
     Component.onCompleted: {
         initHueConfig();
+        debugPrint("BUUUUSY");
         reInit(true, true);
         fullTimer.stop();
         // Check connection every 30 seconds
@@ -322,9 +338,14 @@ FocusScope {
             checkHueConnection(updatedConnection, true);
         }
         if(fetchAll) {
+            busyOverlay.opacity = 1;
             addActions();
-            getAll(groupModel, lightModel);
+            getAll(groupModel, lightModel, fetchAllDone);
         }
+    }
+    
+    function fetchAllDone() {
+        busyOverlay.opacity = 0;
     }
     
     /**

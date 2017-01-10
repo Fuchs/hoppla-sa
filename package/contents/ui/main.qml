@@ -54,8 +54,8 @@ Item {
         Hue.checkHueConnection(callback, enforce);
     }
     
-    function getAll(groupModel, lightModel) {
-        Hue.getAll(groupModel, lightModel);
+    function getAll(groupModel, lightModel, guiFinishedCallback) {
+        Hue.getAll(groupModel, lightModel, guiFinishedCallback);
     }
     
     function getGroups(model) {
