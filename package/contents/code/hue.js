@@ -596,6 +596,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
     // we do not want a cached one
     groupModel.clear();
     lightModel.clear();
+    json = '{"lights":{"1":{"state":{"on":true,"bri":20,"hue":14910,"sat":144,"effect":"none","xy":[0.4596,0.4105],"ct":369,"alert":"none","colormode":"ct","reachable":false},"type":"Extended color light","name":"Bedroom","modelid":"LCT001","manufacturername":"Philips","uniqueid":"00:17:88:01:00:ed:0d:f8-0b","swversion":"5.23.1.13187"},"2":{"state":{"on":false,"bri":254,"hue":14910,"sat":144,"effect":"none","xy":[0.4596,0.4105],"ct":369,"alert":"none","colormode":"ct","reachable":true},"type":"Extended color light","name":"Landing","modelid":"LCT001","manufacturername":"Philips","uniqueid":"00:17:88:01:00:ed:09:e3-0b","swversion":"5.23.1.13187"},"3":{"state":{"on":false,"bri":254,"hue":14910,"sat":144,"effect":"none","xy":[0.4596,0.4105],"ct":369,"alert":"none","colormode":"ct","reachable":true},"type":"Extended color light","name":"Office","modelid":"LCT001","manufacturername":"Philips","uniqueid":"00:17:88:01:00:ed:04:25-0b","swversion":"5.23.1.13187"},"4":{"state":{"on":false,"bri":254,"alert":"none","reachable":true},"type":"Dimmable light","name":"Hallway","modelid":"LWB006","manufacturername":"Philips","uniqueid":"00:17:88:01:10:43:74:49-0b","swversion":"5.38.1.15095"},"5":{"state":{"on":true,"bri":254,"alert":"none","reachable":false},"type":"Dimmable light","name":"Print room","modelid":"LWB010","manufacturername":"Philips","uniqueid":"00:17:88:01:02:49:8d:79-0b","swversion":"1.15.0_r18729","swconfigid":"60083D2F","productid":"Philips-LWB010-1-A19DLv3"}},"groups":{"1":{"name":"office","lights":["2","3"],"type":"LightGroup","state":{"all_on":false,"any_on":false},"recycle":false,"action":{"on":false,"bri":254,"hue":14910,"sat":144,"effect":"none","xy":[0.4596,0.4105],"ct":369,"alert":"none","colormode":"ct"}},"2":{"name":"Office","lights":["3"],"type":"Room","state":{"all_on":false,"any_on":false},"class":"Office","action":{"on":false,"bri":254,"hue":14910,"sat":144,"effect":"none","xy":[0.4596,0.4105],"ct":369,"alert":"none","colormode":"ct"}}}}'
     try {
         var myResult = JSON.parse(json);
     }
@@ -659,7 +660,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
                 
                 myGroup.vct = cgroup.action.ct  || 0;
                 myGroup.valert = cgroup.action.alert || i18n("Not available");
-                myGroup.vcolormode = cgroup.action.colormode  || "ct";
+                myGroup.vcolormode = cgroup.action.colormode  || "none";
                 myGroup.vLastUpdated = getCurrentTime();
                 
                 groupModel.append(myGroup);
@@ -702,7 +703,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
         
                 myLight.vct = clight.state.ct || 0;
                 myLight.valert = clight.state.alert || i18n("Not available");
-                myLight.vcolormode = clight.state.colormode || "ct";
+                myLight.vcolormode = clight.state.colormode || "none";
                 myLight.vreachable = clight.state.reachable || false;
                 myLight.vtype = clight.type || i18n("Not available");
                 myLight.vmanufacturername = clight.manufacturername || i18n("Not available");
@@ -771,7 +772,7 @@ function parseGroupsToModel(json, listModel, name, doneCallback) {
         }
         myGroup.vct = cgroup.action.ct  || 0;
         myGroup.valert = cgroup.action.alert || i18n("Not available");
-        myGroup.vcolormode = cgroup.action.colormode  || "ct";
+        myGroup.vcolormode = cgroup.action.colormode  || "none";
         myGroup.vLastUpdated = getCurrentTime();
         
         if(cgroup.action.hue || cgroup.action.sat || cgroup.action.xy) {
@@ -837,7 +838,7 @@ function parseGroupToObject(json, myObject, name, doneCallback) {
     
     myObject.vct = cgroup.action.ct  || 0;
     myObject.valert = cgroup.action.alert || i18n("Not available");
-    myObject.vcolormode = cgroup.action.colormode  || "ct";
+    myObject.vcolormode = cgroup.action.colormode  || "none";
     myObject.vLastUpdated = getCurrentTime();
 
     if(cgroup.action.hue || cgroup.action.sat || cgroup.action.xy) {
@@ -906,7 +907,7 @@ function parseAllLightsToModel(json, listModel, name, doneCallback) {
         
         myLight.vct = clight.state.ct || 0;
         myLight.valert = clight.state.alert || i18n("Not available");
-        myLight.vcolormode = clight.state.colormode || "ct";
+        myLight.vcolormode = clight.state.colormode || "none";
         myLight.vreachable = clight.state.reachable || false;
         myLight.vtype = clight.type || i18n("Not available");
         myLight.vmanufacturername = clight.manufacturername || i18n("Not available");
@@ -968,7 +969,7 @@ function parseLightToModel(json, listModel, lightName, doneCallback) {
     
     myLight.vct = clight.state.ct || 0;
     myLight.valert = clight.state.alert || i18n("Not available");
-    myLight.vcolormode = clight.state.colormode || "ct";
+    myLight.vcolormode = clight.state.colormode || "none";
     myLight.vreachable = clight.state.reachable || false;
     myLight.vtype = clight.type || i18n("Not available");
     myLight.vmanufacturername = clight.manufacturername || i18n("Not available");
@@ -1035,7 +1036,7 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
     
     myObject.vct = clight.state.ct || 0;
     myObject.valert = clight.state.alert || i18n("Not available");
-    myObject.vcolormode = clight.state.colormode || "ct";
+    myObject.vcolormode = clight.state.colormode || "none";
     myObject.vreachable = clight.state.reachable || false;
     myObject.vtype = clight.type || i18n("Not available");
     myObject.vmanufacturername = clight.manufacturername || i18n("Not available");

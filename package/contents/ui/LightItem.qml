@@ -36,6 +36,16 @@ PlasmaComponents.ListItem {
     
     // Set an auto updater
     Component.onCompleted: {
+        if(vHasTemperature) {
+            lightTabBar.currentTab = lightWhitesTab;
+        }
+        else if(!vHasTemperature && vHasColour) {
+            lightTabBar.currentTab = lightColoursTab;
+        }
+        else {
+            lightTabBar.currentTab = lightInfoTab;
+        }
+
         lightTimer.stop();
         // Update all values every 45 seconds plus some extra time
         // depending on the uuid, so not all lights are updated at
@@ -439,7 +449,7 @@ PlasmaComponents.ListItem {
         }
         
         if(vcolormode == "ct") {
-            myColor = "White by temperature: " + vct;
+            myColor = i18n("White by temperature: ") + vct;
         }
         
         lightDtls.push(i18n("Colour mode"));

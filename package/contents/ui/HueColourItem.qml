@@ -84,7 +84,7 @@ Item {
     function setColour() {
         if(!valOn) {
             // transparent gray
-            circle.color = "#DD1F374E";
+            circle.color = "#dd1f374e";
             setIcon();
             return;
         }
@@ -99,14 +99,17 @@ Item {
             case "ct":
                 setColourCT(valCt);
                 break;
+            case "none":
+                circle.color = "#fff8d2";
+                break;
             default:
-                circle.color = "#DD1F374E";
+                circle.color = "#dd1f374e";
         }
         
     }
     
     function setColourOff() {
-        circle.color = "#DD1F374E";
+        circle.color = "#dd1f374e";
         setIcon();
     }
     

@@ -300,7 +300,6 @@ FocusScope {
     
     Component.onCompleted: {
         initHueConfig();
-        debugPrint("BUUUUSY");
         reInit(true, true);
         fullTimer.stop();
         // Check connection every 30 seconds
