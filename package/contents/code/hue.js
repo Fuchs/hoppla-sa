@@ -22,13 +22,27 @@ var useAltConnection = false;
 var altConnectionEnabled;
 var noConnection = false;
 
-// GETTERS
+// INIT
+
 
 function initHueConfig() {
     useAltConnection = false;
     altConnectionEnabled = plasmoid.configuration.useAltURL
     noConnection = false;
 }
+
+// RAW PUT 
+
+/**
+ * Function to put raw payload to an url
+ * @param {String} url URL after the api/auth/ part
+ * @param {String} payload json payload
+ */
+function putPayloadToUrl(url, payload, succesCallback, failureCallback) {
+    putJsonToHue(url, payload, succesCallback, failureCallback, baseDone);
+}
+
+// GETTERS
 
 /**
  * Checks whether the hue bridge is configured
@@ -529,7 +543,7 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCal
                     }
                     
                     var json = altRequest.responseText;
-                    successCallback(json, name, doneCallback);
+                    successCallback(json, doneCallback);
                     noConnection = false;
                 }
                 altRequest.send();
@@ -1066,6 +1080,36 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
 function getCurrentTime() {
     var date = new Date();
     return date.getMilliseconds(); 
+}
+
+/**
+ * Helper to get the current Hue IP
+ * @param {Function} callback callback with two parameters: success {bool} and ip {string}
+ */
+function getHueIp (callback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        
+        if (request.status !== 200) {
+            callback(false, "");
+            return;
+        }
+        
+        var json = request.responseText;
+        var result = JSON.parse(json);
+        if(result && result.length > 0) {
+            if(result[0].internalipaddress) {
+                callback(true, result[0].internalipaddress);
+                return;
+            }
+        }
+        callback(false, "");
+    }
+    request.open("GET", "https://www.meethue.com/api/nupnp");
+    request.send();
 }
 
 function dbgPrint(msg) {

@@ -421,19 +421,27 @@ FocusScope {
      */
     function addActions() {
         actionModel.clear();
-        actionModel.append( {
-            name: i18n("Switch all lights on"),
-            infoText: i18n("Switches all reachable lights on"),
-            icon: "im-jabber",
-            action: "allon"
-        })
-        actionModel.append( {
-             
-            name: i18n("Switch all lights off"),
-            infoText: i18n("Switches all reachable lights off"),
-            icon: "contrast",
-            action: "alloff"
-        })
+        
+        try {
+            var actionItems = JSON.parse(plasmoid.configuration.actionlist);
+                    }
+        catch(e) {
+            debugPrint("Failed to parse actionlist json: " + json);
+            return;
+        }
+        
+        for(var uuid in actionItems) {
+            var cItem = actionItems[uuid];
+            var actionItem = {};
+            actionItem.uuid = uuid;
+            actionItem.userAdded = cItem.userAdded;
+            actionItem.title = cItem.userAdded ? cItem.title : i18n(cItem.title);
+            actionItem.subtitle = cItem.userAdded ? cItem.subtitle : i18n(cItem.subtitle);
+            actionItem.icon = cItem.icon;
+            actionItem.actions = cItem.actions;
+            
+            actionModel.append(actionItem);
+        }
     }
     
     

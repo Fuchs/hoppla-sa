@@ -30,7 +30,6 @@ PlasmaComponents.ListItem {
     property bool expanded : visibleDetails
     property bool visibleDetails : false
     property int baseHeight : actionItemBase.height
-    property var currentLightDetails : []
     property string defaultIcon : "help-about"
     
     height:  Math.max(units.iconSizes.medium, actionLabel.height + actionInfoLabel.height) + Math.round(units.gridUnit / 2)
@@ -50,7 +49,11 @@ PlasmaComponents.ListItem {
         
         height: Math.max(units.iconSizes.medium, actionLabel.height + actionInfoLabel.height) + Math.round(units.gridUnit / 2)
         
-        PlasmaCore.IconItem {
+        PlasmaCore.Svg {
+            id: mySvg
+        }
+        
+        PlasmaCore.SvgItem {
             id: actionIcon
             
             anchors {
@@ -60,12 +63,7 @@ PlasmaComponents.ListItem {
             
             height: units.iconSizes.medium
             width: height
-            source: getIcon()
-            
-            onSourceChanged: {
-                if (!valid && source != defaultIcon)
-                    source = defaultIcon;
-            }
+            svg: mySvg
         }
         
         PlasmaComponents.Label {
@@ -83,7 +81,7 @@ PlasmaComponents.ListItem {
             height: paintedHeight
             elide: Text.ElideRight
             font.weight: Font.Normal
-            text: name
+            text: title
             textFormat: Text.PlainText
         }
         
@@ -101,7 +99,7 @@ PlasmaComponents.ListItem {
             elide: Text.ElideRight
             font.pointSize: theme.smallestFont.pointSize
             opacity: 0.6
-            text: infoText
+            text: subtitle
             textFormat: Text.PlainText
         }
         
@@ -126,21 +124,55 @@ PlasmaComponents.ListItem {
             
             onClicked: execute()
         }
+        
+        Component.onCompleted: {
+             mySvg.imagePath = Qt.resolvedUrl("../images/" + icon);
+        }
     }
     
     function execute() {
-        if(action === 'allon') {
-            Hue.switchGroup(0, true)
-            // If there are many lamps, it would be horrible performance wise
-            // on the Hue bridge to fetch each. Just fetch all.
-            reInit(false, true);
+        
+        for (var i = 0; i < actions.count; i++) {
+            var act = actions.get(i);
+            if(act.ttype === "groups") {
+                var url = act.ttype + "/" + act.tid + "/action";
+            }
+            else {
+                var url = act.ttype + "/" + act.tid + "/state";
+            }
+            debugPrint("Executing " + url + " with payload: " + act.payload)
+            Hue.putPayloadToUrl(url, act.payload, successCallback, failureCallback)
         }
-        else if(action === 'alloff') {
-            Hue.switchGroup(0, false)
-            // If there are many lamps, it would be horrible performance wise
-            // on the Hue bridge to fetch each. Just fetch all.
-            reInit(false, true);
+    }
+    
+    function successCallback(json, doneCallback) {
+        debugPrint("Success callback with json: " + json);
+        
+        try {
+            var myResult = JSON.parse(json);
         }
+        catch(e) {
+            debugPrint("Failed to parse json: " + json);
+            doneCallback();
+            return;
+        }
+        if(myResult[0]) {
+            if(myResult[0].error) {
+                if(myResult[0].error.type == 1) {
+                    //TODO: Unauthorized
+                }
+                if(myResult[0].error.type == 3) {
+                    //TODO: unavailable
+                }
+            }
+        }
+        reInit(false, true);
+        doneCallback();
+    }
+    
+    function failureCallback(request, doneCallback) {
+        debugPrint("Failure callback with code: " + request.status + " and json: " + json);
+        doneCallback();
     }
     
     function getIcon() {

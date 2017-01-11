@@ -28,11 +28,11 @@ ConfigModel {
          icon: "applications-other"
          source: "configBridge.qml"
     }
-//     ConfigCategory {
-//         name: i18n("Actions")
-//         icon: "practice-start"
-//         source: "configActions.qml"
-//     }
+     ConfigCategory {
+         name: i18n("Actions")
+         icon: "practice-start"
+         source: "configActions.qml"
+     }
 //     ConfigCategory {
 //         name: i18n("Groups")
 //         icon: "object-group"

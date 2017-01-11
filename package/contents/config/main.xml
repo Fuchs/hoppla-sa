@@ -47,4 +47,10 @@
       <default></default>
     </entry>
   </group>
+  <group name="Actions">
+        <entry name="actionlist" type="string">
+        <label>Actions</label>
+        <default>{"1":{"userAdded": false, "title":"Switch all lights on","subtitle":"Switches all reachable lights on","icon": "bulb-light.svg","actions": [{"ttype": "groups", "tid": "0", "payload": "{\"on\":true}"}]},"2":{"userAdded": false, "title":"Switch all lights off","subtitle":"Switches all reachable lights off","icon": "bulb-dark.svg","actions": [{"ttype": "groups", "tid" : "0", "payload": "{\"on\":false}"}]}}</default>
+    </entry>
+  </group>
 </kcfg>

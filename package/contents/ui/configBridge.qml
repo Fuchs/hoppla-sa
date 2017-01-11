@@ -114,7 +114,7 @@ Item {
                 
                 Button {
                     id: btnFindBridge
-                    enabled: false
+                    enabled: true
                     text: i18n("Find bridge")
                     onClicked: findBridge()
                 }
@@ -210,10 +210,28 @@ Item {
     }
     
     function findBridge() {
-        lblStatusTitle.text = i18n("Trying to find a bridge ...");
-        lblStatusText.text = i18n("Please wait while we try to find your Hue bridge");
+        btnFindBridge.enabled = false;
+        lblStatusTitle.text = i18n("Trying to find your bridge ...");
+        lblStatusText.text = i18n("Please wait while I am searching.");
         rctStatus.color = infoColour;
         grpStatus.visible = true;
+        Hue.getHueIp(findHueCallback);
+    }
+    
+    function findHueCallback(success, ip) {
+        if(success) {
+            lblStatusTitle.text = i18n("Found your bridge");
+            lblStatusText.text = i18n("Please apply the configuration");
+            rctStatus.color = successColour;
+            grpStatus.visible = true;
+            baseURL.text = "http://" + ip;
+        }
+        else {
+            lblStatusTitle.text = i18n("Failed to find your bridge");
+            lblStatusText.text = i18n("Are you in the same network and connected to the internet?");
+            rctStatus.color = errorColour;
+        }
+        btnFindBridge.enabled = true;
     }
     
     function authenticate() {
