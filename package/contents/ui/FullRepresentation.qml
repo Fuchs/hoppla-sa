@@ -321,6 +321,10 @@ FocusScope {
             initHueConfig();
             checkHueConnection(updatedConnection, true);
         }
+        
+        onActionlistChanged: {
+            addActions();
+        }
     }
     
     // Method to re-init the plasmoid. 
@@ -338,8 +342,8 @@ FocusScope {
         }
         if(fetchAll) {
             busyOverlay.opacity = 1;
-            addActions();
             getAll(groupModel, lightModel, fetchAllDone);
+            addActions();
         }
     }
     
@@ -424,7 +428,7 @@ FocusScope {
         
         try {
             var actionItems = JSON.parse(plasmoid.configuration.actionlist);
-                    }
+        }
         catch(e) {
             debugPrint("Failed to parse actionlist json: " + json);
             return;

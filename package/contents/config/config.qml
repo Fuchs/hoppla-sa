@@ -30,7 +30,7 @@ ConfigModel {
     }
      ConfigCategory {
          name: i18n("Actions")
-         icon: "practice-start"
+         icon: "system-run"
          source: "configActions.qml"
      }
 //     ConfigCategory {
