@@ -6,13 +6,13 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
 "POT-Creation-Date: 2017-01-12 23:42+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2017-01-12 23:42+0100\n"
+"Last-Translator: Christian Loosli <develop@fuchsnet.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -53,364 +53,364 @@ msgstr ""
 #: package/contents/code/hue.js:1195 package/contents/ui/LightItem.qml:138
 #: package/contents/ui/LightItem.qml:442
 msgid "Not available"
-msgstr ""
+msgstr "Nicht verfügbar"
 
 #: package/contents/config/config.qml:27
 msgid "Bridge"
-msgstr ""
+msgstr "Bridge"
 
 #: package/contents/config/config.qml:32
 #: package/contents/ui/FullRepresentation.qml:104
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: package/contents/ui/ActionItem.qml:115
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: package/contents/ui/configActions.qml:58
 msgid "Group"
-msgstr ""
+msgstr "Gruppe"
 
 #: package/contents/ui/configActions.qml:59
 msgid "Light"
-msgstr ""
+msgstr "Lampe"
 
 #: package/contents/ui/configActions.qml:83
 msgid "All lights"
-msgstr ""
+msgstr "Alle Lampen"
 
 #: package/contents/ui/configActions.qml:251
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: package/contents/ui/configActions.qml:263
 msgid "Subtitle"
-msgstr ""
+msgstr "Untertitel"
 
 #: package/contents/ui/configActions.qml:273
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 #: package/contents/ui/configActions.qml:342
 msgid "Add new action"
-msgstr ""
+msgstr "Aktion hinzufügen"
 
 #: package/contents/ui/configActions.qml:360
 msgid "Add or edit Action"
-msgstr ""
+msgstr "Aktion hinzufügen oder bearbeiten"
 
 #: package/contents/ui/configActions.qml:429
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: package/contents/ui/configActions.qml:442
 msgid "Subtitle:"
-msgstr ""
+msgstr "Untertitel:"
 
 #: package/contents/ui/configActions.qml:455
 msgid "Icon:"
-msgstr ""
+msgstr "Symbol:"
 
 #: package/contents/ui/configActions.qml:480
 msgid "Commands:"
-msgstr ""
+msgstr "Befehle:"
 
 #: package/contents/ui/configActions.qml:490
 #: package/contents/ui/GroupItem.qml:530 package/contents/ui/LightItem.qml:458
 msgid "Type"
-msgstr ""
+msgstr "Art"
 
 #: package/contents/ui/configActions.qml:506
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 #: package/contents/ui/configActions.qml:517
 msgid "Payload"
-msgstr ""
+msgstr "Inhalt"
 
 #: package/contents/ui/configActions.qml:527
 msgid "Remove"
-msgstr ""
+msgstr "Entfernen"
 
 #: package/contents/ui/configActions.qml:556
 msgid "New command"
-msgstr ""
+msgstr "Neuer Befehl"
 
 #: package/contents/ui/configActions.qml:570
 msgid "Target"
-msgstr ""
+msgstr "Ziel"
 
 #: package/contents/ui/configActions.qml:588
 #: package/contents/ui/GroupItem.qml:500 package/contents/ui/LightItem.qml:436
 msgid "State"
-msgstr ""
+msgstr "Status"
 
 #: package/contents/ui/configActions.qml:595
 #: package/contents/ui/LightItem.qml:434
 msgid "On"
-msgstr ""
+msgstr "Ein"
 
 #: package/contents/ui/configActions.qml:602
 #: package/contents/ui/LightItem.qml:434
 msgid "Off"
-msgstr ""
+msgstr "Aus"
 
 #: package/contents/ui/configActions.qml:609
 #: package/contents/ui/GroupItem.qml:512 package/contents/ui/LightItem.qml:439
 msgid "Brightness"
-msgstr ""
+msgstr "Helligkeit"
 
 #: package/contents/ui/configActions.qml:625
 #: package/contents/ui/configActions.qml:639
 msgid "Colour"
-msgstr ""
+msgstr "Farbe"
 
 #: package/contents/ui/configActions.qml:632
 msgid "Temperature"
-msgstr ""
+msgstr "Farbtemperatur"
 
 #: package/contents/ui/configActions.qml:713
 msgid "Add new command"
-msgstr ""
+msgstr "Neuen Befehl hinzufügen"
 
 #: package/contents/ui/configBridge.qml:112
 msgid "Bridge Address:"
-msgstr ""
+msgstr "Adresse der Bridge"
 
 #: package/contents/ui/configBridge.qml:118
 msgid "Find bridge"
-msgstr ""
+msgstr "Bridge finden"
 
 #: package/contents/ui/configBridge.qml:129
 msgid "Authentication Name:"
-msgstr ""
+msgstr "Authentisierungstoken:"
 
 #: package/contents/ui/configBridge.qml:134
 msgid "Authenticate"
-msgstr ""
+msgstr "Authentisieren"
 
 #: package/contents/ui/configBridge.qml:147
 msgid "Use a fallback connection when the bridge is out of reach"
-msgstr ""
+msgstr "Alternative Verbindung wenn Bridge nicht erreichbar"
 
 #: package/contents/ui/configBridge.qml:166
 msgid "Alternative bridge URL:"
-msgstr ""
+msgstr "Alternative Bridge URL:"
 
 #: package/contents/ui/configBridge.qml:176
 msgid "Requires basic authentication:"
-msgstr ""
+msgstr "Benötigt BASIC Authentisierung:"
 
 #: package/contents/ui/configBridge.qml:187
 msgid "Username:"
-msgstr ""
+msgstr "Nutzername:"
 
 #: package/contents/ui/configBridge.qml:199
 msgid "Password:"
-msgstr ""
+msgstr "Passwort:"
 
 #: package/contents/ui/configBridge.qml:214
 msgid "Trying to find your bridge ..."
-msgstr ""
+msgstr "Versuche die Bridge zu finden ..."
 
 #: package/contents/ui/configBridge.qml:215
 msgid "Please wait while I am searching."
-msgstr ""
+msgstr "Bitte warten während ich suche"
 
 #: package/contents/ui/configBridge.qml:223
 msgid "Found your bridge"
-msgstr ""
+msgstr "Bridge gefunden"
 
 #: package/contents/ui/configBridge.qml:224
 msgid "Please apply the configuration"
-msgstr ""
+msgstr "Bitte die Konfiguration speichern"
 
 #: package/contents/ui/configBridge.qml:230
 msgid "Failed to find your bridge"
-msgstr ""
+msgstr "Bridge konnte nicht gefunden werden"
 
 #: package/contents/ui/configBridge.qml:231
 msgid "Are you in the same network and connected to the internet?"
-msgstr ""
+msgstr "Sind Sie im selben Netz und haben eine internetverbindung?"
 
 #: package/contents/ui/configBridge.qml:239
 msgid "Trying to authenticate with your bridge ..."
-msgstr ""
+msgstr "Versuche mit der Bridge zu authentisieren"
 
 #: package/contents/ui/configBridge.qml:240
 msgid "Push the authenticate button on your Hue bridge within 60 seconds"
-msgstr ""
+msgstr "Bitte den Knopf auf der Bridge innerhalb von 60 Sekunden drücken"
 
 #: package/contents/ui/configBridge.qml:252
 msgid "Authenticated with your bridge"
-msgstr ""
+msgstr "Mit der Bridge authentisiert"
 
 #: package/contents/ui/configBridge.qml:253
 msgid "Successfully authenticated, please apply the configuration"
-msgstr ""
+msgstr "Authentisierung erfolgreich, bitte die Konfiguration speichern"
 
 #: package/contents/ui/configBridge.qml:261
 msgid "Failed to authenticate with your bridge"
-msgstr ""
+msgstr "Authentisierung mit Bridge fehlgeschlagen"
 
 #: package/contents/ui/configBridge.qml:262
 msgid "Make sure the bridge is reachable and the button clicked"
-msgstr ""
+msgstr "Ist die Bridge erreichbar und wurde der Knopf gedrückt?"
 
 #: package/contents/ui/FullRepresentation.qml:74
 msgid "Refresh"
-msgstr ""
+msgstr "Aktualisieren"
 
 #: package/contents/ui/FullRepresentation.qml:84
 msgid "Configure Philips Hue..."
-msgstr ""
+msgstr "Philips Hue konfigurieren ..."
 
 #: package/contents/ui/FullRepresentation.qml:109
 msgid "Groups / Rooms"
-msgstr ""
+msgstr "Gruppen / Räume"
 
 #: package/contents/ui/FullRepresentation.qml:114
 msgid "Lights"
-msgstr ""
+msgstr "Lampen"
 
 #: package/contents/ui/FullRepresentation.qml:129
 msgid "No Hue bridge configured"
-msgstr ""
+msgstr "Keine Hue Bridge eingerichtet"
 
 #: package/contents/ui/FullRepresentation.qml:151
 msgid "You need to configure your Hue bridge"
-msgstr ""
+msgstr "Sie müssen eine Bridge einrichten"
 
 #: package/contents/ui/FullRepresentation.qml:157
 #: package/contents/ui/FullRepresentation.qml:208
 msgid "Configure Hue Bridge"
-msgstr ""
+msgstr "Hue Bridge einrichten"
 
 #: package/contents/ui/FullRepresentation.qml:186
 msgid "Not authenticated"
-msgstr ""
+msgstr "Nicht authentisiert"
 
 #: package/contents/ui/FullRepresentation.qml:186
 msgid "Hue not reachable"
-msgstr ""
+msgstr "Hue nicht erreichbar"
 
 #: package/contents/ui/FullRepresentation.qml:202
 msgid "Authenticate with your bridge"
-msgstr ""
+msgstr "Mit der Bridge authentisieren"
 
 #: package/contents/ui/FullRepresentation.qml:202
 msgid "Check if your Hue bridge is configured and reachable"
-msgstr ""
+msgstr "Prüfen Sie, ob die Bride eingerichtet und erreichbar ist"
 
 #: package/contents/ui/FullRepresentation.qml:380
 msgid "Hue bridge not reachable"
-msgstr ""
+msgstr "Hue Bridge nicht erreichbar"
 
 #: package/contents/ui/FullRepresentation.qml:387
 msgid "Not authenticated with Hue bridge"
-msgstr ""
+msgstr "Nicht mit der Hue Bridge authentisiert"
 
 #: package/contents/ui/FullRepresentation.qml:394
 msgid "Main connection"
-msgstr ""
+msgstr "Hauptverbindung"
 
 #: package/contents/ui/FullRepresentation.qml:400
 msgid "Alternative connection"
-msgstr ""
+msgstr "Alternativverbindung"
 
 #: package/contents/ui/FullRepresentation.qml:419
 msgid "lights on"
-msgstr ""
+msgstr "Eingeschaltete Lampen"
 
 #: package/contents/ui/GroupItem.qml:131
 msgid "not available"
-msgstr ""
+msgstr "Nicht verfügbar"
 
 #: package/contents/ui/GroupItem.qml:414
 msgid "light"
-msgstr ""
+msgstr "Lampe"
 
 #: package/contents/ui/GroupItem.qml:417
 msgid "lights"
-msgstr ""
+msgstr "Lampen"
 
 #: package/contents/ui/GroupItem.qml:495 package/contents/ui/LightItem.qml:431
 msgid "ID and name"
-msgstr ""
+msgstr "ID und Name"
 
 #: package/contents/ui/GroupItem.qml:498
 msgid "Number of lights"
-msgstr ""
+msgstr "Anzahl Lampen"
 
 #: package/contents/ui/GroupItem.qml:501
 msgid "All lights off"
-msgstr ""
+msgstr "Alle Lampen aus"
 
 #: package/contents/ui/GroupItem.qml:503
 msgid "All lights on"
-msgstr ""
+msgstr "Alle Lampen an"
 
 #: package/contents/ui/GroupItem.qml:506
 msgid "Some lights on"
-msgstr ""
+msgstr "Einige Lampen an"
 
 #: package/contents/ui/GroupItem.qml:518 package/contents/ui/LightItem.qml:444
 msgid "Colour in CIE space, x: "
-msgstr ""
+msgstr "Farbe im CIE Raum, x:"
 
 #: package/contents/ui/GroupItem.qml:518 package/contents/ui/LightItem.qml:444
 msgid " y: "
-msgstr ""
+msgstr "y:"
 
 #: package/contents/ui/GroupItem.qml:521 package/contents/ui/LightItem.qml:448
 msgid "Colour in HS, hue: "
-msgstr ""
+msgstr "Farbe als HS: hue:"
 
 #: package/contents/ui/GroupItem.qml:521 package/contents/ui/LightItem.qml:448
 msgid " sat: "
-msgstr ""
+msgstr "sat:"
 
 #: package/contents/ui/GroupItem.qml:527 package/contents/ui/LightItem.qml:455
 msgid "Colour mode"
-msgstr ""
+msgstr "Farbmodus"
 
 #: package/contents/ui/GroupItem.qml:533
 msgid "Class"
-msgstr ""
+msgstr "Klasse"
 
 #: package/contents/ui/LightItem.qml:452
 msgid "White by temperature: "
-msgstr ""
+msgstr "Weisstemperatur:"
 
 #: package/contents/ui/LightItem.qml:461
 msgid "Model ID"
-msgstr ""
+msgstr "Modell-Id"
 
 #: package/contents/ui/LightItem.qml:464
 msgid "Unique ID"
-msgstr ""
+msgstr "Eindeutige Id"
 
 #: package/contents/ui/LightItem.qml:467
 msgid "Software Version"
-msgstr ""
+msgstr "Softwareversion"
 
 #: package/contents/ui/main.qml:30
 msgid "Philips Hue lights"
-msgstr ""
+msgstr "Philips Hue Lampen"
 
 #: package/contents/config/main.xml
 msgid "Switch all lights on"
-msgstr ""
+msgstr "Alle Lampen einschalten"
 
 #: package/contents/config/main.xml
 msgid "Switch all lights off"
-msgstr ""
+msgstr "Alle Lampen ausschalten"
 
 #: package/contents/config/main.xml
 msgid "Switches all reachable lights on"
-msgstr ""
+msgstr "Schaltet alle erreichbaren Lampen ein"
 
 #: package/contents/config/main.xml
 msgid "Switches all reachable lights off"
-msgstr ""
+msgstr "Schaltet alle erreichbaren Lampen aus"
