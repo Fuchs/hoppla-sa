@@ -57,9 +57,6 @@ Item {
         cbTypeModel.clear();
         cbTypeModel.append( { text: i18n("Group"), value: "groups" });
         cbTypeModel.append( { text: i18n("Light"), value: "lights" });
-        targetModel.clear()
-        targetModel.append( { text: "0: Alle", value: "0" } );
-        targetModel.append( { text: "1: Test", value: "1" } );
         
         try {
             var actionItems = JSON.parse(actionList.text);
@@ -81,12 +78,15 @@ Item {
         }
     }
     
-    function getLights() {
-        targetModel.clear()
-    }
-    
     function getGroups() {
         targetModel.clear()
+        targetModel.append( { text: "0: " + i18n("All lights"), value: "0" } );
+        Hue.getGroupsIdName(targetModel);
+    }
+    
+    function getLights() {
+        targetModel.clear()
+        Hue.getLightsIdName(targetModel);
     }
     
     function setIcon() {
@@ -99,6 +99,15 @@ Item {
         resetDialog();
     }
     
+    function setTargetModel() {
+        if(cbTypeModel.currentIndex == 0) {
+            getGroups();
+        }
+        else {
+            getLights();
+        }
+    }
+    
     function resetDialog() {
         editActionDialogue.tableIndex = -1;
         txtTitle.text = "";
@@ -109,7 +118,7 @@ Item {
         actListModel.clear();
         lblHue.text = "";
         lblSat.text = "";
-        lblCt.text = "196";
+        lblCt.text = "296";
         chkBri.checked = false;
         chkCol.checked = false;
         chkOn.checked = false;
@@ -119,6 +128,7 @@ Item {
         var iconText = cbIcon.currentText;
         mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
         setColourCT(lblCt.text);
+        getGroups();
     }
     
     function addAct() {
@@ -242,10 +252,6 @@ Item {
                 delegate: Label {
                     text: styleData.value
                     elide: Text.ElideRight
-                    anchors.left: parent ? parent.left : undefined
-                    anchors.leftMargin: 5
-                    anchors.right: parent ? parent.right : undefined
-                    anchors.rightMargin: 5
                 }
             }
             
@@ -256,14 +262,8 @@ Item {
                 width: parent.width * 0.39
                 
                 delegate: Label {
-                    id: placeAliasText
                     text: styleData.value
                     elide: Text.ElideRight
-                    height: parent.height
-                    anchors.left: parent.left
-                    anchors.leftMargin: 5
-                    anchors.right: parent.right
-                    anchors.rightMargin: 5
                 }
             }
             
@@ -395,7 +395,7 @@ Item {
         Label {
             id: lblCt
             visible: false
-            text: "196"
+            text: "296"
         }
         
         Label {
@@ -506,10 +506,6 @@ Item {
                     delegate: Label {
                         text: styleData.value
                         height: parent.height
-                        anchors.left: parent.left
-                        anchors.leftMargin: 5
-                        anchors.right: parent.right
-                        anchors.rightMargin: 5
                     }
                 }
                 
@@ -523,10 +519,6 @@ Item {
                         text: styleData.value
                         elide: Text.ElideRight
                         height: parent.height
-                        anchors.left: parent.left
-                        anchors.leftMargin: 5
-                        anchors.right: parent.right
-                        anchors.rightMargin: 5
                     }
                 }
                 
@@ -580,12 +572,14 @@ Item {
                         ComboBox {
                             id: cbType
                             model: cbTypeModel
+                            onCurrentIndexChanged: setTargetModel()
                         }
                         
                         ComboBox {
                             id: cbTarget
                             Layout.fillWidth: true
                             model: targetModel
+                            textRole: 'text'
                         }
                         
                         CheckBox {

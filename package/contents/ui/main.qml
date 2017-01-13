@@ -33,8 +33,6 @@ Item {
     Plasmoid.compactRepresentation: CompactRepresentation { }
     Plasmoid.fullRepresentation: FullRepresentation { }
     
-
-
     function debugPrint(msg) {
         if(!debug) {
             return;

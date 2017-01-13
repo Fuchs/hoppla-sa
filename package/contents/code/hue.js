@@ -21,8 +21,16 @@
 var useAltConnection = false;
 var altConnectionEnabled;
 var noConnection = false;
+var debug = true;
 
 // INIT
+
+function dbgPrint(msg) {
+    if(!debug) {
+        return;
+    }
+    print('[Hoppla-Hue] ' + msg)
+}
 
 
 function initHueConfig() {
@@ -121,6 +129,33 @@ function getGroups(myModel) {
     getJsonFromHue(myUrl, parseGroupsToModel, baseFail, baseDone, myModel, "");
 }
 
+/**
+ * Helper to fill group names and id, 
+ * into a model (used by config dialogue). 
+ * The model will not be cleared beforehand.
+ * @param {ListModel} myModel model to fill with text and value
+ */
+function getGroupsIdName(myModel) {
+    if(noConnection) {
+        return;
+    }
+    var myUrl = "groups";
+    getJsonFromHue(myUrl, parseGroupsToSimpleModel, baseFail, baseDone, myModel, "");
+}
+
+/**
+ * Helper to fill light names and id 
+ * into a model (used by config dialogue) 
+ * The model will not be cleared beforehand.
+ * @param {ListModel} myModel model to fill with text and value
+ */
+function getLightsIdName(myModel) {
+    if(noConnection) {
+        return;
+    }
+    var myUrl = "groups";
+    getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, baseDone, myModel, "");
+}
 
 /**
  * Get all lights for a specific group from the hue bridge and
@@ -323,7 +358,7 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
         var myResult = JSON.parse(json);
     }
     catch(e) {
-        debugPrint("Failed to parse json: " + json);
+        dbgPrint("Failed to parse json: " + json);
         return;
     }
     if(!myResult[0]) {
@@ -431,7 +466,7 @@ function checkHueConnection (callback, enforce) {
                         var myResult = JSON.parse(json);
                     }
                     catch(e) {
-                        debugPrint("Failed to parse json: " + json);
+                        dbgPrint("Failed to parse json: " + json);
                         return;
                     }
                     if(!myResult[0]) {
@@ -460,7 +495,7 @@ function checkHueConnection (callback, enforce) {
             var myResult = JSON.parse(json);
         }
         catch(e) {
-            debugPrint("Failed to parse json: " + json);
+            dbgPrint("Failed to parse json: " + json);
             return;
         }
         if(!myResult[0]) {
@@ -479,6 +514,16 @@ function checkHueConnection (callback, enforce) {
     request.send();
 }
 
+/**
+ * Function to get JSON from the Hue bridge
+ * @param {String} getUrl the URL to send the GET request to
+ * @param {function} successCallback call on success, json, object, object2 and a done callback as params
+ * @param {function} failureCallback call on failure, request and done callback as params
+ * @param {function} doneCallback called when all is handled
+ * @param {Object} object object to pass to the success function, e.g. a model 
+ * @param {Object} object2 object to pass to the success function, e.g. a model 
+ * 
+ */
 function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, object, object2) {
     var request = getRequest(getUrl, 'GET');
     request.onreadystatechange = function () {
@@ -488,7 +533,7 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, 
         
         if (request.status !== 200) {
             if(!useAltConnection && altConnectionEnabled) {
-                debugPrint("Request to " + getUrl + " failed, trying alt URL")
+                dbgPrint("Request to " + getUrl + " failed, trying alt URL")
                 useAltConnection = true;
                 var altRequest = getRequest(getUrl, 'GET');
                 altRequest.onreadystatechange = function () {
@@ -496,7 +541,7 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, 
                         return;
                     }
                     if (altRequest.status !== 200) {
-                        debugPrint("Request to " + getUrl + " failed with alt URL as well")
+                        dbgPrint("Request to " + getUrl + " failed with alt URL as well")
                         noConnection = true;
                         failureCallback(altRequest, doneCallback);
                     }
@@ -508,7 +553,7 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, 
                 altRequest.send();
             }
             else {
-                debugPrint("Request to " + getUrl + " failed, with alt connection or no alt configured")
+                dbgPrint("Request to " + getUrl + " failed, with alt connection or no alt configured")
                 failureCallback(request, doneCallback);
                 noConnection = true;
             }
@@ -520,6 +565,14 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, 
     request.send();
 }
 
+/**
+ * Function to put JSON to the Hue bridge
+ * @param {String} putUrl the URL to send the PUT request to
+ * @param {String} payload the content of the PUT request
+ * @param {function} successCallback call on success, json, object, object2 and a done callback as params
+ * @param {function} failureCallback call on failure, request and done callback as params
+ * @param {function} doneCallback called when all is handled
+ */
 function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCallback) {
     var request = getRequest(putUrl, 'PUT');
     request.onreadystatechange = function () {
@@ -528,7 +581,7 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCal
         }
         if (request.status !== 200) {
             if(!useAltConnection && altConnectionEnabled) {
-                debugPrint("Request to " + putUrl + " failed, trying alt URL")
+                dbgPrint("Request to " + putUrl + " failed, trying alt URL")
                 useAltConnection = true;
                 var altRequest = getRequest(getUrl, 'PUT');
                 altRequest.onreadystatechange = function () {
@@ -537,7 +590,7 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCal
                     }
                     
                     if (altRequest.status !== 200) {
-                        debugPrint("Request to " + putUrl + " failed with alt URL as well")
+                        dbgPrint("Request to " + putUrl + " failed with alt URL as well")
                         failureCallback(altRequest, doneCallback);
                         noConnection = true;
                     }
@@ -549,7 +602,7 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCal
                 altRequest.send();
             }
             else {
-                debugPrint("Request to " + putUrl + " failed with alt URL or no alt Url specified")
+                dbgPrint("Request to " + putUrl + " failed with alt URL or no alt Url specified")
                 failureCallback(request, doneCallback);
                 noConnection = true;
             }
@@ -563,6 +616,16 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCal
     request.send(payload);
 }
 
+/**
+ * Function to post JSON to the Hue bridge
+ * @param {String} putUrl the URL to send the POST request to
+ * @param {String} body the content of the POST request
+ * @param {int} att current attempt
+ * @param {int} maxAtt maximal amount of attempts
+ * @param {function} lSuccCb call on success
+ * @param {function} lFailCb call on failure
+ *
+ */
 function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gFailCb) {
     if(att > maxAtt) {
         gFailCb("Timeout");
@@ -586,20 +649,32 @@ function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gF
     request.send(body);
 }
 
+/**
+ * Skeleton function to call on success, will just call doneCallback
+ */
 function baseSuccess(json, name, doneCallback) {
     doneCallback();
 }
 
+/**
+ * Skeleton function to call on all done, will do nothing
+ */
 function baseDone () {
 }
 
+
+/**
+ * Skeleton function to call on failure, will print debug output and call doneCallback
+ * @param {XHTTPRequest} request 
+ * @param {function} doneCallback will be called at the end
+ */
 function baseFail (request, doneCallback) {
-    debugPrint("Communicating with hue failed");
+    dbgPrint("Communicating with hue failed");
     if(request.status) {
-        debugPrint("Status: " + request.status);
+        dbgPrint("Status: " + request.status);
     }
     if(request.responseText) {
-        debugPrint("Response: " + request.responseText);
+        dbgPrint("Response: " + request.responseText);
     }
     
     doneCallback();
@@ -614,7 +689,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
         var myResult = JSON.parse(json);
     }
     catch(e) {
-        debugPrint("Failed to parse json: " + json);
+        dbgPrint("Failed to parse json: " + json);
         doneCallback();
         return;
     }
@@ -736,6 +811,36 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
     doneCallback();
 }
 
+function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
+     try {
+        var myGroups = JSON.parse(json);
+    }
+    catch(e) {
+        dbgPrint("Failed to parse json: " + json);
+        doneCallback();
+        return;
+    }
+    if(myGroups[0]) {
+        if(myGroups[0].error) {
+            if(myGroups[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myGroups[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
+    for(var groupName in myGroups) {
+        var cgroup = myGroups[groupName];
+        var myGroup = {};
+        myGroup.text = groupName + ": " + cgroup.name;
+        myGroup.value = "" + groupName;
+        listModel.append(myGroup);
+    }
+    doneCallback();
+}
+
 function parseGroupsToModel(json, listModel, name, doneCallback) {
     // Delete current list, even in case of errors 
     // we do not want a cached one
@@ -744,7 +849,7 @@ function parseGroupsToModel(json, listModel, name, doneCallback) {
         var myGroups = JSON.parse(json);
     }
     catch(e) {
-        debugPrint("Failed to parse json: " + json);
+        dbgPrint("Failed to parse json: " + json);
         doneCallback();
         return;
     }
@@ -812,7 +917,7 @@ function parseGroupToObject(json, myObject, name, doneCallback) {
         var cgroup = JSON.parse(json);
     }
     catch(e) {
-        debugPrint("Failed to parse json: " + json);
+        dbgPrint("Failed to parse json: " + json);
         doneCallback();
         return;
     }
@@ -872,13 +977,43 @@ function parseGroupToObject(json, myObject, name, doneCallback) {
     
 }
 
+function parseLightsToSimpleModel(json, listModel, name, doneCallback) {
+     try {
+        var myLights = JSON.parse(json);
+    }
+    catch(e) {
+        dbgPrint("Failed to parse json: " + json);
+        doneCallback();
+        return;
+    }
+    if(myLights[0]) {
+        if(myLights[0].error) {
+            if(myLights[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myLights[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
+    for(var lightName in myLights) {
+        var cLight = myLights[lightName];
+        var myLight = {};
+        myLight.text = lightName + ": " + cLight.name;
+        myLight.value = "" + lightName
+        listModel.append(myLight);
+    }
+    doneCallback();
+}
+
 function parseAllLightsToModel(json, listModel, name, doneCallback) {
     listModel.clear();
     try {
         var myLights = JSON.parse(json);
      }
     catch(e) {
-        debugPrint("Failed to parse json: " + json);
+        dbgPrint("Failed to parse json: " + json);
         doneCallback();
         return;
     }
@@ -949,7 +1084,7 @@ function parseLightToModel(json, listModel, lightName, doneCallback) {
         var clight = JSON.parse(json);
     }
     catch(e) {
-        debugPrint("Failed to parse json: " + json);
+        dbgPrint("Failed to parse json: " + json);
         doneCallback();
         return;
     }
@@ -1017,7 +1152,7 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
         var clight = JSON.parse(json);
     }
     catch(e) {
-        debugPrint("Failed to parse json: " + json);
+        dbgPrint("Failed to parse json: " + json);
         doneCallback();
         return;
     }
@@ -1077,6 +1212,9 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
     doneCallback();
 }
 
+/**
+ * Helper function to get the current time in milliseconds
+ */
 function getCurrentTime() {
     var date = new Date();
     return date.getMilliseconds(); 
