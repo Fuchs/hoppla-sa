@@ -1,12 +1,12 @@
 # Changelog 
 
-## 0.42 (unreleased, current git) 
+## 1.0 (2017-01-14) 
 
 Initial version with: 
 
 * Actions
   * Show two default actions, turn on and off all lamps
-  * Not yet configurable
+  * Offer a GUI to add and remove actions
 
 * Lights
   * Show all lights with curent status, coloured
@@ -26,9 +26,9 @@ Initial version with:
   * Show detailled group info 
   
 * Bridge
-  * Configurable bridge address, not yet auto-discoverable
+  * Configurable bridge address, auto-discoverable via Philips Server
   * Authentication with bridge from config dialogue
   * Alt address can be set including http basic auth, only used when main address is unreachable
 
 * Translations
-  * Prepared for translations, none shipped yet
+  * Prepared for translations

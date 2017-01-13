@@ -25,7 +25,7 @@ import "hue.js" as Hue
 
 Item {
     id: hopplaApplet
-    property bool debug: true
+    property bool debug: false
     
     Plasmoid.toolTipMainText: i18n("Philips Hue lights")
     Plasmoid.icon: "im-jabber"

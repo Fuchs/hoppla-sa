@@ -21,7 +21,7 @@
 var useAltConnection = false;
 var altConnectionEnabled;
 var noConnection = false;
-var debug = true;
+var debug = false;
 
 // INIT
 
