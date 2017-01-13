@@ -100,10 +100,12 @@ Item {
     }
     
     function setTargetModel() {
-        if(cbTypeModel.currentIndex == 0) {
+        if(cbType.currentIndex == 0) {
+            print("GROOOOUPS");
             getGroups();
         }
         else {
+            print("LIIIIIGHTS");
             getLights();
         }
     }
@@ -475,7 +477,7 @@ Item {
             
             Label {
                 id: lblActions
-                text: i18n("Actions:")
+                text: i18n("Commands:")
             }
             
             TableView {
@@ -506,7 +508,6 @@ Item {
                     
                     delegate: Label {
                         text: styleData.value
-                        height: parent.height
                     }
                 }
                 
@@ -519,7 +520,6 @@ Item {
                     delegate: Label {
                         text: styleData.value
                         elide: Text.ElideRight
-                        height: parent.height
                     }
                 }
                 
@@ -553,7 +553,7 @@ Item {
             GroupBox {
                 Layout.fillWidth: true
                 id: grpNewAction
-                title: i18n("New Action");
+                title: i18n("New command");
                 
                 
                 ColumnLayout {
@@ -710,7 +710,7 @@ Item {
                     
                     Button {
                         id: btnAddAct
-                        text: i18n("Add new action")
+                        text: i18n("Add new command")
                         onClicked: addAct()
                     }
                 }

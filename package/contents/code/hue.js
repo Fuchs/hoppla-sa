@@ -153,7 +153,7 @@ function getLightsIdName(myModel) {
     if(noConnection) {
         return;
     }
-    var myUrl = "groups";
+    var myUrl = "lights";
     getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, baseDone, myModel, "");
 }
 
