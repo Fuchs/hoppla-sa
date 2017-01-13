@@ -201,7 +201,7 @@ Item {
         actionList.text = strJson;
     }
     
-        function setColourHS(phue, psat) {
+    function setColourHS(phue, psat) {
         // qt expects hue and saturation as 0..1 value, so we have to convert
         var hue = 0.00001525902 * phue
         var sat = 0.003937 * psat;
@@ -330,7 +330,7 @@ Item {
                 }
             }
             model: actionListModel
-            Layout.preferredHeight: 150
+            Layout.preferredHeight: 290
             Layout.preferredWidth: parent.width
             Layout.columnSpan: 2
         }
@@ -346,6 +346,7 @@ Item {
             Layout.fillWidth: true
             anchors.left: parent.left
             anchors.right: parent.right
+            visible: false
             height: 20
         }
     }
