@@ -35,12 +35,28 @@ This software is distributed under the LGPL 2.1 License. See COPYING for details
 
 ## Compile and install
 
-To be added soon. Note that currently nothings needs to be built, 
-only once translations will be added this is required.
-You can use the content as is, due to there being no code
-that has to be compiled.
 
-If you git cloned it or downloaded this structure, you can use 
+```
+git clone https://github.com/Fuchs/hoppla-sa.git
+cd hoppla-sa
+```
+
+### Global installation
+
+```
+mkdir build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLIB_INSTALL_DIR=lib \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
+make
+sudo make install
+```
+
+### Local installation (per user)
+
 
 `plasmapkg2 -i package`
 
