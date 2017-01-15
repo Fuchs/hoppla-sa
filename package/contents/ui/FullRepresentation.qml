@@ -106,7 +106,7 @@ FocusScope {
         
         PlasmaComponents.TabButton {
             id: groupsTab
-            text: i18n("Groups / Rooms")
+            text: i18n("Groups")
         }
         
         PlasmaComponents.TabButton {

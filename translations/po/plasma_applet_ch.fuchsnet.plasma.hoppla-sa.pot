@@ -267,7 +267,7 @@ msgid "Configure Philips Hue..."
 msgstr ""
 
 #: package/contents/ui/FullRepresentation.qml:109
-msgid "Groups / Rooms"
+msgid "Groups"
 msgstr ""
 
 #: package/contents/ui/FullRepresentation.qml:114
