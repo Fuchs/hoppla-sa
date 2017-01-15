@@ -652,7 +652,7 @@ function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gF
 /**
  * Skeleton function to call on success, will just call doneCallback
  */
-function baseSuccess(json, name, doneCallback) {
+function baseSuccess(json, doneCallback) {
     doneCallback();
 }
 
