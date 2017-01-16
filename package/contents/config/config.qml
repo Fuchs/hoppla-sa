@@ -28,25 +28,24 @@ ConfigModel {
          icon: "applications-other"
          source: "configBridge.qml"
     }
-     ConfigCategory {
+    ConfigCategory {
          name: i18n("Actions")
-         icon: "system-run"
+         icon: "run-build"
          source: "configActions.qml"
      }
-//     ConfigCategory {
-//         name: i18n("Groups")
-//         icon: "object-group"
-//         source: "configGroups.qml"
-//     }
-//     ConfigCategory {
-//         name: i18n("Lights")
-//         icon: "im-jabber"
-//         source: "configLights.qml"
-//     }
-//     ConfigCategory {
-//         name: i18n("Schedules")
-//         icon: "clock"
-//         source: "configSchedules.qml"
-//     }
-
+    ConfigCategory {
+        name: i18n("Lights")
+        icon: "im-jabber"
+        source: "configLights.qml"
+    }
+    ConfigCategory {
+        name: i18n("Groups")
+        icon: "view-group"
+        source: "configGroups.qml"
+    }
+    ConfigCategory {
+        name: i18n("Schedules")
+        icon: "clock"
+        source: "configSchedules.qml"
+    }
 }

@@ -19,6 +19,7 @@
 //TODO: This seems to not work when being called from the config UI, find out why and fix
 
 var useAltConnection = false;
+var initialized = false;
 var altConnectionEnabled;
 var noConnection = false;
 var debug = false;
@@ -37,6 +38,7 @@ function initHueConfig() {
     useAltConnection = false;
     altConnectionEnabled = plasmoid.configuration.useAltURL
     noConnection = false;
+    initialized = true;
 }
 
 // RAW PUT 
@@ -51,6 +53,13 @@ function putPayloadToUrl(url, payload, succesCallback, failureCallback) {
 }
 
 // GETTERS
+
+/**
+ * Returns whether init has been called already
+ */
+function isInitialized () {
+    return initialized;
+}
 
 /**
  * Checks whether the hue bridge is configured
@@ -151,10 +160,20 @@ function getGroupsIdName(myModel) {
  */
 function getLightsIdName(myModel) {
     if(noConnection) {
+        dbgPrint("No connection");
         return;
     }
     var myUrl = "lights";
     getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, baseDone, myModel, "");
+}
+
+function getSchedulesIdName(myModel) {
+    if(noConnection) {
+        dbgPrint("No connection");
+        return;
+    }
+    var myUrl = "schedules";
+    getJsonFromHue(myUrl, parseSchedulesToSimpleModel, baseFail, baseDone, myModel, "");
 }
 
 /**
@@ -554,6 +573,7 @@ function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, 
             }
             else {
                 dbgPrint("Request to " + getUrl + " failed, with alt connection or no alt configured")
+                dbgPrint("Use alt: " + useAltConnection + " Enabled alt: " + altConnectionEnabled);
                 failureCallback(request, doneCallback);
                 noConnection = true;
             }
@@ -834,6 +854,8 @@ function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
         var myGroup = {};
+        myGroup.name = cgroup.name;
+        myGroup.uuid = groupName;
         myGroup.text = groupName + ": " + cgroup.name;
         myGroup.value = "" + groupName;
         listModel.append(myGroup);
@@ -1000,6 +1022,8 @@ function parseLightsToSimpleModel(json, listModel, name, doneCallback) {
     for(var lightName in myLights) {
         var cLight = myLights[lightName];
         var myLight = {};
+        myLight.uuid = lightName;
+        myLight.name = cLight.name || i18n("Not available");
         myLight.text = lightName + ": " + cLight.name;
         myLight.value = "" + lightName
         listModel.append(myLight);
@@ -1212,12 +1236,245 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
     doneCallback();
 }
 
+function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
+     try {
+        var mySchedules = JSON.parse(json);
+    }
+    catch(e) {
+        dbgPrint("Failed to parse json: " + json);
+        doneCallback();
+        return;
+    }
+    if(mySchedules[0]) {
+        if(mySchedules[0].error) {
+            if(mySchedules[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(mySchedules[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
+    for(var scheduleName in mySchedules) {
+        var cSchedule = mySchedules[scheduleName];
+        var mySchedule = {};
+        mySchedule.uuid = scheduleName;
+        mySchedule.name = cSchedule.name;
+        mySchedule.text = scheduleName + ": " + cSchedule.name;
+        mySchedule.value = "" + scheduleName
+        mySchedule.description = cSchedule.description || i18n("Not available");
+        if(cSchedule.command) {
+            mySchedule.address = cSchedule.address;
+            mySchedule.body = cSchedule.command.body + "";
+            mySchedule.method = cSchedule.command.method;
+        }
+        mySchedule.localtime =  cSchedule.localtime || i18n("Not available");
+        mySchedule.time = cSchedule.time || i18n("Not available");
+        mySchedule.created = cSchedule.created || i18n("Not available");
+        mySchedule.status = cSchedule.status || i18n("Not available");
+        if(mySchedule.status == "enabled") {
+            mySchedule.pstatus = i18n("on");
+        }
+        else {
+            mySchedule.pstatus = i18n("off");
+        }
+        mySchedule.recycle = cSchedule.recycle || i18n("Not available");
+        mySchedule.autodelete = cSchedule.autodelete || false
+        
+        // Prefer localtime over time, as per Hue API
+        if(cSchedule.localtime) {
+            mySchedule.ptime = fmtTimeHumReadable(cSchedule.localtime, true)
+        }
+        else if(cSchedule.time) {
+            mySchedule.ptime = fmtTimeHumReadable(cSchedule.time, false)
+        }
+        else {
+            mySchedule.ptime = i18n("Not available");
+        }
+        
+        listModel.append(mySchedule);
+    }
+    doneCallback();
+}
+
 /**
  * Helper function to get the current time in milliseconds
  */
 function getCurrentTime() {
     var date = new Date();
     return date.getMilliseconds(); 
+}
+
+/**
+ * Helper to format time human readable
+ * See https://developers.meethue.com/documentation/datatypes-and-time-patterns#16_time_patterns
+ * @param {String} strHueTime string formatted as per above
+ * @param {bool} isLocalTime whether the time is local
+ */
+function fmtTimeHumReadable(strHueTime, isLocalTime) {
+
+    var isWeekly = false;
+    var isTime = false;
+    var isRec = false;
+    var isRandom = false;
+    var isAbsolute = false;
+    var bitMask = "";
+    var strTime = "";
+    var strRandom = "";
+    var strRec = "";
+    var strAbsolute = "";
+    
+    var strReadable = "";
+    
+    for (var i = 0, len = strHueTime.length; i < len; i++) {
+        if(strHueTime[i] == "P" || strHueTime[i] == "/") {
+            // we simply ignore these, as they are not needed
+            continue;
+        }
+        if(strHueTime[i] == "R") {
+            isRec = true;
+            continue;
+        }
+        if(strHueTime[i] == "W") {
+            isWeekly = true; 
+            continue; 
+        }
+        if(strHueTime[i] == "T") {
+            isTime = true;
+            continue;
+        }
+        if(strHueTime[i] == "A") {
+            isRandom = true;
+            continue;
+        }
+        if(isWeekly && !isTime && !isRandom) {
+            bitMask += strHueTime[i]
+            continue;
+        }
+        if(isRec && !isTime && !isRandom) {
+            strRec += strHueTime[i];
+            continue;
+        }
+        if(isTime && !isRandom) {
+            strTime += strHueTime[i];
+            continue;
+        }
+        if(isRandom) {
+            strRandom += strHueTime[i];
+            continue;
+        }
+        if(!isTime && !isRandom) {
+            isAbsolute = true;
+            strAbsolute += strHueTime[i];
+        }
+    }
+    
+    if(bitMask != "") {
+        var numMask = parseInt(bitMask);
+        var bits = arrayFromMask(numMask);
+
+        var F_MON = false;
+        var F_TUE = false;
+        var F_WED = false;
+        var F_THU = false;
+        var F_FRI = false;
+        var F_SAT = false;
+        var F_SUN = false;
+        
+        if(bits.length = 7) {
+            F_MON = bits[6]; // 0000001
+            F_TUE = bits[5]; // 0000010
+            F_WED = bits[4]; // 0000100
+            F_THU = bits[3]; // 0001000
+            F_FRI = bits[2]; // 0010000
+            F_SAT = bits[1]; // 0100000
+            F_SUN = bits[0]; // 1000000
+        }
+        
+        strReadable += i18n("Every") + " ";
+        
+        if(F_MON && F_TUE && F_WED && F_THU && F_FRI && F_SAT && F_SUN) {
+            strReadable += i18n("day");
+        }
+        else if(F_MON && F_TUE && F_WED && F_THU && F_FRI) {
+            strReadable += i18n("weekday");
+        }
+        else if(F_SAT && F_SUN) {
+            strReadable += i18n("weekend");
+        }
+        else {
+            if(F_MON) {
+                strReadable += i18n("Mon, ");
+            }
+            if(F_TUE) {
+                strReadable += i18n("Tue, ");
+            }
+            if(F_WED) {
+                strReadable += i18n("Wed, ");
+            }
+            if(F_THU) {
+                strReadable += i18n("Thu, ");
+            }
+            if(F_FRI) {
+                strReadable += i18n("Fri, ");
+            }
+            if(F_SAT) {
+                strReadable += i18n("Sat, ");
+            }
+            if(F_SUN) {
+                strReadable += i18n("Sun, ");
+            }
+        }
+    }
+    else {
+        if(!isAbsolute) {
+            if(!isRec) {
+                strReadable += i18n("Once") 
+            }
+            else if (strRec) {
+                strReadable += strRec + " " + i18n("times");
+            }
+            else {
+                strReadable += i18n("Forever");
+            }
+        }
+        else {
+            strReadable += i18n("At") + " " + strAbsolute + " ";
+        }
+    }
+    
+
+    if(strTime) {
+        strReadable += " " + i18n("at") + " " + strTime;
+        if(!isLocalTime) {
+            strReadable += i18n("UTC");
+        }
+    }
+
+    if(strRandom) {
+        strReadable += " " + i18n("+ random:") + " " + strRandom; 
+        if(!isLocalTime) {
+            strReadable += i18n("UTC");
+        }
+    }
+    
+    return strReadable;
+}
+
+/**
+ * Helper to create an array from a bit mask
+ * @param {int} intMask: bitmask as integer
+ * @return {array} bitMask as array
+ */
+function arrayFromMask (intMask) {
+  if (intMask > 0x7fffffff || intMask < -0x80000000) { 
+    dbgPrint("arrayFromMask: out of range"); 
+    return [false,false,false,false,false,false,false];
+  }
+  for (var nShifted = intMask, resultArray = []; nShifted; 
+       resultArray.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+  return resultArray;
 }
 
 /**
