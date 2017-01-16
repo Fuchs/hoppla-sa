@@ -101,11 +101,9 @@ Item {
     
     function setTargetModel() {
         if(cbType.currentIndex == 0) {
-            print("GROOOOUPS");
             getGroups();
         }
         else {
-            print("LIIIIIGHTS");
             getLights();
         }
     }
@@ -249,7 +247,7 @@ Item {
                 id: titleCol
                 role: 'title'
                 title: i18n('Title')
-                width: parent.width * 0.29
+                width: parent.width * 0.28
                 
                 delegate: Label {
                     text: styleData.value
@@ -261,7 +259,7 @@ Item {
                 id: subtitleCol
                 role: 'subtitle'
                 title: i18n('Subtitle')
-                width: parent.width * 0.39
+                width: parent.width * 0.36
                 
                 delegate: Label {
                     text: styleData.value

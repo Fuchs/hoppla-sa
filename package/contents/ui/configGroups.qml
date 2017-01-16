@@ -89,7 +89,7 @@ Item {
                 id: nameCol
                 role: 'name'
                 title: i18n('Name')
-                width: parent.width * 0.7
+                width: parent.width * 0.72
                 
                 delegate: Label {
                     text: styleData.value
