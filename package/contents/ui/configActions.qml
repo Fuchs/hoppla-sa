@@ -159,6 +159,10 @@ Item {
                     payload += "\"ct\":" + lblCt.text + ",\"colormode\":\"ct\"";
                 }
             }
+
+            if(chkFade.checked) {
+                payload += ", \"transitiontime\":" + sbTime.value * 10
+            }
             
             payload += "}"
             var newAct = {};
@@ -595,6 +599,7 @@ Item {
                             exclusiveGroup: stateGroup
                             enabled: chkOn.checked
                         }
+                        
                         RadioButton {
                             id: rbOff
                             text: i18n("Off")
@@ -701,6 +706,35 @@ Item {
                                         lblSat.text = vsat; 
                                         lblHue.text = vhue;
                                     }
+                                }
+                            }
+                        }
+                        
+                                                CheckBox {
+                            id: chkFade
+                            checked: false
+                            text: i18n("Fade")
+                        }
+                        
+                        // If I got a Swiss Franc for every layout hack needed,
+                        // I'd be rich enough to buy me a nice dinosaur. *RAWR*
+                        GroupBox {
+                            Layout.columnSpan: 2
+                            Layout.fillWidth: true
+                            flat: true
+                            
+                            GridLayout {
+                                columns: 2
+                            
+                                SpinBox {
+                                    id: sbTime
+                                    decimals: 1
+                                    maximumValue: 65534
+                                    enabled: chkFade.checked
+                                }
+                                
+                                Label {
+                                    text: i18n("seconds")
                                 }
                             }
                         }
