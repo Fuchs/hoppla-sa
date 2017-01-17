@@ -1,5 +1,16 @@
 # Changelog 
 
+## 2.0 (2017-mm-dd)
+
+Manage your stuff version with: 
+
+* Lights can be added and edited (renamed)
+* Groups can be added and edited
+* Actions allow fading
+* Schedules can be added and edited
+* Bug fixes all over the place
+* 100% translated to German
+
 ## 1.0 (2017-01-14) 
 
 Initial version with: 

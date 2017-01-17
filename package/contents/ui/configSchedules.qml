@@ -166,7 +166,7 @@ Item {
             standardButtons: StandardButton.Ok | StandardButton.Cancel
             
             onAccepted: {
-                // TODO: Sanity check string, jsonify, rename 
+                // TODO: Sanity check string, jsonify, save 
                 close()
                 
             }

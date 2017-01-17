@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2017-01-17 20:42+0100\n"
+"POT-Creation-Date: 2017-01-17 22:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -262,102 +262,110 @@ msgstr ""
 msgid "All lights"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:249
+#: package/contents/ui/configActions.qml:253
 msgid "Title"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:261
+#: package/contents/ui/configActions.qml:265
 msgid "Subtitle"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:271
+#: package/contents/ui/configActions.qml:275
 #: package/contents/ui/configGroups.qml:136
 #: package/contents/ui/configLights.qml:99
 #: package/contents/ui/configSchedules.qml:112
 msgid "Action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:340
+#: package/contents/ui/configActions.qml:344
 msgid "Add new action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:358
+#: package/contents/ui/configActions.qml:362
 msgid "Add or edit Action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:427
+#: package/contents/ui/configActions.qml:431
 msgid "Title:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:440
+#: package/contents/ui/configActions.qml:444
 msgid "Subtitle:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:453
+#: package/contents/ui/configActions.qml:457
 msgid "Icon:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:478
+#: package/contents/ui/configActions.qml:482
 msgid "Commands:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:488
+#: package/contents/ui/configActions.qml:492
 #: package/contents/ui/GroupItem.qml:530 package/contents/ui/LightItem.qml:458
 msgid "Type"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:504
+#: package/contents/ui/configActions.qml:508
 #: package/contents/ui/configGroups.qml:336
 msgid "Id"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:515
+#: package/contents/ui/configActions.qml:519
 msgid "Payload"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:525
+#: package/contents/ui/configActions.qml:529
 #: package/contents/ui/configGroups.qml:357
 msgid "Remove"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:554
+#: package/contents/ui/configActions.qml:558
 msgid "New command"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:568
+#: package/contents/ui/configActions.qml:572
 msgid "Target"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:586
+#: package/contents/ui/configActions.qml:590
 #: package/contents/ui/GroupItem.qml:500 package/contents/ui/LightItem.qml:436
 msgid "State"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:593
+#: package/contents/ui/configActions.qml:597
 #: package/contents/ui/LightItem.qml:434
 msgid "On"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:600
+#: package/contents/ui/configActions.qml:605
 #: package/contents/ui/LightItem.qml:434
 msgid "Off"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:607
+#: package/contents/ui/configActions.qml:612
 #: package/contents/ui/GroupItem.qml:512 package/contents/ui/LightItem.qml:439
 msgid "Brightness"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:623
-#: package/contents/ui/configActions.qml:637
+#: package/contents/ui/configActions.qml:628
+#: package/contents/ui/configActions.qml:642
 msgid "Colour"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:630
+#: package/contents/ui/configActions.qml:635
 msgid "Temperature"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:711
+#: package/contents/ui/configActions.qml:716
+msgid "Fade"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:737
+msgid "seconds"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:745
 msgid "Add new command"
 msgstr ""
 
@@ -567,23 +575,23 @@ msgstr ""
 msgid "Check if your Hue bridge is configured and reachable"
 msgstr ""
 
-#: package/contents/ui/FullRepresentation.qml:380
+#: package/contents/ui/FullRepresentation.qml:379
 msgid "Hue bridge not reachable"
 msgstr ""
 
-#: package/contents/ui/FullRepresentation.qml:387
+#: package/contents/ui/FullRepresentation.qml:386
 msgid "Not authenticated with Hue bridge"
 msgstr ""
 
-#: package/contents/ui/FullRepresentation.qml:394
+#: package/contents/ui/FullRepresentation.qml:393
 msgid "Main connection"
 msgstr ""
 
-#: package/contents/ui/FullRepresentation.qml:400
+#: package/contents/ui/FullRepresentation.qml:399
 msgid "Alternative connection"
 msgstr ""
 
-#: package/contents/ui/FullRepresentation.qml:419
+#: package/contents/ui/FullRepresentation.qml:418
 msgid "lights on"
 msgstr ""
 

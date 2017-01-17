@@ -333,7 +333,6 @@ FocusScope {
     // This leads to side effects such as closing the current expanded selection, 
     // but this should be acceptable, else updateGroups and updateLights can be used.
     function reInit(initial, fetchAll) {
-        //TODO: add a nice overlay while loading
         hueNotConfiguredView.visible = !getHueConfigured();
         hueNotConnectedView.visible = getHueConfigured() && hueNotConnected;
         tabView.visible = getHueConfigured() && !hueNotConnected;
