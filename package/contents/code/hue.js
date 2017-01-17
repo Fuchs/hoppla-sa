@@ -16,8 +16,6 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//TODO: This seems to not work when being called from the config UI, find out why and fix
-
 var useAltConnection = false;
 var initialized = false;
 var altConnectionEnabled;
@@ -165,6 +163,15 @@ function getLightsIdName(myModel) {
     }
     var myUrl = "lights";
     getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, baseDone, myModel, "");
+}
+
+function getAvailableLightsIdName(myModel) {
+    if(noConnection) {
+        dbgPrint("No connection");
+        return;
+    }
+    var myUrl = "";
+    getJsonFromHue(myUrl, parseAvailableLightsToSimpleModel, baseFail, baseDone, myModel, "");
 }
 
 function getSchedulesIdName(myModel) {
@@ -808,7 +815,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
                 else {
                     myLight.vHasTemperature = false;
                 }
-        
+                
                 myLight.vct = clight.state.ct || 0;
                 myLight.valert = clight.state.alert || i18n("Not available");
                 myLight.vcolormode = clight.state.colormode || "none";
@@ -832,7 +839,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
 }
 
 function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
-     try {
+    try {
         var myGroups = JSON.parse(json);
     }
     catch(e) {
@@ -855,10 +862,21 @@ function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
         var cgroup = myGroups[groupName];
         var myGroup = {};
         myGroup.name = cgroup.name;
-        myGroup.uuid = groupName;
-        myGroup.text = groupName + ": " + cgroup.name;
-        myGroup.value = "" + groupName;
-        listModel.append(myGroup);
+        myGroup.type = cgroup.type || i18n("Not available");
+        myGroup.class = cgroup.class || i18n("Not available");
+        if(myGroup.type == "Group" || myGroup.type == "Room") {
+            myGroup.uuid = groupName;
+            myGroup.text = groupName + ": " + cgroup.name;
+            myGroup.value = "" + groupName;
+            myGroup.tclass = i18n(cgroup.class);
+            myGroup.vlights = cgroup.lights || i18n("Not available");
+            myGroup.slights = "" + cgroup.lights || i18n("Not available");
+            listModel.append(myGroup);
+        }
+        else {
+            dbgPrint("Got a group we can't handle: " + groupName + " with type: " + cgroup.type);
+            continue;
+        }
     }
     doneCallback();
 }
@@ -926,7 +944,7 @@ function parseGroupsToModel(json, listModel, name, doneCallback) {
             myGroup.vHasTemperature = true;
         }
         else {
-             myGroup.vHasTemperature = false;
+            myGroup.vHasTemperature = false;
         }
         
         listModel.append(myGroup);
@@ -980,7 +998,7 @@ function parseGroupToObject(json, myObject, name, doneCallback) {
     myObject.valert = cgroup.action.alert || i18n("Not available");
     myObject.vcolormode = cgroup.action.colormode  || "none";
     myObject.vLastUpdated = getCurrentTime();
-
+    
     if(cgroup.action.hue || cgroup.action.sat || cgroup.action.xy) {
         myObject.vHasColour = true;
     }
@@ -1000,7 +1018,7 @@ function parseGroupToObject(json, myObject, name, doneCallback) {
 }
 
 function parseLightsToSimpleModel(json, listModel, name, doneCallback) {
-     try {
+    try {
         var myLights = JSON.parse(json);
     }
     catch(e) {
@@ -1031,11 +1049,68 @@ function parseLightsToSimpleModel(json, listModel, name, doneCallback) {
     doneCallback();
 }
 
+function parseAvailableLightsToSimpleModel(json, listModel, name, doneCallback) {
+    try {
+        var myResult = JSON.parse(json);
+    }
+    catch(e) {
+        dbgPrint("Failed to parse json: " + json);
+        doneCallback();
+        return;
+    }
+    if(myResult[0]) {
+        if(myResult[0].error) {
+            if(myResult[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myResult[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
+    var usedLight = []
+    
+    var myGroups = myResult["groups"];
+    for(var groupName in myGroups) {
+        var cgroup = myGroups[groupName];
+        if(cgroup.lights) {
+            for(var light in  cgroup.lights) {
+                usedLight.push(cgroup.lights[light]);
+            }
+        }
+    }
+    
+    var foundLights = false;
+    
+    var myLights = myResult["lights"];
+    for(var lightName in myLights) {
+        foundLights = true;
+        if(usedLight.indexOf(lightName) >= 0) {
+        }
+        else {
+            var cLight = myLights[lightName];
+            var myLight = {};
+            myLight.uuid = lightName;
+            myLight.name = cLight.name || i18n("Not available");
+            myLight.text = lightName + ": " + cLight.name;
+            myLight.value = "" + lightName
+            listModel.append(myLight);
+        }
+    }
+    if(foundLights && listModel.count == 0) {
+        var txtNone = i18n("No lights without a room available");
+        listModel.append({ uuid: "-1", name: txtNone, text: txtNone, value: txtNone})
+    }
+    
+    doneCallback();
+}
+
 function parseAllLightsToModel(json, listModel, name, doneCallback) {
     listModel.clear();
     try {
         var myLights = JSON.parse(json);
-     }
+    }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
         doneCallback();
@@ -1165,7 +1240,7 @@ function parseLightToModel(json, listModel, lightName, doneCallback) {
     else {
         myLight.vHasTemperature = false;
     }
-
+    
     listModel.append(myLight);
     
     doneCallback();
@@ -1225,7 +1300,7 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
     else {
         myObject.vHasColour = false;
     }
-
+    
     if(clight.state.ct){
         myObject.vHasTemperature = true;
     }
@@ -1237,7 +1312,7 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
 }
 
 function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
-     try {
+    try {
         var mySchedules = JSON.parse(json);
     }
     catch(e) {
@@ -1299,6 +1374,35 @@ function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
 }
 
 /**
+ * Helper to clear a model and fill it with all supported room classes 
+ * @param {ListModel} myModel model to fill
+ * Adds: name (Hue), translatedName (i18n), iconName (lowercase, stripped whitespace)
+ */
+function fillWithClasses(myModel) {
+    // We do these one by one so we can translate them
+    myModel.clear();
+    myModel.append({name: "Living room", translatedName: i18n("Living room"), iconName: "livingroom"});
+    myModel.append({name: "Kitchen", translatedName: i18n("Kitchen"), iconName: "kitchen"});
+    myModel.append({name: "Dining", translatedName: i18n("Dining"), iconName: "dining"});
+    myModel.append({name: "Bedroom", translatedName: i18n("Bedroom"), iconName: "bedroom"});
+    myModel.append({name: "Kids bedroom", translatedName: i18n("Kids bedroom"), iconName: "kidsbedroom"});
+    myModel.append({name: "Bathroom", translatedName: i18n("Bathroom"), iconName: "bathroom"});
+    myModel.append({name: "Nursery", translatedName: i18n("Nursery"), iconName: "nursery"});
+    myModel.append({name: "Recreation", translatedName: i18n("Recreation"), iconName: "recreation"});
+    myModel.append({name: "Office", translatedName: i18n("Office"), iconName: "office"});
+    myModel.append({name: "Gym", translatedName: i18n("Gym"), iconName: "gym"});
+    myModel.append({name: "Hallway", translatedName: i18n("Hallway"), iconName: "hallway"});
+    myModel.append({name: "Toilet", translatedName: i18n("Toilet"), iconName: "toilet"});
+    myModel.append({name: "Front door", translatedName: i18n("Front door"), iconName: "frontdoor"});
+    myModel.append({name: "Garage", translatedName: i18n("Garage"), iconName: "garage"});
+    myModel.append({name: "Terrace", translatedName: i18n("Terrace"), iconName: "terrace"});
+    myModel.append({name: "Garden", translatedName: i18n("Garden"), iconName: "garden"});
+    myModel.append({name: "Driveway", translatedName: i18n("Driveway"), iconName: "driveway"});
+    myModel.append({name: "Carport", translatedName: i18n("Carport"), iconName: "carport"});
+    myModel.append({name: "Other", translatedName: i18n("Other"), iconName: "other"});
+}
+
+/**
  * Helper function to get the current time in milliseconds
  */
 function getCurrentTime() {
@@ -1313,7 +1417,7 @@ function getCurrentTime() {
  * @param {bool} isLocalTime whether the time is local
  */
 function fmtTimeHumReadable(strHueTime, isLocalTime) {
-
+    
     var isWeekly = false;
     var isTime = false;
     var isRec = false;
@@ -1373,7 +1477,7 @@ function fmtTimeHumReadable(strHueTime, isLocalTime) {
     if(bitMask != "") {
         var numMask = parseInt(bitMask);
         var bits = arrayFromMask(numMask);
-
+        
         var F_MON = false;
         var F_TUE = false;
         var F_WED = false;
@@ -1444,14 +1548,14 @@ function fmtTimeHumReadable(strHueTime, isLocalTime) {
         }
     }
     
-
+    
     if(strTime) {
         strReadable += " " + i18n("at") + " " + strTime;
         if(!isLocalTime) {
             strReadable += i18n("UTC");
         }
     }
-
+    
     if(strRandom) {
         strReadable += " " + i18n("+ random:") + " " + strRandom; 
         if(!isLocalTime) {
@@ -1468,13 +1572,13 @@ function fmtTimeHumReadable(strHueTime, isLocalTime) {
  * @return {array} bitMask as array
  */
 function arrayFromMask (intMask) {
-  if (intMask > 0x7fffffff || intMask < -0x80000000) { 
-    dbgPrint("arrayFromMask: out of range"); 
-    return [false,false,false,false,false,false,false];
-  }
-  for (var nShifted = intMask, resultArray = []; nShifted; 
-       resultArray.push(Boolean(nShifted & 1)), nShifted >>>= 1);
-  return resultArray;
+    if (intMask > 0x7fffffff || intMask < -0x80000000) { 
+        dbgPrint("arrayFromMask: out of range"); 
+        return [false,false,false,false,false,false,false];
+    }
+    for (var nShifted = intMask, resultArray = []; nShifted; 
+         resultArray.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+    return resultArray;
 }
 
 /**

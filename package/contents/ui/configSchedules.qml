@@ -50,19 +50,18 @@ Item {
     
     
     function resetDialog() {
-       
+        txtScheduleName.text = "";
     }
     
     function addSchedule() {
-        
-        
+        resetDialog();
+        editScheduleDialogue.scheduleId = "-1";
+        editScheduleDialogue.open();
     }
     
     function scheduleListChanged() {
-
+        
     }
-
-    
     
     ColumnLayout {
         Layout.fillWidth: true
@@ -125,7 +124,11 @@ Item {
                             iconName: 'entry-edit'
                             Layout.fillHeight: true
                             onClicked: {
-                                // Open dialogue
+                                resetDialog();
+                                var editItem = schedulesModel.get(styleData.row);
+                                txtScheduleName.text = editItem.name;
+                                editScheduleDialogue.scheduleId = editItem.uuid;
+                                editScheduleDialogue.open();
                             }
                         }
                         
@@ -151,7 +154,41 @@ Item {
             id: btnAddSchedule
             text: i18n("Add new schedule")
             onClicked: addSchedule();
-            enabled: false
+        }
+        
+        Dialog {
+            id: editScheduleDialogue
+            title: i18n('Create or edit schedule')
+            width: 500
+            
+            property string scheduleId: ""
+            
+            standardButtons: StandardButton.Ok | StandardButton.Cancel
+            
+            onAccepted: {
+                // TODO: Sanity check string, jsonify, rename 
+                close()
+                
+            }
+            
+            GridLayout {
+                id: grdTitle
+                anchors.left: parent.left
+                anchors.right: parent.right
+                columns: 3
+                Layout.fillWidth: true
+                
+                Label {
+                    Layout.alignment: Qt.AlignRight
+                    text: i18n("Schedule name:")
+                }
+                
+                TextField {
+                    id: txtScheduleName
+                    Layout.fillWidth: true
+                    maximumLength: 32
+                }
+            }
         }
     }
 }

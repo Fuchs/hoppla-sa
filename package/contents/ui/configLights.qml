@@ -50,7 +50,7 @@ Item {
     
     
     function resetDialog() {
-       
+        txtLightName.text = "";
     }
     
     function addLight() {
@@ -62,8 +62,6 @@ Item {
 
     }
 
-    
-    
     ColumnLayout {
         Layout.fillWidth: true
         anchors.left: parent.left
@@ -113,10 +111,13 @@ Item {
                             iconName: 'entry-edit'
                             Layout.fillHeight: true
                             onClicked: {
-                                // Open dialogue
+                                resetDialog();
+                                var editItem = lightsModel.get(styleData.row);
+                                txtLightName.text = editItem.name;
+                                editLightDialogue.lightId = editItem.uuid;
+                                editLightDialogue.open();
                             }
                         }
-                        
                         
                         Button {
                             iconName: 'list-remove'
@@ -140,6 +141,41 @@ Item {
             text: i18n("Add new light")
             onClicked: addLight()
             enabled: false
+        }
+        
+        Dialog {
+            id: editLightDialogue
+            title: i18n('Edit Light')
+            width: 500
+            
+            property string lightId: ""
+            
+            standardButtons: StandardButton.Ok | StandardButton.Cancel
+            
+            onAccepted: {
+                // TODO: Sanity check string, jsonify, rename 
+                close()
+               
+            }
+            
+            GridLayout {
+                id: grdTitle
+                anchors.left: parent.left
+                anchors.right: parent.right
+                columns: 3
+                Layout.fillWidth: true
+                
+                Label {
+                    Layout.alignment: Qt.AlignRight
+                    text: i18n("Light name:")
+                }
+                
+                TextField {
+                    id: txtLightName
+                    Layout.fillWidth: true
+                    maximumLength: 32
+                }
+            }
         }
     }
 }

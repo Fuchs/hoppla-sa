@@ -26,7 +26,6 @@ import "../code/hue.js" as Hue
 
 
 Item {
-    
     width: parent.width
     anchors.left: parent.left
     anchors.right: parent.right
@@ -35,12 +34,36 @@ Item {
         id: groupsModel
     }
     
+    ListModel {
+        id: cbClassModel
+    }
+    
+    ListModel {
+        id: groupLightsModel
+    }
+    
+    ListModel {
+        id: availableLightsModel
+    }
+    
     Component.onCompleted: {
         if(!Hue.isInitialized()) {
             Hue.initHueConfig();
         }
         groupsModel.clear();
         getGroups();
+        Hue.fillWithClasses(cbClassModel);
+    }
+    
+    function rbTypeChanged() {
+        if(rbRoom.checked) {
+            availableLightsModel.clear();
+            Hue.getAvailableLightsIdName(availableLightsModel);
+        }
+        else if(rbGroup.checked) {
+            availableLightsModel.clear();
+            Hue.getLightsIdName(availableLightsModel);
+        }
     }
     
     function getGroups() {
@@ -48,21 +71,33 @@ Item {
         Hue.getGroupsIdName(groupsModel);
     }
     
-    
     function resetDialog() {
-       
+        groupLightsModel.clear();
+        txtGroupName.text = ""
+        rbGroup.checked = true; 
+        rbRoom.checked = false;
+        cbClass.currentIndex = 0;
+        rbTypeChanged();
+    }
+    
+    function addLight(lightId, lightName) {
+        groupLightsModel.append( { vuuid: lightId, vname: lightName });
+    }
+    
+    function getLightsForGroup(groupId, slights) {
+        groupLightsModel.clear();
+        Hue.getGroupLights(groupLightsModel, slights);
     }
     
     function addGroup() {
-        
-        
+        resetDialog();
+        editGroupDialogue.groupId = "-1";
+        editGroupDialogue.open();
     }
     
     function groupListChanged() {
-
+        
     }
-
-    
     
     ColumnLayout {
         Layout.fillWidth: true
@@ -113,7 +148,25 @@ Item {
                             iconName: 'entry-edit'
                             Layout.fillHeight: true
                             onClicked: {
-                                // Open dialogue
+                                resetDialog();
+                                var editItem = groupsModel.get(styleData.row);
+                                txtGroupName.text = editItem.name;
+                                editGroupDialogue.groupId = editItem.uuid;
+                                if( editItem.type == "Room" ) {
+                                    rbRoom.checked = true;
+                                    cbClass.currentIndex = cbClass.find(editItem.tclass);
+                                }
+                                else if (editItem.type == "Group" ) {
+                                    rbGroup.checked = true;
+                                }
+                                else { 
+                                    // can't manage that type, should not happen
+                                    return;
+                                }
+                                getLightsForGroup(editItem.uuid, editItem.slights);
+                                rbTypeChanged();
+
+                                editGroupDialogue.open();
                             }
                         }
                         
@@ -139,7 +192,196 @@ Item {
             id: btnAddGroup
             text: i18n("Add new group")
             onClicked: addGroup()
-            enabled: false
+        }
+        
+        Dialog {
+            id: editGroupDialogue
+            title: i18n('Create or edit group')
+            width: 500
+            
+            property string groupId: ""
+            
+            standardButtons: StandardButton.Ok | StandardButton.Cancel
+            
+            onAccepted: {
+                // TODO: Sanity check, jsonify, save all
+                close()
+            }
+            
+            ColumnLayout {
+                Layout.fillWidth: true
+                anchors.left: parent.left
+                anchors.right: parent.right
+                
+                GridLayout {
+                    id: grdTitle
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    columns: 3
+                    Layout.fillWidth: true
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Group name:")
+                    }
+                    
+                    TextField {
+                        Layout.columnSpan: 2
+                        id: txtGroupName
+                        Layout.fillWidth: true
+                        maximumLength: 32
+                    }
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Group type:")
+                    }
+                    
+                    ExclusiveGroup { id: typeGroup }
+                    
+                    RadioButton {
+                        id: rbGroup
+                        text: i18n("Group")
+                        checked: true
+                        exclusiveGroup: typeGroup
+                        onClicked: { 
+                            rbTypeChanged()
+                        }
+                    }
+                    RadioButton {
+                        id: rbRoom
+                        text: i18n("Room")
+                        exclusiveGroup: typeGroup
+                        onClicked: { 
+                            rbTypeChanged()
+                        }
+                    }
+                    
+                    Label {
+                    }
+                    
+                    Label {
+                        Layout.columnSpan: 2
+                        font.italic: true
+                        text: i18n("A light can only be in one room but multiple groups at the same time.")
+                    }
+                    
+                    Label {
+                    }
+                    
+                    Label {
+                        Layout.columnSpan: 2
+                        font.italic: true
+                        text: i18n("Only rooms have a class with a specific icon, groups only have a name")
+                    }
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Class")
+                    }
+                    
+                    ComboBox {
+                        id: cbClass
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        model: cbClassModel
+                        enabled: rbRoom.checked
+                        textRole: 'translatedName'
+                    }
+                }
+                
+                GroupBox {
+                    Layout.fillWidth: true
+                    id: grpNewLight
+                    title: i18n("Lights");
+                    
+                    GridLayout {
+                        id: grdLight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        columns: 3
+                        Layout.fillWidth: true
+                        
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            text: i18n("light: ")
+                        }
+                        
+                        ComboBox {
+                            id: cbLight
+                            model: availableLightsModel
+                            Layout.fillWidth: true
+                            textRole: 'name'
+                            
+                        }
+                        
+                        Button {
+                            id: btnAddLight
+                            text: i18n("Add light");
+                            onClicked: {
+                                var cLight = availableLightsModel.get(cbLight.currentIndex);
+                                if(cLight && cLight.uuid != "-1") {
+                                    addLight(cLight.uuid, cLight.name)
+                                }
+                            }
+                        }
+                        
+                        TableView {
+                            id: lightTable
+                            width: parent.width
+                            
+                            TableViewColumn {
+                                id: lightIdCol
+                                role: 'vuuid'
+                                title: i18n('Id')
+                                width: parent.width * 0.1
+                                
+                                delegate: Label {
+                                    text: styleData.value
+                                }
+                            }
+                            
+                            TableViewColumn {
+                                id: lightNameCol
+                                role: 'vname'
+                                title: i18n('Name')
+                                width: parent.width * 0.72
+                                
+                                delegate: Label {
+                                    text: styleData.value
+                                    elide: Text.ElideRight
+                                }
+                            }
+                            
+                            TableViewColumn {
+                                title: i18n('Remove')
+                                width: parent.width * 0.15
+                                
+                                delegate: Item {
+                                    
+                                    GridLayout {
+                                        height: parent.height
+                                        columns: 1
+                                        rowSpacing: 0
+                                        
+                                        Button {
+                                            iconName: 'list-remove'
+                                            Layout.fillHeight: true
+                                            onClicked: {
+                                                groupLightsModel.remove(styleData.row)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            model: groupLightsModel
+                            Layout.preferredHeight: 110
+                            Layout.preferredWidth: parent.width
+                            Layout.columnSpan: 3
+                        }
+                    }
+                }
+            }
         }
     }
 }
