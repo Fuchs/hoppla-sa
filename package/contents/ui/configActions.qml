@@ -125,6 +125,8 @@ Item {
         rbOn.checked = true; 
         rbTemp.checked = true; 
         sldBri.value = 0;
+        chkFade.checked = false;
+        sbTime.value = 0.0;
         var iconText = cbIcon.currentText;
         mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
         setColourCT(lblCt.text);
