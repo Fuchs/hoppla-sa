@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2017-01-18 14:23+0100\n"
+"POT-Creation-Date: 2017-01-18 22:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,207 +17,208 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: package/contents/code/hue.js:764 package/contents/code/hue.js:765
-#: package/contents/code/hue.js:766 package/contents/code/hue.js:767
-#: package/contents/code/hue.js:770 package/contents/code/hue.js:775
-#: package/contents/code/hue.js:777 package/contents/code/hue.js:778
-#: package/contents/code/hue.js:800 package/contents/code/hue.js:813
-#: package/contents/code/hue.js:818 package/contents/code/hue.js:843
-#: package/contents/code/hue.js:846 package/contents/code/hue.js:847
-#: package/contents/code/hue.js:848 package/contents/code/hue.js:849
-#: package/contents/code/hue.js:850 package/contents/code/hue.js:851
-#: package/contents/code/hue.js:852 package/contents/code/hue.js:888
-#: package/contents/code/hue.js:889 package/contents/code/hue.js:895
-#: package/contents/code/hue.js:896 package/contents/code/hue.js:935
-#: package/contents/code/hue.js:936 package/contents/code/hue.js:937
-#: package/contents/code/hue.js:938 package/contents/code/hue.js:941
-#: package/contents/code/hue.js:946 package/contents/code/hue.js:948
-#: package/contents/code/hue.js:949 package/contents/code/hue.js:956
+#: package/contents/code/hue.js:763 package/contents/code/hue.js:764
+#: package/contents/code/hue.js:765 package/contents/code/hue.js:766
+#: package/contents/code/hue.js:769 package/contents/code/hue.js:774
+#: package/contents/code/hue.js:776 package/contents/code/hue.js:777
+#: package/contents/code/hue.js:799 package/contents/code/hue.js:812
+#: package/contents/code/hue.js:817 package/contents/code/hue.js:842
+#: package/contents/code/hue.js:845 package/contents/code/hue.js:846
+#: package/contents/code/hue.js:847 package/contents/code/hue.js:848
+#: package/contents/code/hue.js:849 package/contents/code/hue.js:850
+#: package/contents/code/hue.js:851 package/contents/code/hue.js:887
+#: package/contents/code/hue.js:888 package/contents/code/hue.js:894
+#: package/contents/code/hue.js:895 package/contents/code/hue.js:933
+#: package/contents/code/hue.js:934 package/contents/code/hue.js:935
+#: package/contents/code/hue.js:936 package/contents/code/hue.js:939
+#: package/contents/code/hue.js:944 package/contents/code/hue.js:946
+#: package/contents/code/hue.js:947 package/contents/code/hue.js:954
+#: package/contents/code/hue.js:998 package/contents/code/hue.js:999
 #: package/contents/code/hue.js:1000 package/contents/code/hue.js:1001
-#: package/contents/code/hue.js:1002 package/contents/code/hue.js:1003
-#: package/contents/code/hue.js:1006 package/contents/code/hue.js:1011
-#: package/contents/code/hue.js:1013 package/contents/code/hue.js:1014
-#: package/contents/code/hue.js:1022 package/contents/code/hue.js:1068
-#: package/contents/code/hue.js:1120 package/contents/code/hue.js:1158
-#: package/contents/code/hue.js:1163 package/contents/code/hue.js:1181
-#: package/contents/code/hue.js:1184 package/contents/code/hue.js:1185
-#: package/contents/code/hue.js:1186 package/contents/code/hue.js:1187
-#: package/contents/code/hue.js:1188 package/contents/code/hue.js:1189
-#: package/contents/code/hue.js:1190 package/contents/code/hue.js:1227
-#: package/contents/code/hue.js:1232 package/contents/code/hue.js:1243
-#: package/contents/code/hue.js:1246 package/contents/code/hue.js:1247
-#: package/contents/code/hue.js:1248 package/contents/code/hue.js:1249
-#: package/contents/code/hue.js:1250 package/contents/code/hue.js:1251
-#: package/contents/code/hue.js:1252 package/contents/code/hue.js:1294
-#: package/contents/code/hue.js:1299 package/contents/code/hue.js:1310
-#: package/contents/code/hue.js:1313 package/contents/code/hue.js:1314
-#: package/contents/code/hue.js:1315 package/contents/code/hue.js:1316
-#: package/contents/code/hue.js:1317 package/contents/code/hue.js:1318
-#: package/contents/code/hue.js:1319 package/contents/code/hue.js:1366
-#: package/contents/code/hue.js:1372 package/contents/code/hue.js:1373
-#: package/contents/code/hue.js:1374 package/contents/code/hue.js:1375
-#: package/contents/code/hue.js:1382 package/contents/code/hue.js:1393
+#: package/contents/code/hue.js:1004 package/contents/code/hue.js:1009
+#: package/contents/code/hue.js:1011 package/contents/code/hue.js:1012
+#: package/contents/code/hue.js:1020 package/contents/code/hue.js:1066
+#: package/contents/code/hue.js:1117 package/contents/code/hue.js:1155
+#: package/contents/code/hue.js:1160 package/contents/code/hue.js:1178
+#: package/contents/code/hue.js:1181 package/contents/code/hue.js:1182
+#: package/contents/code/hue.js:1183 package/contents/code/hue.js:1184
+#: package/contents/code/hue.js:1185 package/contents/code/hue.js:1186
+#: package/contents/code/hue.js:1187 package/contents/code/hue.js:1224
+#: package/contents/code/hue.js:1229 package/contents/code/hue.js:1240
+#: package/contents/code/hue.js:1243 package/contents/code/hue.js:1244
+#: package/contents/code/hue.js:1245 package/contents/code/hue.js:1246
+#: package/contents/code/hue.js:1247 package/contents/code/hue.js:1248
+#: package/contents/code/hue.js:1249 package/contents/code/hue.js:1291
+#: package/contents/code/hue.js:1296 package/contents/code/hue.js:1307
+#: package/contents/code/hue.js:1310 package/contents/code/hue.js:1311
+#: package/contents/code/hue.js:1312 package/contents/code/hue.js:1313
+#: package/contents/code/hue.js:1314 package/contents/code/hue.js:1315
+#: package/contents/code/hue.js:1316 package/contents/code/hue.js:1363
+#: package/contents/code/hue.js:1369 package/contents/code/hue.js:1370
+#: package/contents/code/hue.js:1371 package/contents/code/hue.js:1372
+#: package/contents/code/hue.js:1379 package/contents/code/hue.js:1390
 #: package/contents/ui/LightItem.qml:138 package/contents/ui/LightItem.qml:442
 msgid "Not available"
 msgstr ""
 
-#: package/contents/code/hue.js:1127
+#: package/contents/code/hue.js:1124
 msgid "No lights without a room available"
 msgstr ""
 
-#: package/contents/code/hue.js:1377
+#: package/contents/code/hue.js:1374
 msgid "on"
 msgstr ""
 
-#: package/contents/code/hue.js:1380
+#: package/contents/code/hue.js:1377
 msgid "off"
 msgstr ""
 
-#: package/contents/code/hue.js:1409
+#: package/contents/code/hue.js:1406
 msgid "Living room"
 msgstr ""
 
-#: package/contents/code/hue.js:1410
+#: package/contents/code/hue.js:1407
 msgid "Kitchen"
 msgstr ""
 
-#: package/contents/code/hue.js:1411
+#: package/contents/code/hue.js:1408
 msgid "Dining"
 msgstr ""
 
-#: package/contents/code/hue.js:1412
+#: package/contents/code/hue.js:1409
 msgid "Bedroom"
 msgstr ""
 
-#: package/contents/code/hue.js:1413
+#: package/contents/code/hue.js:1410
 msgid "Kids bedroom"
 msgstr ""
 
-#: package/contents/code/hue.js:1414
+#: package/contents/code/hue.js:1411
 msgid "Bathroom"
 msgstr ""
 
-#: package/contents/code/hue.js:1415
+#: package/contents/code/hue.js:1412
 msgid "Nursery"
 msgstr ""
 
-#: package/contents/code/hue.js:1416
+#: package/contents/code/hue.js:1413
 msgid "Recreation"
 msgstr ""
 
-#: package/contents/code/hue.js:1417
+#: package/contents/code/hue.js:1414
 msgid "Office"
 msgstr ""
 
-#: package/contents/code/hue.js:1418
+#: package/contents/code/hue.js:1415
 msgid "Gym"
 msgstr ""
 
-#: package/contents/code/hue.js:1419
+#: package/contents/code/hue.js:1416
 msgid "Hallway"
 msgstr ""
 
-#: package/contents/code/hue.js:1420
+#: package/contents/code/hue.js:1417
 msgid "Toilet"
 msgstr ""
 
-#: package/contents/code/hue.js:1421
+#: package/contents/code/hue.js:1418
 msgid "Front door"
 msgstr ""
 
-#: package/contents/code/hue.js:1422
+#: package/contents/code/hue.js:1419
 msgid "Garage"
 msgstr ""
 
-#: package/contents/code/hue.js:1423
+#: package/contents/code/hue.js:1420
 msgid "Terrace"
 msgstr ""
 
-#: package/contents/code/hue.js:1424
+#: package/contents/code/hue.js:1421
 msgid "Garden"
 msgstr ""
 
-#: package/contents/code/hue.js:1425
+#: package/contents/code/hue.js:1422
 msgid "Driveway"
 msgstr ""
 
-#: package/contents/code/hue.js:1426
+#: package/contents/code/hue.js:1423
 msgid "Carport"
 msgstr ""
 
-#: package/contents/code/hue.js:1427
+#: package/contents/code/hue.js:1424
 msgid "Other"
 msgstr ""
 
-#: package/contents/code/hue.js:1524
+#: package/contents/code/hue.js:1521
 msgid "Every"
 msgstr ""
 
-#: package/contents/code/hue.js:1527
+#: package/contents/code/hue.js:1524
 msgid "day"
 msgstr ""
 
-#: package/contents/code/hue.js:1530
+#: package/contents/code/hue.js:1527
 msgid "weekday"
 msgstr ""
 
-#: package/contents/code/hue.js:1533
+#: package/contents/code/hue.js:1530
 msgid "weekend"
 msgstr ""
 
-#: package/contents/code/hue.js:1537
+#: package/contents/code/hue.js:1534
 msgid "Mon, "
 msgstr ""
 
-#: package/contents/code/hue.js:1540
+#: package/contents/code/hue.js:1537
 msgid "Tue, "
 msgstr ""
 
-#: package/contents/code/hue.js:1543
+#: package/contents/code/hue.js:1540
 msgid "Wed, "
 msgstr ""
 
-#: package/contents/code/hue.js:1546
+#: package/contents/code/hue.js:1543
 msgid "Thu, "
 msgstr ""
 
-#: package/contents/code/hue.js:1549
+#: package/contents/code/hue.js:1546
 msgid "Fri, "
 msgstr ""
 
-#: package/contents/code/hue.js:1552
+#: package/contents/code/hue.js:1549
 msgid "Sat, "
 msgstr ""
 
-#: package/contents/code/hue.js:1555
+#: package/contents/code/hue.js:1552
 msgid "Sun, "
 msgstr ""
 
-#: package/contents/code/hue.js:1562 package/contents/ui/ActionEditor.qml:287
+#: package/contents/code/hue.js:1559 package/contents/ui/ActionEditor.qml:301
+#: package/contents/ui/TimeEditor.qml:68
 msgid "Once"
 msgstr ""
 
-#: package/contents/code/hue.js:1565
+#: package/contents/code/hue.js:1562
 msgid "times"
 msgstr ""
 
-#: package/contents/code/hue.js:1568
+#: package/contents/code/hue.js:1565
 msgid "Forever"
 msgstr ""
 
-#: package/contents/code/hue.js:1572
+#: package/contents/code/hue.js:1569
 msgid "At"
 msgstr ""
 
-#: package/contents/code/hue.js:1578
+#: package/contents/code/hue.js:1575
 msgid "at"
 msgstr ""
 
-#: package/contents/code/hue.js:1580 package/contents/code/hue.js:1587
+#: package/contents/code/hue.js:1577 package/contents/code/hue.js:1584
 msgid "UTC"
 msgstr ""
 
-#: package/contents/code/hue.js:1585
+#: package/contents/code/hue.js:1582
 msgid "+ random:"
 msgstr ""
 
@@ -231,7 +232,7 @@ msgid "Actions"
 msgstr ""
 
 #: package/contents/config/config.qml:37
-#: package/contents/ui/configGroups.qml:313
+#: package/contents/ui/configGroups.qml:322
 #: package/contents/ui/FullRepresentation.qml:114
 msgid "Lights"
 msgstr ""
@@ -245,85 +246,81 @@ msgstr ""
 msgid "Schedules"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:62
+#: package/contents/ui/ActionEditor.qml:69
 msgid "Target"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:80
+#: package/contents/ui/ActionEditor.qml:89
 #: package/contents/ui/GroupItem.qml:500 package/contents/ui/LightItem.qml:436
 msgid "State"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:87
+#: package/contents/ui/ActionEditor.qml:97
 #: package/contents/ui/LightItem.qml:434
 msgid "On"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:95
+#: package/contents/ui/ActionEditor.qml:105
 #: package/contents/ui/LightItem.qml:434
 msgid "Off"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:102
+#: package/contents/ui/ActionEditor.qml:112
 #: package/contents/ui/GroupItem.qml:512 package/contents/ui/LightItem.qml:439
 msgid "Brightness"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:119
+#: package/contents/ui/ActionEditor.qml:130
 msgid "Effect"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:126
+#: package/contents/ui/ActionEditor.qml:138
 msgid "None"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:134
+#: package/contents/ui/ActionEditor.qml:146
 msgid "Colourloop"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:142
-#: package/contents/ui/ActionEditor.qml:156
+#: package/contents/ui/ActionEditor.qml:154
+#: package/contents/ui/ActionEditor.qml:168
 msgid "Colour"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:149
+#: package/contents/ui/ActionEditor.qml:161
 msgid "Temperature"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:236
+#: package/contents/ui/ActionEditor.qml:248
 msgid "Fade"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:257
+#: package/contents/ui/ActionEditor.qml:270
 msgid "seconds"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:265
+#: package/contents/ui/ActionEditor.qml:278
 msgid "Blink"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:280
+#: package/contents/ui/ActionEditor.qml:294
 msgid "Stop"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:294
+#: package/contents/ui/ActionEditor.qml:308
 msgid "15 seconds"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:304
-msgid "Add new command"
-msgstr ""
-
-#: package/contents/ui/ActionEditor.qml:310
-#: package/contents/ui/configGroups.qml:261
+#: package/contents/ui/ActionEditor.qml:318
+#: package/contents/ui/configGroups.qml:270
 msgid "Group"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:311
+#: package/contents/ui/ActionEditor.qml:319
 msgid "Light"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:353
+#: package/contents/ui/ActionEditor.qml:362
 msgid "All lights"
 msgstr ""
 
@@ -331,66 +328,70 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:147
+#: package/contents/ui/configActions.qml:148
 msgid "Title"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:159
+#: package/contents/ui/configActions.qml:160
 msgid "Subtitle"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:169
+#: package/contents/ui/configActions.qml:170
 #: package/contents/ui/configGroups.qml:136
 #: package/contents/ui/configLights.qml:99
 #: package/contents/ui/configSchedules.qml:112
 msgid "Action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:238
+#: package/contents/ui/configActions.qml:239
 msgid "Add new action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:256
-msgid "Add or edit Action"
+#: package/contents/ui/configActions.qml:257
+msgid "Add or edit action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:309
+#: package/contents/ui/configActions.qml:310
 msgid "Title:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:322
+#: package/contents/ui/configActions.qml:321
 msgid "Subtitle:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:335
+#: package/contents/ui/configActions.qml:332
 msgid "Icon:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:360
+#: package/contents/ui/configActions.qml:357
 msgid "Commands:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:370
+#: package/contents/ui/configActions.qml:367
 #: package/contents/ui/GroupItem.qml:530 package/contents/ui/LightItem.qml:458
 msgid "Type"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:386
-#: package/contents/ui/configGroups.qml:353
+#: package/contents/ui/configActions.qml:383
+#: package/contents/ui/configGroups.qml:362
 msgid "Id"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:397
+#: package/contents/ui/configActions.qml:394
 msgid "Payload"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:407
-#: package/contents/ui/configGroups.qml:374
+#: package/contents/ui/configActions.qml:404
+#: package/contents/ui/configGroups.qml:383
 msgid "Remove"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:436
+#: package/contents/ui/configActions.qml:433
 msgid "New command"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:445
+msgid "Add new command"
 msgstr ""
 
 #: package/contents/ui/configBridge.qml:112
@@ -483,66 +484,67 @@ msgid "ID"
 msgstr ""
 
 #: package/contents/ui/configGroups.qml:126
-#: package/contents/ui/configGroups.qml:364
+#: package/contents/ui/configGroups.qml:373
 #: package/contents/ui/configLights.qml:89
 #: package/contents/ui/configSchedules.qml:78
 msgid "Name"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:210
+#: package/contents/ui/configGroups.qml:219
 msgid "Add new group"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:216
+#: package/contents/ui/configGroups.qml:225
 msgid "Create or edit group"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:242
+#: package/contents/ui/configGroups.qml:251
 msgid "Group name:"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:254
+#: package/contents/ui/configGroups.qml:263
 msgid "Group type:"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:270
+#: package/contents/ui/configGroups.qml:279
 msgid "Room"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:283
+#: package/contents/ui/configGroups.qml:292
 msgid "A light can only be in one room but multiple groups at the same time."
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:292
+#: package/contents/ui/configGroups.qml:301
 msgid "Only rooms have a class with a specific icon, groups only have a name"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:297
+#: package/contents/ui/configGroups.qml:306
 #: package/contents/ui/GroupItem.qml:533
 msgid "Class"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:324
+#: package/contents/ui/configGroups.qml:333
 msgid "light: "
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:337
+#: package/contents/ui/configGroups.qml:346
 msgid "Add light"
 msgstr ""
 
-#: package/contents/ui/configLights.qml:159
+#: package/contents/ui/configLights.qml:168
 msgid "Add new light"
 msgstr ""
 
-#: package/contents/ui/configLights.qml:166
-msgid "Edit Light"
+#: package/contents/ui/configLights.qml:175
+msgid "Edit light"
 msgstr ""
 
-#: package/contents/ui/configLights.qml:188
+#: package/contents/ui/configLights.qml:197
 msgid "Light name:"
 msgstr ""
 
 #: package/contents/ui/configSchedules.qml:90
+#: package/contents/ui/configSchedules.qml:213
 msgid "Time"
 msgstr ""
 
@@ -558,8 +560,16 @@ msgstr ""
 msgid "Create or edit schedule"
 msgstr ""
 
-#: package/contents/ui/configSchedules.qml:183
+#: package/contents/ui/configSchedules.qml:187
 msgid "Schedule name:"
+msgstr ""
+
+#: package/contents/ui/configSchedules.qml:199
+msgid "Description:"
+msgstr ""
+
+#: package/contents/ui/configSchedules.qml:223
+msgid "Command"
 msgstr ""
 
 #: package/contents/ui/FullRepresentation.qml:74
@@ -689,6 +699,70 @@ msgstr ""
 
 #: package/contents/ui/main.qml:30
 msgid "Philips Hue lights"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:48
+msgid "Schedule type:"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:55
+msgid "Recurring"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:62
+msgid "Weekly"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:80 package/contents/ui/TimeEditor.qml:168
+msgid "Execute on:"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:93
+msgid "Monday"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:99
+msgid "Tuesday"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:105
+msgid "Wednesday"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:111
+msgid "Thursday"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:117
+msgid "Friday"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:123
+msgid "Saturday"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:129
+msgid "Sunday"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:141
+msgid "Execute:"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:152
+msgid "times or"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:158
+msgid "forever"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:206
+msgid "Execution time (HH:MM:SS):"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:237
+msgid "Random added time:"
 msgstr ""
 
 #: rc.cpp:1

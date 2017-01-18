@@ -138,7 +138,7 @@ ColumnLayout {
         columns: 4
         
         Label {
-            text: i18n("Execute")
+            text: i18n("Execute:")
         }
         
         SpinBox {

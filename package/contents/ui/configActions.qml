@@ -254,7 +254,7 @@ Item {
         id: editActionDialogue
         width: 500
         height: 500
-        title: i18n('Add or edit Action')
+        title: i18n('Add or edit action')
         
         standardButtons: StandardButton.Ok | StandardButton.Cancel
         
