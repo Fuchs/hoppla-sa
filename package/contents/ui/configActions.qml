@@ -180,6 +180,7 @@ Item {
                         
                         Button {
                             iconName: 'entry-edit'
+                            tooltip: i18n("Edit")
                             Layout.fillHeight: true
                             onClicked: {
                                 editActionDialogue.open();
@@ -199,6 +200,7 @@ Item {
                         
                         Button {
                             iconName: 'go-up'
+                            tooltip: i18n("Move up");
                             Layout.fillHeight: true
                             onClicked: {
                                 actionListModel.move(styleData.row, styleData.row - 1, 1)
@@ -209,6 +211,7 @@ Item {
                         
                         Button {
                             iconName: 'go-down'
+                            tooltip: i18n("Move down")
                             Layout.fillHeight: true
                             onClicked: {
                                 actionListModel.move(styleData.row, styleData.row + 1, 1)
@@ -219,6 +222,7 @@ Item {
                         
                         Button {
                             iconName: 'list-remove'
+                            tooltip: i18n("Remove")
                             Layout.fillHeight: true
                             onClicked: {
                                 actionListModel.remove(styleData.row)
@@ -413,6 +417,7 @@ Item {
                             
                             Button {
                                 iconName: 'list-remove'
+                                tooltip: i18n("Remove")
                                 Layout.fillHeight: true
                                 onClicked: {
                                     actListModel.remove(styleData.row)

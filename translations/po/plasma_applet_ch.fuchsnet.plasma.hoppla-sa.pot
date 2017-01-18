@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2017-01-18 22:26+0100\n"
+"POT-Creation-Date: 2017-01-18 23:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,7 +194,7 @@ msgid "Sun, "
 msgstr ""
 
 #: package/contents/code/hue.js:1559 package/contents/ui/ActionEditor.qml:301
-#: package/contents/ui/TimeEditor.qml:68
+#: package/contents/ui/TimeEditor.qml:67
 msgid "Once"
 msgstr ""
 
@@ -232,7 +232,7 @@ msgid "Actions"
 msgstr ""
 
 #: package/contents/config/config.qml:37
-#: package/contents/ui/configGroups.qml:322
+#: package/contents/ui/configGroups.qml:327
 #: package/contents/ui/FullRepresentation.qml:114
 msgid "Lights"
 msgstr ""
@@ -300,6 +300,8 @@ msgid "seconds"
 msgstr ""
 
 #: package/contents/ui/ActionEditor.qml:278
+#: package/contents/ui/configGroups.qml:168
+#: package/contents/ui/configLights.qml:131
 msgid "Blink"
 msgstr ""
 
@@ -312,7 +314,7 @@ msgid "15 seconds"
 msgstr ""
 
 #: package/contents/ui/ActionEditor.qml:318
-#: package/contents/ui/configGroups.qml:270
+#: package/contents/ui/configGroups.qml:275
 msgid "Group"
 msgstr ""
 
@@ -343,54 +345,75 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:239
+#: package/contents/ui/configActions.qml:183
+#: package/contents/ui/configGroups.qml:178
+#: package/contents/ui/configLights.qml:141
+#: package/contents/ui/configSchedules.qml:125
+msgid "Edit"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:203
+msgid "Move up"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:214
+msgid "Move down"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:225
+#: package/contents/ui/configActions.qml:408
+#: package/contents/ui/configActions.qml:420
+#: package/contents/ui/configGroups.qml:206
+#: package/contents/ui/configGroups.qml:388
+#: package/contents/ui/configGroups.qml:400
+#: package/contents/ui/configLights.qml:155
+#: package/contents/ui/configSchedules.qml:138
+msgid "Remove"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:243
 msgid "Add new action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:257
+#: package/contents/ui/configActions.qml:261
 msgid "Add or edit action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:310
+#: package/contents/ui/configActions.qml:314
 msgid "Title:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:321
+#: package/contents/ui/configActions.qml:325
 msgid "Subtitle:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:332
+#: package/contents/ui/configActions.qml:336
 msgid "Icon:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:357
+#: package/contents/ui/configActions.qml:361
 msgid "Commands:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:367
+#: package/contents/ui/configActions.qml:371
 #: package/contents/ui/GroupItem.qml:530 package/contents/ui/LightItem.qml:458
 msgid "Type"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:383
-#: package/contents/ui/configGroups.qml:362
+#: package/contents/ui/configActions.qml:387
+#: package/contents/ui/configGroups.qml:367
 msgid "Id"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:394
+#: package/contents/ui/configActions.qml:398
 msgid "Payload"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:404
-#: package/contents/ui/configGroups.qml:383
-msgid "Remove"
-msgstr ""
-
-#: package/contents/ui/configActions.qml:433
+#: package/contents/ui/configActions.qml:438
 msgid "New command"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:445
+#: package/contents/ui/configActions.qml:450
 msgid "Add new command"
 msgstr ""
 
@@ -484,67 +507,77 @@ msgid "ID"
 msgstr ""
 
 #: package/contents/ui/configGroups.qml:126
-#: package/contents/ui/configGroups.qml:373
+#: package/contents/ui/configGroups.qml:378
 #: package/contents/ui/configLights.qml:89
 #: package/contents/ui/configSchedules.qml:78
 msgid "Name"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:219
+#: package/contents/ui/configGroups.qml:148
+#: package/contents/ui/configLights.qml:111
+msgid "Switch on"
+msgstr ""
+
+#: package/contents/ui/configGroups.qml:158
+#: package/contents/ui/configLights.qml:121
+msgid "Switch off"
+msgstr ""
+
+#: package/contents/ui/configGroups.qml:224
 msgid "Add new group"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:225
+#: package/contents/ui/configGroups.qml:230
 msgid "Create or edit group"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:251
+#: package/contents/ui/configGroups.qml:256
 msgid "Group name:"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:263
+#: package/contents/ui/configGroups.qml:268
 msgid "Group type:"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:279
+#: package/contents/ui/configGroups.qml:284
 msgid "Room"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:292
+#: package/contents/ui/configGroups.qml:297
 msgid "A light can only be in one room but multiple groups at the same time."
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:301
+#: package/contents/ui/configGroups.qml:306
 msgid "Only rooms have a class with a specific icon, groups only have a name"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:306
+#: package/contents/ui/configGroups.qml:311
 #: package/contents/ui/GroupItem.qml:533
 msgid "Class"
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:333
+#: package/contents/ui/configGroups.qml:338
 msgid "light: "
 msgstr ""
 
-#: package/contents/ui/configGroups.qml:346
+#: package/contents/ui/configGroups.qml:351
 msgid "Add light"
 msgstr ""
 
-#: package/contents/ui/configLights.qml:168
+#: package/contents/ui/configLights.qml:173
 msgid "Add new light"
 msgstr ""
 
-#: package/contents/ui/configLights.qml:175
+#: package/contents/ui/configLights.qml:180
 msgid "Edit light"
 msgstr ""
 
-#: package/contents/ui/configLights.qml:197
+#: package/contents/ui/configLights.qml:202
 msgid "Light name:"
 msgstr ""
 
 #: package/contents/ui/configSchedules.qml:90
-#: package/contents/ui/configSchedules.qml:213
+#: package/contents/ui/configSchedules.qml:215
 msgid "Time"
 msgstr ""
 
@@ -552,23 +585,23 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: package/contents/ui/configSchedules.qml:155
+#: package/contents/ui/configSchedules.qml:157
 msgid "Add new schedule"
 msgstr ""
 
-#: package/contents/ui/configSchedules.qml:161
+#: package/contents/ui/configSchedules.qml:163
 msgid "Create or edit schedule"
 msgstr ""
 
-#: package/contents/ui/configSchedules.qml:187
+#: package/contents/ui/configSchedules.qml:189
 msgid "Schedule name:"
 msgstr ""
 
-#: package/contents/ui/configSchedules.qml:199
+#: package/contents/ui/configSchedules.qml:201
 msgid "Description:"
 msgstr ""
 
-#: package/contents/ui/configSchedules.qml:223
+#: package/contents/ui/configSchedules.qml:225
 msgid "Command"
 msgstr ""
 
@@ -701,19 +734,19 @@ msgstr ""
 msgid "Philips Hue lights"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:48
+#: package/contents/ui/TimeEditor.qml:47
 msgid "Schedule type:"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:55
+#: package/contents/ui/TimeEditor.qml:54
 msgid "Recurring"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:62
+#: package/contents/ui/TimeEditor.qml:61
 msgid "Weekly"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:80 package/contents/ui/TimeEditor.qml:168
+#: package/contents/ui/TimeEditor.qml:79 package/contents/ui/TimeEditor.qml:170
 msgid "Execute on:"
 msgstr ""
 
@@ -745,23 +778,28 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:141
+#: package/contents/ui/TimeEditor.qml:142
 msgid "Execute:"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:152
+#: package/contents/ui/TimeEditor.qml:153
 msgid "times or"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:158
+#: package/contents/ui/TimeEditor.qml:159
 msgid "forever"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:206
+#: package/contents/ui/TimeEditor.qml:177
+#: package/contents/ui/TimeEditor.qml:202
+msgid "Pick a date"
+msgstr ""
+
+#: package/contents/ui/TimeEditor.qml:223
 msgid "Execution time (HH:MM:SS):"
 msgstr ""
 
-#: package/contents/ui/TimeEditor.qml:237
+#: package/contents/ui/TimeEditor.qml:254
 msgid "Random added time:"
 msgstr ""
 

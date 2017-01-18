@@ -174,6 +174,7 @@ ColumnLayout {
         Button {
             id: btnCalendar
             iconName: 'view-calendar'
+            tooltip: i18n("Pick a date")
             onClicked: {diaCalendar.visible = !diaCalendar.visible}
         }
         

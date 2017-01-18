@@ -122,6 +122,7 @@ Item {
                         
                         Button {
                             iconName: 'entry-edit'
+                            tooltip: i18n("Edit")
                             Layout.fillHeight: true
                             onClicked: {
                                 resetDialog();
@@ -134,6 +135,7 @@ Item {
                         
                         
                         Button {
+                            tooltip: i18n("Remove")
                             iconName: 'list-remove'
                             Layout.fillHeight: true
                             onClicked: {

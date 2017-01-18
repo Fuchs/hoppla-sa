@@ -145,6 +145,7 @@ Item {
                         
                         Button {
                             iconName: 'im-jabber'
+                            tooltip: i18n("Switch on")
                             Layout.fillHeight: true
                             onClicked: {
                                 var editItem = groupsModel.get(styleData.row);
@@ -154,6 +155,7 @@ Item {
                         
                         Button {
                             iconName: 'system-shutdown'
+                            tooltip: i18n("Switch off")
                             Layout.fillHeight: true
                             onClicked: {
                                 var editItem = groupsModel.get(styleData.row);
@@ -163,6 +165,7 @@ Item {
                         
                          Button {
                             iconName: 'contrast'
+                            tooltip: i18n("Blink")
                             Layout.fillHeight: true
                             onClicked: {
                                 var editItem = groupsModel.get(styleData.row);
@@ -172,6 +175,7 @@ Item {
                         
                         Button {
                             iconName: 'entry-edit'
+                            tooltip: i18n("Edit")
                             Layout.fillHeight: true
                             onClicked: {
                                 resetDialog();
@@ -199,6 +203,7 @@ Item {
                         
                         Button {
                             iconName: 'list-remove'
+                            tooltip: i18n("Remove")
                             Layout.fillHeight: true
                             onClicked: {
                                 // groupsModel.remove(styleData.row)
@@ -392,6 +397,7 @@ Item {
                                         
                                         Button {
                                             iconName: 'list-remove'
+                                            tooltip: i18n("Remove")
                                             Layout.fillHeight: true
                                             onClicked: {
                                                 groupLightsModel.remove(styleData.row)
