@@ -44,19 +44,8 @@ Item {
         id: actListModel
     }
     
-    ListModel {
-        id: cbTypeModel
-    }
-    
-    ListModel {
-        id: targetModel
-    }
-    
     Component.onCompleted: {
         actionListModel.clear();
-        cbTypeModel.clear();
-        cbTypeModel.append( { text: i18n("Group"), value: "groups" });
-        cbTypeModel.append( { text: i18n("Light"), value: "lights" });
         
         try {
             var actionItems = JSON.parse(actionList.text);
@@ -78,17 +67,6 @@ Item {
         }
     }
     
-    function getGroups() {
-        targetModel.clear()
-        targetModel.append( { text: "0: " + i18n("All lights"), value: "0" } );
-        Hue.getGroupsIdName(targetModel);
-    }
-    
-    function getLights() {
-        targetModel.clear()
-        Hue.getLightsIdName(targetModel);
-    }
-    
     function setIcon() {
         var iconText = cbIcon.currentText;
         mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
@@ -99,79 +77,25 @@ Item {
         resetDialog();
     }
     
-    function setTargetModel() {
-        if(cbType.currentIndex == 0) {
-            getGroups();
-        }
-        else {
-            getLights();
-        }
-    }
-    
     function resetDialog() {
         editActionDialogue.tableIndex = -1;
         txtTitle.text = "";
         txtSubTitle.text = "";
         cbIcon.currentIndex = 0;
-        cbType.currentIndex = 0; 
-        cbTarget.currentIndex = 0;
         actListModel.clear();
-        lblHue.text = "";
-        lblSat.text = "";
-        lblCt.text = "296";
-        chkBri.checked = false;
-        chkCol.checked = false;
-        chkOn.checked = false;
-        rbOn.checked = true; 
-        rbTemp.checked = true; 
-        sldBri.value = 0;
-        chkFade.checked = false;
-        sbTime.value = 0.0;
+        actionEditor.reset();
         var iconText = cbIcon.currentText;
         mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
-        setColourCT(lblCt.text);
-        getGroups();
     }
     
     function addAct() {
-        var cBri = chkBri.checked;
-        var cOn = chkOn.checked;
-        var cCol = chkCol.checked;
-        if(cBri || cOn || cCol) {
-            var payload = "{"
-            if(cOn) {
-                payload += "\"on\":"
-                payload += rbOn.checked;
-                if(cBri || cCol) {
-                    payload += ","
-                }
-            }
-            if(cBri) {
-                payload += "\"bri\":";
-                payload += sldBri.value;
-                if(cCol) {
-                    payload += ","
-                }
-            }
-            if(cCol) {
-                if(rbColour.checked) {
-                    payload += "\"hue\":" + lblHue.text + ",\"sat\":" + lblSat.text + ",\"colormode\":\"hs\"";
-                }
-                if(rbTemp.checked) {
-                    payload += "\"ct\":" + lblCt.text + ",\"colormode\":\"ct\"";
-                }
-            }
-
-            if(chkFade.checked) {
-                payload += ", \"transitiontime\":" + sbTime.value * 10
-            }
-            
-            payload += "}"
+        var payload = "";
+        payload = actionEditor.getPayload();
+        if(payload) {
             var newAct = {};
-            newAct.ttype = cbTypeModel.get(cbType.currentIndex).value;
-            newAct.tid = targetModel.get(cbTarget.currentIndex).value;
+            newAct.ttype = actionEditor.getType();
+            newAct.tid = actionEditor.getTargetId();
             newAct.payload = payload;
-            
             actListModel.append(newAct);
         }
     }
@@ -206,39 +130,7 @@ Item {
         
         actionList.text = strJson;
     }
-    
-    function setColourHS(phue, psat) {
-        // qt expects hue and saturation as 0..1 value, so we have to convert
-        var hue = 0.00001525902 * phue
-        var sat = 0.003937 * psat;
-        
-        circle.color = Qt.hsva(hue, sat, 1, 1)
-    }
-    
-    function setColourCT(pct) {
-        if(pct < 190) {
-            circle.color = "#94feff";  
-        }
-        else if(pct < 240) {
-            circle.color = "#c5ffff";  
-        }
-        else if(pct < 300) {
-            circle.color = "#ffffff";  
-        }
-        else if(pct < 350) {
-            circle.color = "#fff8d2";  
-        }
-        else if(pct < 400) {
-            circle.color = "#ffedc2";  
-        }
-        else if(pct < 440) {
-            circle.color = "#ffddb3";  
-        }
-        else {
-            circle.color = "#ff9500";  
-        }
-    }
-    
+
     
     ColumnLayout {
         Layout.fillWidth: true
@@ -399,22 +291,6 @@ Item {
         
         property int tableIndex: 0
         
-        Label {
-            id: lblCt
-            visible: false
-            text: "296"
-        }
-        
-        Label {
-            id: lblHue
-            visible: false
-        }
-        
-        Label {
-            id: lblSat
-            visible: false
-        }
-        
         
         ColumnLayout {
             Layout.fillWidth: true
@@ -435,10 +311,8 @@ Item {
                 
                 TextField {
                     id: txtTitle
+                    Layout.columnSpan: 2
                     Layout.fillWidth: true
-                }
-                
-                Label { 
                 }
                 
                 Label {
@@ -448,6 +322,7 @@ Item {
                 
                 TextField {
                     id: txtSubTitle
+                    Layout.columnSpan : 2
                     Layout.fillWidth: true
                 }
                 
@@ -559,195 +434,16 @@ Item {
                 id: grpNewAction
                 title: i18n("New command");
                 
-                
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    
-                    GridLayout {
-                        height: parent.height
-                        columns: 3
-                        rowSpacing: 5
-                        
-                        Label {
-                            text: i18n("Target")
-                        }
-                        
-                        ComboBox {
-                            id: cbType
-                            model: cbTypeModel
-                            onCurrentIndexChanged: setTargetModel()
-                        }
-                        
-                        ComboBox {
-                            id: cbTarget
-                            Layout.fillWidth: true
-                            model: targetModel
-                            textRole: 'text'
-                        }
-                        
-                        CheckBox {
-                            id: chkOn
-                            text: i18n("State")
-                        }
-                        
-                        ExclusiveGroup { id: stateGroup }
-                        
-                        RadioButton {
-                            id: rbOn
-                            text: i18n("On")
-                            checked: true
-                            exclusiveGroup: stateGroup
-                            enabled: chkOn.checked
-                        }
-                        
-                        RadioButton {
-                            id: rbOff
-                            text: i18n("Off")
-                            exclusiveGroup: stateGroup
-                            enabled: chkOn.checked
-                        }
-                        
-                        CheckBox {
-                            id: chkBri
-                            text: i18n("Brightness")
-                        }
-                        
-                        Slider {
-                            id: sldBri
-                            Layout.columnSpan: 2
-                            Layout.fillWidth: true
-                            enabled: chkBri.checked
-                            minimumValue: 0
-                            maximumValue: 255
-                            updateValueWhileDragging : false
-                            stepSize: 1
-                        }
-                        
-                        CheckBox {
-                            id: chkCol
-                            text: i18n("Colour")
-                        }
-                        
-                        ExclusiveGroup { id: colorGroup }
-                        
-                        RadioButton {
-                            id: rbTemp
-                            text: i18n("Temperature")
-                            checked: true
-                            exclusiveGroup: colorGroup
-                            enabled: chkCol.checked
-                        }
-                        RadioButton {
-                            id: rbColour
-                            text: i18n("Colour")
-                            exclusiveGroup: colorGroup
-                            enabled: chkCol.checked
-                        }
-                        
-                        Rectangle {
-                            id: circle
-                            
-                            anchors {
-                                leftMargin: units.LargeSpacing
-                                topMargin: units.LargeSpacing
-                            }
-                            
-                            height: 40
-                            width: 40
-                            border.color: "#99999999"
-                            border.width: 1
-                            color: "white"
-                            radius: width * 0.5
-                            antialiasing: true
-                        }
-                        
-                        
-                        GroupBox {
-                            flat: true
-                            Layout.fillWidth: true
-                            Layout.columnSpan: 2
-                            
-                            TemperatureChooser {
-                                id: tmpChsr
-                                height: 50
-                                Layout.fillWidth: true
-                                
-                                anchors {
-                                    horizontalCenter: parent.horizontalCenter
-                                }
-                                visible: rbTemp.checked
-                                
-                                onReleased: {
-                                    if(chkCol.checked) {
-                                        // Minimal ct is 153 mired, maximal is 500. Thus we have a range of 347.
-                                        var vct = Math.round(Math.min(153 + ( (347 / tmpChsr.rectWidth) * mouseX), 500));
-                                        setColourCT(vct);
-                                        lblCt.text = vct;
-                                    }
-                                }
-                            }
-                            
-                            ColourChooser {
-                                id: clrChooser
-                                height: 50
-                                Layout.fillWidth: true
-                                
-                                anchors {
-                                    horizontalCenter: parent.horizontalCenter
-                                }
-                                visible: rbColour.checked
-                                
-                                onReleased: {
-                                    if(chkCol.checked)
-                                    {
-                                        var vhue = Math.round(Math.min(65535 - ( (65535 / clrChooser.rectWidth) * mouseX), 65535));
-                                        var vsat = Math.round(Math.min(254 - ( (254 / clrChooser.rectHeight) * mouseY), 254));
-                                        setColourHS(vhue, vsat)
-                                        lblSat.text = vsat; 
-                                        lblHue.text = vhue;
-                                    }
-                                }
-                            }
-                        }
-                        
-                                                CheckBox {
-                            id: chkFade
-                            checked: false
-                            text: i18n("Fade")
-                        }
-                        
-                        // If I got a Swiss Franc for every layout hack needed,
-                        // I'd be rich enough to buy me a nice dinosaur. *RAWR*
-                        GroupBox {
-                            Layout.columnSpan: 2
-                            Layout.fillWidth: true
-                            flat: true
-                            
-                            GridLayout {
-                                columns: 2
-                            
-                                SpinBox {
-                                    id: sbTime
-                                    decimals: 1
-                                    maximumValue: 65534
-                                    enabled: chkFade.checked
-                                }
-                                
-                                Label {
-                                    text: i18n("seconds")
-                                }
-                            }
-                        }
-                    }
-                    
-                    Button {
-                        id: btnAddAct
-                        text: i18n("Add new command")
-                        onClicked: addAct()
-                    }
+                ActionEditor {
+                    id: actionEditor
                 }
+                
+                Button {
+                    id: btnAddAct
+                    text: i18n("Add new command")
+                    onClicked: addAct()
+                }
+
             }
         }
     }

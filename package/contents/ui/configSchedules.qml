@@ -168,25 +168,63 @@ Item {
             onAccepted: {
                 // TODO: Sanity check string, jsonify, save 
                 close()
-                
             }
             
-            GridLayout {
-                id: grdTitle
+            ColumnLayout {
+                Layout.fillWidth: true
                 anchors.left: parent.left
                 anchors.right: parent.right
-                columns: 3
-                Layout.fillWidth: true
                 
-                Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Schedule name:")
+                GridLayout {
+                    id: grdTitle
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    columns: 3
+                    Layout.fillWidth: true
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Schedule name:")
+                    }
+                    
+                    TextField {
+                        id: txtScheduleName
+                        Layout.columnSpan : 2
+                        Layout.fillWidth: true
+                        maximumLength: 32
+                    }
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Description:")
+                    }
+                    
+                    TextField {
+                        id: txtDescription
+                        Layout.columnSpan : 2
+                        Layout.fillWidth: true
+                        maximumLength: 64
+                    }
                 }
                 
-                TextField {
-                    id: txtScheduleName
+                GroupBox {
                     Layout.fillWidth: true
-                    maximumLength: 32
+                    id: grpTime
+                    title: i18n("Time");
+                    
+                    TimeEditor {
+                        id: timeEditor
+                    }
+                }
+                
+                GroupBox {
+                    Layout.fillWidth: true
+                    id: grpNewAction
+                    title: i18n("Command");
+                    
+                    ActionEditor {
+                            id: actionEditor
+                    }
                 }
             }
         }

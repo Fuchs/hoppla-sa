@@ -231,6 +231,17 @@ function switchLight(lightId, on) {
 }
 
 /**
+ * Sets a certain hue to blink
+ * @param {string} lightId The philips hue id of the light.
+ * @param {string} type Hue supported types, "none", "select" (once), "lselect" (15 sec)
+ */
+function blinkLight(lightId, type) {
+    var body = '{"alert": "' + type + '"}';
+    var myUrl = "lights/" + lightId + "/state";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
+}
+
+/**
  * Sets a certain hue group on or off
  *
  * @param {string} groupId The philips hue id of the group.
@@ -238,6 +249,18 @@ function switchLight(lightId, on) {
  */
 function switchGroup(groupId, on) {
     var body = on ? '{"on":true}' : '{"on":false}';
+    var myUrl = "groups/" + groupId + "/action";
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
+}
+
+/**
+ * Sets a certain hue group to blink
+ *
+ * @param {string} groupId The philips hue id of the group.
+ * @param {string} type Hue supported types, "none", "select" (once), "lselect" (15 sec)
+ */
+function blinkGroup(groupId, type) {
+    var body = '{"alert": "' + type + '"}';
     var myUrl = "groups/" + groupId + "/action";
     putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
@@ -548,7 +571,6 @@ function checkHueConnection (callback, enforce) {
  * @param {function} doneCallback called when all is handled
  * @param {Object} object object to pass to the success function, e.g. a model 
  * @param {Object} object2 object to pass to the success function, e.g. a model 
- * 
  */
 function getJsonFromHue(getUrl, successCallback, failureCallback, doneCallback, object, object2) {
     var request = getRequest(getUrl, 'GET');
@@ -1043,7 +1065,7 @@ function parseLightsToSimpleModel(json, listModel, name, doneCallback) {
         myLight.uuid = lightName;
         myLight.name = cLight.name || i18n("Not available");
         myLight.text = lightName + ": " + cLight.name;
-        myLight.value = "" + lightName
+        myLight.value = "" + lightName;
         listModel.append(myLight);
     }
     doneCallback();

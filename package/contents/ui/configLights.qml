@@ -87,7 +87,7 @@ Item {
                 id: nameCol
                 role: 'name'
                 title: i18n('Name')
-                width: parent.width * 0.72
+                width: parent.width * 0.49
                 
                 delegate: Label {
                     text: styleData.value
@@ -97,15 +97,41 @@ Item {
             
             TableViewColumn {
                 title: i18n('Action')
-                width: parent.width * 0.12
+                width: parent.width * 0.38
                 
                 delegate: Item {
                     
                     GridLayout {
                         height: parent.height
-                        columns: 2
+                        columns: 5
                         rowSpacing: 0
                         
+                        Button {
+                            iconName: 'im-jabber'
+                            Layout.fillHeight: true
+                            onClicked: {
+                                var editItem = lightsModel.get(styleData.row)
+                                Hue.switchLight(editItem.uuid, true)
+                            }
+                        }
+                        
+                        Button {
+                            iconName: 'system-shutdown'
+                            Layout.fillHeight: true
+                            onClicked: {
+                                var editItem = lightsModel.get(styleData.row)
+                                Hue.switchLight(editItem.uuid, false)
+                            }
+                        }
+                        
+                         Button {
+                            iconName: 'contrast'
+                            Layout.fillHeight: true
+                            onClicked: {
+                                var editItem = lightsModel.get(styleData.row);
+                                Hue.blinkLight(editItem.uuid, "select");
+                            }
+                        }
                         
                         Button {
                             iconName: 'entry-edit'
@@ -118,6 +144,7 @@ Item {
                                 editLightDialogue.open();
                             }
                         }
+                        
                         
                         Button {
                             iconName: 'list-remove'
@@ -145,7 +172,7 @@ Item {
         
         Dialog {
             id: editLightDialogue
-            title: i18n('Edit Light')
+            title: i18n('Edit light')
             width: 500
             
             property string lightId: ""
