@@ -18,8 +18,9 @@
 
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0 
+import QtQuick.Dialogs 1.2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import "../code/hue.js" as Hue
 
@@ -39,10 +40,8 @@ ColumnLayout {
     
     GridLayout {
         id: grdType
-        anchors.left: parent.left
-        anchors.right: parent.right
         columns: 4
-        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignCenter
         
         Label {
             text: i18n("Schedule type:");
@@ -70,11 +69,11 @@ ColumnLayout {
         }
     }
     
-    
     GridLayout {
         id: grdWeekly
         visible: rbWeekly.checked;
         columns: 2
+        Layout.alignment: Qt.AlignCenter
         
         Label {
             text: i18n("Execute on:")
@@ -86,6 +85,7 @@ ColumnLayout {
             flat: true
             GridLayout {
                 columns: 4
+                Layout.fillWidth: true
             
                 CheckBox {
                     id: chkMonday
@@ -136,6 +136,7 @@ ColumnLayout {
         id: grdRecurring
         visible: rbReccuring.checked;
         columns: 4
+        Layout.alignment: Qt.AlignCenter
         
         Label {
             text: i18n("Execute:")
@@ -163,9 +164,17 @@ ColumnLayout {
         id: grdOnce
         visible: rbOnce.checked;
         columns: 5
+        Layout.alignment: Qt.AlignCenter
         
         Label {
             text: i18n("Execute on:")
+            width: lblTimeWidth.width
+        }
+        
+        Button {
+            id: btnCalendar
+            iconName: 'view-calendar'
+            onClicked: {diaCalendar.visible = !diaCalendar.visible}
         }
         
         SpinBox {
@@ -185,24 +194,31 @@ ColumnLayout {
             maximumValue: 31
             enabled: isEnabled && rbOnce.checked
         }
-        
-        Button {
-            id: btnCalendar
-            iconName: 'view-calendar'
-            
+    }
+    
+    Dialog {
+        id: diaCalendar
+        title: i18n("Pick a date")
+        contentItem: Calendar {
+            id: calendar
+            visible: true
+            onClicked: {
+                var date = calendar.selectedDate;
+                sbDay.value = parseInt(date.getDate());
+                sbMonth.value = parseInt(date.getMonth()) + 1; 
+                sbYear.value = parseInt(date.getFullYear());
+                diaCalendar.close();
+            }
         }
-        
-        
     }
     
     GridLayout {
         id: grdTime
-        anchors.left: parent.left
-        anchors.right: parent.right
         columns: 6
-        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignCenter
         
         Label {
+            id: lblTimeWidth
             text: i18n("Execution time (HH:MM:SS):")
         }
         
