@@ -414,57 +414,55 @@ ColumnLayout {
         var cBri = chkBri.checked;
         var cOn = chkOn.checked;
         var cCol = chkCol.checked;
-        if(cBri || cOn || cCol) {
+        var cFad = chkFade.checked;
+        var cEff = chkEffect.checked;
+        var cBli = chkBlink.checked;
+        if(cBri || cOn || cCol || cEff || cBli) {
             var payload = "{"
+            var content = []
             if(cOn) {
-                payload += "\"on\":"
-                payload += rbOn.checked;
-                if(cBri || cCol) {
-                    payload += ","
-                }
+                content.push("\"on\":" + rbOn.checked);
             }
             if(cBri) {
-                payload += "\"bri\":";
-                payload += sldBri.value;
-                if(cCol) {
-                    payload += ","
-                }
+                content.push("\"bri\":" + sldBri.value);
             }
             if(cCol) {
                 if(rbColour.checked) {
-                    payload += "\"hue\":" + lblHue.text + ",\"sat\":" + lblSat.text + ",\"colormode\":\"hs\"";
+                    content.push("\"hue\":" + lblHue.text + ",\"sat\":" + lblSat.text + ",\"colormode\":\"hs\"");
                 }
                 if(rbTemp.checked) {
-                    payload += "\"ct\":" + lblCt.text + ",\"colormode\":\"ct\"";
+                    content.push("\"ct\":" + lblCt.text + ",\"colormode\":\"ct\"");
                 }
             }
             
-            if(chkFade.checked) {
-                payload += ", \"transitiontime\":" + sbTime.value * 10
+            if(cFad) {
+                content.push("\"transitiontime\":" + sbTime.value * 10)
             }
             
             if(chkBlink.checked) {
                 if(rbStopBlink.checked) {
-                    payload += ", \"alert\": \"none\"";
+                    content.push("\"alert\": \"none\"");
                 }
                 else if(rbOnce.checked) {
-                    payload += ", \"alert\": \"select\"";
+                    content.push("\"alert\": \"select\"");
                 }
                 else if(rbFifteen.checked) {
-                    payload += ", \"alert\": \"lselect\"";
+                    content.push("\"alert\": \"lselect\"");
                 }
             }
             
             if(chkEffect.checked) {
                 if(rbStopEffect.checked) {
-                    payload += ", \"effect\": \"none\"";
+                    content.push("\"effect\": \"none\"");
                 }
                 else if(rbColourLoop.checked) {
-                    payload += ", \"effect\": \"colorloop\"";
+                    content.push("\"effect\": \"colorloop\"");
                 }
             }
             
-            payload += "}"
+            payload += content.join(",");
+            
+            payload += "}";
         }
         
         return payload;

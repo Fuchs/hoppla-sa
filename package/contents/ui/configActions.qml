@@ -97,6 +97,7 @@ Item {
             newAct.tid = actionEditor.getTargetId();
             newAct.payload = payload;
             actListModel.append(newAct);
+            actionListChanged();
         }
     }
     
@@ -327,9 +328,6 @@ Item {
                 }
                 
                 Label {
-                }
-                
-                Label {
                     Layout.alignment: Qt.AlignRight
                     text: i18n("Icon:")
                 }
@@ -439,6 +437,10 @@ Item {
                 }
                 
                 Button {
+                    anchors {
+                        top: actionEditor.bottom
+                        left: parent.left
+                    }
                     id: btnAddAct
                     text: i18n("Add new command")
                     onClicked: addAct()
