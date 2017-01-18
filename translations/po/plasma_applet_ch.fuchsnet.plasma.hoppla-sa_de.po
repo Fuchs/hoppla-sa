@@ -670,11 +670,11 @@ msgstr "y:"
 
 #: package/contents/ui/GroupItem.qml:521 package/contents/ui/LightItem.qml:448
 msgid "Colour in HS, hue: "
-msgstr "Farbe als HS: hue:"
+msgstr "Farbe als HS: hue: "
 
 #: package/contents/ui/GroupItem.qml:521 package/contents/ui/LightItem.qml:448
 msgid " sat: "
-msgstr "sat:"
+msgstr " sat: "
 
 #: package/contents/ui/GroupItem.qml:527 package/contents/ui/LightItem.qml:455
 msgid "Colour mode"
