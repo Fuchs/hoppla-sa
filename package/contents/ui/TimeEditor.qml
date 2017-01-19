@@ -441,9 +441,9 @@ ColumnLayout {
         else if(rbReccuring.checked) {
             strTime = "R";
             if(!chkForever.checked) {
-                strTime += sbRecN.value;
+                strTime += ("0" + sbRecN.value).slice(-2);
             }
-            strTime += "/";
+            strTime += "/P";
         }
         else if(rbWeekly.checked) {
             strTime = "W";
@@ -480,20 +480,39 @@ ColumnLayout {
             strTime += ("0" + sbDay.value).slice(-2);
         }
         
+        var strHours = ("0" + sbHours.value).slice(-2);
+        var strMinutes = ("0" + sbMinutes.value).slice(-2);
+        var strSeconds = ("0" + sbSeconds.value).slice(-2);
+        
+        if(strHours == "00" && strMinutes == "00" && strSeconds == "00") {
+            // Bug which can crash your Hue Bridge on 00:00:00, for whatever reason
+            strSeconds = "01";
+        }
+        
         strTime += "T"
-        strTime += ("0" + sbHours.value).slice(-2);
+        strTime += strHours;
         strTime += ":"
-        strTime += ("0" + sbMinutes.value).slice(-2);
+        strTime += strMinutes;
         strTime += ":"
-        strTime += ("0" + sbSeconds.value).slice(-2);
+        strTime += strSeconds;
         
         if(chkRandom.checked) {
             strTime += "A"
-            strTime += ("0" + sbRandHours.value).slice(-2);
+            
+            var strRandHours = ("0" + sbRandHours.value).slice(-2);
+            var strRandMinutes = ("0" + sbRandMinutes.value).slice(-2);
+            var strRandSeconds = ("0" + sbRandSeconds.value).slice(-2);
+            
+            if(strRandHours == "00" && strRandMinutes == "00" && strRandSeconds == "00") {
+            // Bug which can crash your Hue Bridge on 00:00:00, for whatever reason
+            strRandSeconds = "01";
+            }
+            
+            strTime += strRandHours;
             strTime += ":"
-            strTime += ("0" + sbRandMinutes.value).slice(-2);
+            strTime += strRandMinutes;
             strTime += ":"
-            strTime += ("0" + sbRandSeconds.value).slice(-2);
+            strTime += strRandSeconds;
         }
         
         return strTime;

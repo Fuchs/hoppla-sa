@@ -31,41 +31,62 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     
+    property string infoColour: "#5555ff"
+    property string errorColour: "#ff0000"
+    property string successColour: "#00aa00"
+    
     ListModel {
         id: lightsModel
     }
     
-    Component.onCompleted: {
-        if(!Hue.isInitialized()) {
-            Hue.initHueConfig();
-        }
-        lightsModel.clear();
-        getLights();
+    ListModel {
+        id: newLightsModel
     }
     
-    function getLights() {
-        lightsModel.clear()
-        Hue.getLightsIdName(lightsModel);
-    }
-    
-    
-    function resetDialog() {
-        txtLightName.text = "";
-    }
-    
-    function addLight() {
-        
-        
-    }
-    
-    function lightListChanged() {
-
-    }
-
     ColumnLayout {
         Layout.fillWidth: true
         anchors.left: parent.left
         anchors.right: parent.right
+        
+        GroupBox {
+            id: grpStatus
+            Layout.fillWidth: true
+            anchors.left: parent.left
+            anchors.right: parent.right
+            flat: true
+            visible: false
+            
+            Rectangle {
+                id: rctStatus
+                width: parent.width
+                height: (units.gridUnit * 2.5) + units.smallSpacing
+                color: "#ff0000"
+                border.color: "black"
+                border.width: 1
+                radius: 5
+            }
+            
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusTitle
+                color: "white"
+                font.bold: true
+            }
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: lblStatusTitle.bottom
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusText
+                color: "white"
+                font.bold: true
+            }
+        }
         
         TableView {
             id: lightsTable
@@ -126,7 +147,7 @@ Item {
                             }
                         }
                         
-                         Button {
+                        Button {
                             iconName: 'contrast'
                             tooltip: i18n("Blink")
                             Layout.fillHeight: true
@@ -163,7 +184,7 @@ Item {
                 }
             }
             model: lightsModel
-            Layout.preferredHeight: 290
+            Layout.preferredHeight: 230
             Layout.preferredWidth: parent.width
             Layout.columnSpan: 2
         }
@@ -172,7 +193,7 @@ Item {
             id: btnAddLight
             text: i18n("Add new light")
             onClicked: addLight()
-            enabled: false
+            enabled: true
         }
         
         Dialog {
@@ -187,7 +208,7 @@ Item {
             onAccepted: {
                 // TODO: Sanity check string, jsonify, save
                 close()
-               
+                
             }
             
             GridLayout {
@@ -208,6 +229,43 @@ Item {
                     maximumLength: 32
                 }
             }
+        }
+    }
+    
+    Component.onCompleted: {
+        if(!Hue.isInitialized()) {
+            Hue.initHueConfig();
+        }
+        lightsModel.clear();
+        getLights();
+    }
+    
+    function getLights() {
+        lightsModel.clear()
+        Hue.getLightsIdName(lightsModel);
+    }
+    
+    function resetDialog() {
+        txtLightName.text = "";
+    }
+    
+    function addLight() {   
+        // TOOD: if not scanning
+        // Hue.scanNewLights(null)
+        updateTimer.start();
+        
+    }
+    
+    function lightListChanged() {
+        // getLights();
+    }
+    
+    Timer {
+        id: updateTimer
+        interval: 20000
+        onTriggered: {
+            newLightsModel.clear();
+            Hue.getNewLights(newLightsModel, null);
         }
     }
 }

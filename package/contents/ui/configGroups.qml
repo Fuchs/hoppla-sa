@@ -30,6 +30,10 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     
+    property string infoColour: "#5555ff"
+    property string errorColour: "#ff0000"
+    property string successColour: "#00aa00"
+    
     ListModel {
         id: groupsModel
     }
@@ -46,63 +50,50 @@ Item {
         id: availableLightsModel
     }
     
-    Component.onCompleted: {
-        if(!Hue.isInitialized()) {
-            Hue.initHueConfig();
-        }
-        groupsModel.clear();
-        getGroups();
-        Hue.fillWithClasses(cbClassModel);
-    }
-    
-    function rbTypeChanged() {
-        if(rbRoom.checked) {
-            availableLightsModel.clear();
-            Hue.getAvailableLightsIdName(availableLightsModel);
-        }
-        else if(rbGroup.checked) {
-            availableLightsModel.clear();
-            Hue.getLightsIdName(availableLightsModel);
-        }
-    }
-    
-    function getGroups() {
-        groupsModel.clear()
-        Hue.getGroupsIdName(groupsModel);
-    }
-    
-    function resetDialog() {
-        groupLightsModel.clear();
-        txtGroupName.text = ""
-        rbGroup.checked = true; 
-        rbRoom.checked = false;
-        cbClass.currentIndex = 0;
-        rbTypeChanged();
-    }
-    
-    function addLight(lightId, lightName) {
-        groupLightsModel.append( { vuuid: lightId, vname: lightName });
-    }
-    
-    function getLightsForGroup(groupId, slights) {
-        groupLightsModel.clear();
-        Hue.getGroupLights(groupLightsModel, slights);
-    }
-    
-    function addGroup() {
-        resetDialog();
-        editGroupDialogue.groupId = "-1";
-        editGroupDialogue.open();
-    }
-    
-    function groupListChanged() {
-        
-    }
-    
     ColumnLayout {
         Layout.fillWidth: true
         anchors.left: parent.left
         anchors.right: parent.right
+        
+        GroupBox {
+            id: grpStatus
+            Layout.fillWidth: true
+            anchors.left: parent.left
+            anchors.right: parent.right
+            flat: true
+            visible: false
+            
+            Rectangle {
+                id: rctStatus
+                width: parent.width
+                height: (units.gridUnit * 2.5) + units.smallSpacing
+                color: "#ff0000"
+                border.color: "black"
+                border.width: 1
+                radius: 5
+            }
+            
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusTitle
+                color: "white"
+                font.bold: true
+            }
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: lblStatusTitle.bottom
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusText
+                color: "white"
+                font.bold: true
+            }
+        }
         
         TableView {
             id: groupsTable
@@ -214,7 +205,7 @@ Item {
                 }
             }
             model: groupsModel
-            Layout.preferredHeight: 290
+            Layout.preferredHeight: 230
             Layout.preferredWidth: parent.width
             Layout.columnSpan: 2
         }
@@ -415,5 +406,59 @@ Item {
                 }
             }
         }
+    }
+    
+    Component.onCompleted: {
+        if(!Hue.isInitialized()) {
+            Hue.initHueConfig();
+        }
+        groupsModel.clear();
+        getGroups();
+        Hue.fillWithClasses(cbClassModel);
+    }
+    
+    function rbTypeChanged() {
+        if(rbRoom.checked) {
+            availableLightsModel.clear();
+            Hue.getAvailableLightsIdName(availableLightsModel);
+        }
+        else if(rbGroup.checked) {
+            availableLightsModel.clear();
+            Hue.getLightsIdName(availableLightsModel);
+        }
+    }
+    
+    function getGroups() {
+        groupsModel.clear()
+        Hue.getGroupsIdName(groupsModel);
+    }
+    
+    function resetDialog() {
+        groupLightsModel.clear();
+        txtGroupName.text = ""
+        rbGroup.checked = true; 
+        rbRoom.checked = false;
+        cbClass.currentIndex = 0;
+        rbTypeChanged();
+    }
+    
+    function addLight(lightId, lightName) {
+        groupLightsModel.append( { vuuid: lightId, vname: lightName });
+    }
+    
+    function getLightsForGroup(groupId, slights) {
+        groupLightsModel.clear();
+        Hue.getGroupLights(groupLightsModel, slights);
+    }
+    
+    function addGroup() {
+        resetDialog();
+        editGroupDialogue.groupId = "-1";
+        editGroupDialogue.open();
+    }
+    
+    function groupListChanged() {
+        getGroups();
+        
     }
 }

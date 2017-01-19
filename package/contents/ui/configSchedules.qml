@@ -31,51 +31,66 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     
+    property string infoColour: "#5555ff"
+    property string errorColour: "#ff0000"
+    property string successColour: "#00aa00"
+    
     ListModel {
         id: schedulesModel
     }
     
-    Component.onCompleted: {
-        if(!Hue.isInitialized()) {
-            Hue.initHueConfig();
+    Timer {
+        id: updateTimer
+        interval: 400
+        onTriggered: {
+            getSchedules()
         }
-        schedulesModel.clear();
-        getSchedules();
-    }
-    
-    function getSchedules() {
-        schedulesModel.clear()
-        Hue.getSchedulesIdName(schedulesModel);
-    }
-    
-    
-    function resetDialog() {
-        txtScheduleName.text = "";
-        txtDescription.text = "";
-        chkEnabled.checked = true;
-        chkAutodelete.checked = false;
-        timeEditor.reset();
-        timeEditor.strOriginalTime = "";
-        timeEditor.strOriginalLocaltime = "";
-        timeEditor.useOriginal = false;
-        timeEditor.useLocal = true;
-        timeEditor.isEnabled = true;
-    }
-    
-    function addSchedule() {
-        resetDialog();
-        editScheduleDialogue.scheduleId = "-1";
-        editScheduleDialogue.open();
-    }
-    
-    function scheduleListChanged() {
-        
     }
     
     ColumnLayout {
         Layout.fillWidth: true
         anchors.left: parent.left
         anchors.right: parent.right
+        
+        GroupBox {
+            id: grpStatus
+            Layout.fillWidth: true
+            anchors.left: parent.left
+            anchors.right: parent.right
+            flat: true
+            visible: false
+            
+            Rectangle {
+                id: rctStatus
+                width: parent.width
+                height: (units.gridUnit * 2.5) + units.smallSpacing
+                color: "#ff0000"
+                border.color: "black"
+                border.width: 1
+                radius: 5
+            }
+            
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusTitle
+                color: "white"
+                font.bold: true
+            }
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: lblStatusTitle.bottom
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusText
+                color: "white"
+                font.bold: true
+            }
+        }
         
         TableView {
             id: groupsTable
@@ -158,15 +173,15 @@ Item {
                             iconName: 'list-remove'
                             Layout.fillHeight: true
                             onClicked: {
-                                // schedulesModel.remove(styleData.row)
-                                // scheduleListChanged()
+                                var editItem = schedulesModel.get(styleData.row);
+                                Hue.deleteSchedule(editItem.uuid, deleteScheduleDone)
                             }
                         }
                     }
                 }
             }
             model: schedulesModel
-            Layout.preferredHeight: 290
+            Layout.preferredHeight: 230
             Layout.preferredWidth: parent.width
             Layout.columnSpan: 2
         }
@@ -184,9 +199,9 @@ Item {
             
             property string scheduleId: ""
             
-            standardButtons: StandardButton.Ok | StandardButton.Cancel
+            standardButtons: StandardButton.Apply | StandardButton.Cancel
             
-            onAccepted: {
+            onApply: {
                 
                 var strJson  = "{\"name\":"
                 strJson += "\"" + txtScheduleName.text + "\",";
@@ -212,7 +227,7 @@ Item {
                     strJson += "\"enabled\"";
                 }
                 else {
-                     strJson += "\"disabled\"";
+                    strJson += "\"disabled\"";
                 }
                 
                 if(chkAutodelete.enabled) {
@@ -222,20 +237,60 @@ Item {
                 
                 strJson += "}"
                 
-                if(editScheduleDialogue.scheduleId == "-1") {
-                    //TODO: Create schedule
+                if(editScheduleDialogue.scheduleId == "-1") {3
+                    Hue.createSchedule(strJson, createScheduleDone)
                 }
                 else {
-                    //TODO: Update Schedule
+                    Hue.updateSchedule(editScheduleDialogue.scheduleId, strJson, updateScheduleDone);
                 }
-                print("JSON: " + strJson);
-                close()
             }
             
             ColumnLayout {
                 Layout.fillWidth: true
                 anchors.left: parent.left
                 anchors.right: parent.right
+                
+                GroupBox {
+                    id: grpDiaStatus
+                    Layout.fillWidth: true
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    flat: true
+                    visible: false
+                    
+                    Rectangle {
+                        id: rctDiaStatus
+                        width: parent.width
+                        height: (units.gridUnit * 2.5) + units.smallSpacing
+                        color: "#ff0000"
+                        border.color: "black"
+                        border.width: 1
+                        radius: 5
+                    }
+                    
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.top
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblDiaStatusTitle
+                        color: "white"
+                        text: "Test"
+                        font.bold: true
+                    }
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: lblDiaStatusTitle.bottom
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblDiaStatusText
+                        color: "white"
+                        text: "Test"
+                        font.bold: true
+                    }
+                }
                 
                 GridLayout {
                     id: grdTitle
@@ -307,5 +362,154 @@ Item {
                 }
             }
         }
+    }
+    
+    Component.onCompleted: {
+        if(!Hue.isInitialized()) {
+            Hue.initHueConfig();
+        }
+        schedulesModel.clear();
+        getSchedules();
+    }
+    
+    function getSchedules() {
+        schedulesModel.clear()
+        Hue.getSchedulesIdName(schedulesModel);
+    }
+    
+    
+    function resetDialog() {
+        grpDiaStatus.visible = false;
+        txtScheduleName.text = "";
+        txtDescription.text = "";
+        chkEnabled.checked = true;
+        chkAutodelete.checked = false;
+        timeEditor.reset();
+        timeEditor.strOriginalTime = "";
+        timeEditor.strOriginalLocaltime = "";
+        timeEditor.useOriginal = false;
+        timeEditor.useLocal = true;
+        timeEditor.isEnabled = true;
+    }
+    
+    function addSchedule() {
+        resetDialog();
+        editScheduleDialogue.scheduleId = "-1";
+        editScheduleDialogue.open();
+    }
+    
+    function updateScheduleDone(succ, json) {
+        if(!succ) {
+            lblDiaStatusTitle.text = i18n("Failed to update schedule");
+            lblDiaStatusText.text = i18n("Communication error occured");
+            rctDiaStatus.color = errorColour;
+            grpDiaStatus.visible = true;
+            grpStatus.visible = false;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblDiaStatusTitle.text = i18n("Failed to update schedule");
+                        lblDiaStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctDiaStatus.color = errorColour;
+                        grpDiaStatus.visible = true;
+                        grpStatus.visible = false;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully updated schedule");
+                        rctStatus.color = successColour;
+                        grpDiaStatus.visible = false;
+                        grpStatus.visible = true;
+                        editScheduleDialogue.close();
+                    }
+                }
+            }
+            catch(e) {
+                lblDiaStatusTitle.text = i18n("Failed to update schedule");
+                lblDiaStatusText.text = i18n("Unknown error occured");
+                rctStatus.color = errorColour;
+                grpDiaStatus.visible = true;
+                grpStatus.visible = false;
+            }
+        }
+        scheduleListChanged();
+    }
+    
+    function createScheduleDone(succ, json) {
+        if(!succ) {
+            lblDiaStatusTitle.text = i18n("Failed to create schedule");
+            lblDiaStatusText.text = i18n("Communication error occured");
+            rctDiaStatus.color = errorColour;
+            grpDiaStatus.visible = true;
+            grpStatus.visible = false;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblDiaStatusTitle.text = i18n("Failed to create schedule");
+                        lblDiaStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctDiaStatus.color = errorColour;
+                        grpDiaStatus.visible = true;
+                        grpStatus.visible = false;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully created schedule");
+                        rctStatus.color = successColour;
+                        editScheduleDialogue.close();
+                        grpStatus.visible = true;
+                        grpDiaStatus.visible = false;
+                        editScheduleDialogue.close();
+                    }
+                }
+            }
+            catch(e) {
+                lblDiaStatusTitle.text = i18n("Failed to create schedule");
+                lblDiaStatusText.text = i18n("Unknown error occured");
+                rctDiaStatus.color = errorColour;
+                grpDiaStatus.visible = true;
+                grpStatus.visible = false;
+            }
+        }
+        scheduleListChanged();
+    }
+    
+    function deleteScheduleDone(succ, json) {
+        if(!succ) {
+            lblStatusTitle.text = i18n("Failed to delete schedule");
+            lblStatusText.text = i18n("Communication error occured");
+            rctStatus.color = errorColour;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblStatusTitle.text = i18n("Failed to delete schedule");
+                        lblStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctStatus.color = errorColour;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully deleted schedule");
+                        lblStatusText.text = "";
+                        rctStatus.color = successColour;
+                    }
+                }
+            }
+            catch(e) {
+                lblStatusTitle.text = i18n("Failed to update schedule");
+                lblStatusText.text = i18n("Unknown error occured");
+                rctStatus.color = errorColour;
+            }
+        }
+        grpStatus.visible = true;
+        scheduleListChanged();
+    }
+    
+    function scheduleListChanged() {
+       updateTimer.start();
     }
 }

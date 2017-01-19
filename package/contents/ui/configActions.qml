@@ -31,6 +31,9 @@ Item {
     }
     
     property alias cfg_actionlist: actionList.text
+    property string infoColour: "#5555ff"
+    property string errorColour: "#ff0000"
+    property string successColour: "#00aa00"
     
     width: parent.width
     anchors.left: parent.left
@@ -44,99 +47,50 @@ Item {
         id: actListModel
     }
     
-    Component.onCompleted: {
-        actionListModel.clear();
-        
-        try {
-            var actionItems = JSON.parse(actionList.text);
-        }
-        catch(e) {
-            return;
-        }
-        
-        for(var uuid in actionItems) {
-            var cItem = actionItems[uuid];
-            var actionItem = {};
-            actionItem.uuid = uuid;
-            actionItem.userAdded = cItem.userAdded;
-            actionItem.title = cItem.userAdded ? cItem.title : i18n(cItem.title);
-            actionItem.subtitle = cItem.userAdded ? cItem.subtitle : i18n(cItem.subtitle);
-            actionItem.icon = cItem.icon;
-            actionItem.actions = cItem.actions;
-            actionListModel.append(actionItem);
-        }
-    }
-    
-    function setIcon() {
-        var iconText = cbIcon.currentText;
-        mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
-    }
-    
-    function addAction() {
-        editActionDialogue.open();
-        resetDialog();
-    }
-    
-    function resetDialog() {
-        editActionDialogue.tableIndex = -1;
-        txtTitle.text = "";
-        txtSubTitle.text = "";
-        cbIcon.currentIndex = 0;
-        actListModel.clear();
-        actionEditor.reset();
-        var iconText = cbIcon.currentText;
-        mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
-    }
-    
-    function addAct() {
-        var payload = "";
-        payload = actionEditor.getPayload();
-        if(payload) {
-            var newAct = {};
-            newAct.ttype = actionEditor.getType();
-            newAct.tid = actionEditor.getTargetId();
-            newAct.payload = payload;
-            actListModel.append(newAct);
-            actionListChanged();
-        }
-    }
-    
-    function actionListChanged() {
-        // jsonify doesn't work, due to how Qt internally handles the objects
-        var actionArray = []
-        var strJson = "{"
-        for (var i = 0; i < actionListModel.count; i++) {
-            var cObj = actionListModel.get(i)
-            strJson += "\"" + i + "\":{";
-            strJson += "\"userAdded\":" + cObj.userAdded + ",";
-            strJson += "\"title\":\"" + cObj.title + "\",";
-            strJson += "\"subtitle\":\"" + cObj.subtitle + "\",";
-            strJson += "\"icon\": \"" + cObj.icon + "\",";
-            strJson += "\"actions\":[";
-            for (var j = 0; j < cObj.actions.count; j++) {
-                var cAct = cObj.actions.get(j);
-                strJson += "{\"ttype\":\"" + cAct.ttype + "\","
-                strJson += "\"tid\":\"" + cAct.tid + "\","
-                strJson += "\"payload\":\"" + cAct.payload.replace(/"/g, "\\\"") + "\"}"
-                if(j != cObj.actions.count - 1){
-                    strJson += ",";
-                }
-            }
-            strJson += "]}";
-            if(i != actionListModel.count - 1){
-                strJson += ",";
-            }
-        }
-        strJson += "}"
-        
-        actionList.text = strJson;
-    }
-
-    
     ColumnLayout {
         Layout.fillWidth: true
         anchors.left: parent.left
         anchors.right: parent.right
+        
+        GroupBox {
+            id: grpStatus
+            Layout.fillWidth: true
+            anchors.left: parent.left
+            anchors.right: parent.right
+            flat: true
+            visible: false
+            
+            Rectangle {
+                id: rctStatus
+                width: parent.width
+                height: (units.gridUnit * 2.5) + units.smallSpacing
+                color: "#ff0000"
+                border.color: "black"
+                border.width: 1
+                radius: 5
+            }
+            
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.top
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusTitle
+                color: "white"
+                font.bold: true
+            }
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: lblStatusTitle.bottom
+                    topMargin: units.smallSpacing
+                }
+                id: lblStatusText
+                color: "white"
+                font.bold: true
+            }
+        }
         
         TableView {
             id: actionsTable
@@ -233,7 +187,7 @@ Item {
                 }
             }
             model: actionListModel
-            Layout.preferredHeight: 290
+            Layout.preferredHeight: 230
             Layout.preferredWidth: parent.width
             Layout.columnSpan: 2
         }
@@ -454,4 +408,93 @@ Item {
             }
         }
     }
+    
+    Component.onCompleted: {
+        actionListModel.clear();
+        
+        try {
+            var actionItems = JSON.parse(actionList.text);
+        }
+        catch(e) {
+            return;
+        }
+        
+        for(var uuid in actionItems) {
+            var cItem = actionItems[uuid];
+            var actionItem = {};
+            actionItem.uuid = uuid;
+            actionItem.userAdded = cItem.userAdded;
+            actionItem.title = cItem.userAdded ? cItem.title : i18n(cItem.title);
+            actionItem.subtitle = cItem.userAdded ? cItem.subtitle : i18n(cItem.subtitle);
+            actionItem.icon = cItem.icon;
+            actionItem.actions = cItem.actions;
+            actionListModel.append(actionItem);
+        }
+    }
+    
+    function setIcon() {
+        var iconText = cbIcon.currentText;
+        mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
+    }
+    
+    function addAction() {
+        editActionDialogue.open();
+        resetDialog();
+    }
+    
+    function resetDialog() {
+        editActionDialogue.tableIndex = -1;
+        txtTitle.text = "";
+        txtSubTitle.text = "";
+        cbIcon.currentIndex = 0;
+        actListModel.clear();
+        actionEditor.reset();
+        var iconText = cbIcon.currentText;
+        mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
+    }
+    
+    function addAct() {
+        var payload = "";
+        payload = actionEditor.getPayload();
+        if(payload) {
+            var newAct = {};
+            newAct.ttype = actionEditor.getType();
+            newAct.tid = actionEditor.getTargetId();
+            newAct.payload = payload;
+            actListModel.append(newAct);
+            actionListChanged();
+        }
+    }
+    
+    function actionListChanged() {
+        // jsonify doesn't work, due to how Qt internally handles the objects
+        var actionArray = []
+        var strJson = "{"
+        for (var i = 0; i < actionListModel.count; i++) {
+            var cObj = actionListModel.get(i)
+            strJson += "\"" + i + "\":{";
+            strJson += "\"userAdded\":" + cObj.userAdded + ",";
+            strJson += "\"title\":\"" + cObj.title + "\",";
+            strJson += "\"subtitle\":\"" + cObj.subtitle + "\",";
+            strJson += "\"icon\": \"" + cObj.icon + "\",";
+            strJson += "\"actions\":[";
+            for (var j = 0; j < cObj.actions.count; j++) {
+                var cAct = cObj.actions.get(j);
+                strJson += "{\"ttype\":\"" + cAct.ttype + "\","
+                strJson += "\"tid\":\"" + cAct.tid + "\","
+                strJson += "\"payload\":\"" + cAct.payload.replace(/"/g, "\\\"") + "\"}"
+                if(j != cObj.actions.count - 1){
+                    strJson += ",";
+                }
+            }
+            strJson += "]}";
+            if(i != actionListModel.count - 1){
+                strJson += ",";
+            }
+        }
+        strJson += "}"
+        
+        actionList.text = strJson;
+    }
+
 }

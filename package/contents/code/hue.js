@@ -50,8 +50,6 @@ function putPayloadToUrl(url, payload, succesCallback, failureCallback) {
     putJsonToHue(url, payload, succesCallback, failureCallback, baseDone);
 }
 
-// GETTERS
-
 /**
  * Returns whether init has been called already
  */
@@ -95,6 +93,24 @@ function getLights(myModel) {
     getJsonFromHue(myUrl, parseAllLightsToModel, baseFail, baseDone, myModel, "");
 }
 
+function getNewLights(myModel, doneCallback) {
+    if(noConnection) {
+        return;
+    }
+    var myUrl = "lights/new";
+    //TODO: doneCallback
+    getJsonFromHue(myUrl, parseNewLights, baseFail, baseDone, myModel, "");
+}
+
+function scanNewLights(doneCallback) {
+    if(noConnection) {
+        return;
+    }
+    var myUrl = "lights";
+    //TODO: doneCallback
+    postJsonToHue(myUrl, "", baseSuccess, baseFail, baseDone);
+}
+
 /**
  * Get one lights from the hue bridge and fill them into a ListModel
  *
@@ -107,6 +123,30 @@ function getLight(myModel, lightId) {
     }
     var myUrl = "lights/" + lightId;
     getJsonFromHue(myUrl, parseLightToModel, baseFail, baseDone, myModel, lightId);
+}
+
+/**
+ * Helper to fill light names and id 
+ * into a model (used by config dialogue) 
+ * The model will not be cleared beforehand.
+ * @param {ListModel} myModel model to fill with text and value
+ */
+function getLightsIdName(myModel) {
+    if(noConnection) {
+        dbgPrint("No connection");
+        return;
+    }
+    var myUrl = "lights";
+    getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, baseDone, myModel, "");
+}
+
+function getAvailableLightsIdName(myModel) {
+    if(noConnection) {
+        dbgPrint("No connection");
+        return;
+    }
+    var myUrl = "";
+    getJsonFromHue(myUrl, parseAvailableLightsToSimpleModel, baseFail, baseDone, myModel, "");
 }
 
 /**
@@ -151,39 +191,6 @@ function getGroupsIdName(myModel) {
 }
 
 /**
- * Helper to fill light names and id 
- * into a model (used by config dialogue) 
- * The model will not be cleared beforehand.
- * @param {ListModel} myModel model to fill with text and value
- */
-function getLightsIdName(myModel) {
-    if(noConnection) {
-        dbgPrint("No connection");
-        return;
-    }
-    var myUrl = "lights";
-    getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, baseDone, myModel, "");
-}
-
-function getAvailableLightsIdName(myModel) {
-    if(noConnection) {
-        dbgPrint("No connection");
-        return;
-    }
-    var myUrl = "";
-    getJsonFromHue(myUrl, parseAvailableLightsToSimpleModel, baseFail, baseDone, myModel, "");
-}
-
-function getSchedulesIdName(myModel) {
-    if(noConnection) {
-        dbgPrint("No connection");
-        return;
-    }
-    var myUrl = "schedules";
-    getJsonFromHue(myUrl, parseSchedulesToSimpleModel, baseFail, baseDone, myModel, "");
-}
-
-/**
  * Get all lights for a specific group from the hue bridge and
  * fills them into a ListModel
  *
@@ -215,6 +222,53 @@ function updateGroup(myGroup) {
     var myUrl = "groups/" + myGroup.vuuid;
     getJsonFromHue(myUrl, parseGroupToObject, baseFail, baseDone, myGroup, myGroup.vuuid);
 }
+
+/**
+ * method to fill schedules into a model
+ * @param {ListModel} myModel model to fill
+ */
+function getSchedulesIdName(myModel) {
+    if(noConnection) {
+        dbgPrint("No connection");
+        return;
+    }
+    var myUrl = "schedules";
+    getJsonFromHue(myUrl, parseSchedulesToSimpleModel, baseFail, baseDone, myModel, "");
+}
+
+/**
+ * Method to create a new schedule
+ * @param {string} body JSON body
+ * @param {function} doneCallback called when done
+ */
+function createSchedule(body, doneCallback) {
+    var myUrl = "schedules";
+    postJsonToHue(myUrl, body, baseSuccess, baseFail, doneCallback);
+}
+
+/**
+ * Method to update an existing schedule
+ * @param {string} scheduleId id of the schedule to update
+ * @param {string} body JSON body
+ * @param {function} doneCallback called when done
+ */
+function updateSchedule(scheduleId, body, doneCallback) {
+    var myUrl = "schedules/" + scheduleId;
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, doneCallback);
+}
+
+/**
+ * Method to delete an existing schedule
+ * @param {string} scheduleId id of the schedule to update
+ * @param {function} doneCallback called when done
+ */
+function deleteSchedule(scheduleId, doneCallback) {
+    var myUrl = "schedules/" + scheduleId;
+    deleteRequestToHue(myUrl, baseSuccess, baseFail, doneCallback);
+}
+
+
+
 
 // SWITCH
 
@@ -351,6 +405,10 @@ function setLightColourHS(lightId, hue, sat) {
     putJsonToHue(myUrl, body, baseSuccess, baseFail, baseDone);
 }
 
+// Schedules
+
+
+
 // Authenticate
 
 /**
@@ -378,7 +436,7 @@ function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
     var attempt = 1; 
     var attempts = 12;
     var postUrl = bridgeUrl + "/api";
-    postJsonToHue(postUrl, body, attempt, attempts, authSuccess, authFail, sCb, fCb)
+    postAuthToHue(postUrl, body, attempt, attempts, authSuccess, authFail, sCb, fCb)
 }
 
 /**
@@ -390,7 +448,7 @@ function authFail(postUrl, body, att, maxAtt, request, gSuccCb, gFailCb) {
     mytimer.interval = 5000;
     mytimer.repeat = false;
     mytimer.triggered.connect(function () {
-        postJsonToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
+        postAuthToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
     })
     mytimer.start();
     gFailCb("unknown error");
@@ -421,7 +479,7 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
             mytimer.interval = 5000;
             mytimer.repeat = false;
             mytimer.triggered.connect(function () {
-                postJsonToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
+                postAuthToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
             })
             mytimer.start();
             return;
@@ -437,7 +495,7 @@ function authSuccess(json, postUrl, body, att, maxAtt, request, gSuccCb, gFailCb
     mytimer.interval = 5000;
     mytimer.repeat = false;
     mytimer.triggered.connect(function () {
-        postJsonToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
+        postAuthToHue(postUrl, body, attempt, maxAtt, authSuccess, authFail, gSuccCb, gFailCb)
     })
     mytimer.start();
     gFailCb("unknown error");
@@ -668,6 +726,57 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCal
 /**
  * Function to post JSON to the Hue bridge
  * @param {String} putUrl the URL to send the POST request to
+ * @param {String} payload the content of the POST request
+ * @param {function} successCallback call on success, json, object, object2 and a done callback as params
+ * @param {function} failureCallback call on failure, request and done callback as params
+ * @param {function} doneCallback called when all is handled
+ */
+function postJsonToHue(postUrl, payload, successCallback, failureCallback, doneCallback) {
+    var request = getRequest(postUrl, 'POST');
+    request.onreadystatechange = function () {
+        if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (request.status !== 200) {
+            if(!useAltConnection && altConnectionEnabled) {
+                dbgPrint("Request to " + postUrl + " failed, trying alt URL")
+                useAltConnection = true;
+                var altRequest = getRequest(getUrl, 'POST');
+                altRequest.onreadystatechange = function () {
+                    if (altRequest.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    
+                    if (altRequest.status !== 200) {
+                        dbgPrint("Request to " + postUrl + " failed with alt URL as well")
+                        failureCallback(altRequest, doneCallback);
+                        noConnection = true;
+                    }
+                    
+                    var json = altRequest.responseText;
+                    successCallback(json, doneCallback);
+                    noConnection = false;
+                }
+                altRequest.send();
+            }
+            else {
+                dbgPrint("Request to " + postUrl + " failed with alt URL or no alt Url specified")
+                failureCallback(request, doneCallback);
+                noConnection = true;
+            }
+        }
+        
+        var json = request.responseText;
+        successCallback(json, doneCallback);
+        noConnection = false;
+    }
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(payload);
+}
+
+/**
+ * Function to post JSON to the Hue bridge for authentication
+ * @param {String} putUrl the URL to send the POST request to
  * @param {String} body the content of the POST request
  * @param {int} att current attempt
  * @param {int} maxAtt maximal amount of attempts
@@ -675,7 +784,7 @@ function putJsonToHue(putUrl, payload, successCallback, failureCallback, doneCal
  * @param {function} lFailCb call on failure
  *
  */
-function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gFailCb) {
+function postAuthToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gFailCb) {
     if(att > maxAtt) {
         gFailCb("Timeout");
         return;
@@ -699,16 +808,65 @@ function postJsonToHue(postUrl, body, att, maxAtt, lSuccCb, lFailCb, gSuccCb, gF
 }
 
 /**
+ * Function to post JSON to the Hue bridge
+ * @param {String} putUrl the URL to send the DELETE request to
+ * @param {function} successCallback call on success, json, object, object2 and a done callback as params
+ * @param {function} failureCallback call on failure, request and done callback as params
+ * @param {function} doneCallback called when all is handled
+ */
+function deleteRequestToHue(deleteUrl, successCallback, failureCallback, doneCallback) {
+    var request = getRequest(deleteUrl, 'DELETE');
+    request.onreadystatechange = function () {
+        if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (request.status !== 200) {
+            if(!useAltConnection && altConnectionEnabled) {
+                dbgPrint("Request to " + deleteUrl + " failed, trying alt URL")
+                useAltConnection = true;
+                var altRequest = getRequest(getUrl, 'DELETE');
+                altRequest.onreadystatechange = function () {
+                    if (altRequest.readyState !== XMLHttpRequest.DONE) {
+                        return;
+                    }
+                    
+                    if (altRequest.status !== 200) {
+                        dbgPrint("Request to " + deleteUrl + " failed with alt URL as well")
+                        failureCallback(altRequest, doneCallback);
+                        noConnection = true;
+                    }
+                    
+                    var json = altRequest.responseText;
+                    successCallback(json, doneCallback);
+                    noConnection = false;
+                }
+                altRequest.send();
+            }
+            else {
+                dbgPrint("Request to " + deleteUrl + " failed with alt URL or no alt Url specified")
+                failureCallback(request, doneCallback);
+                noConnection = true;
+            }
+        }
+        
+        var json = request.responseText;
+        successCallback(json, doneCallback);
+        noConnection = false;
+    }
+    request.send();
+}
+
+/**
  * Skeleton function to call on success, will just call doneCallback
  */
 function baseSuccess(json, doneCallback) {
-    doneCallback();
+    doneCallback(true, json);
 }
 
 /**
  * Skeleton function to call on all done, will do nothing
  */
-function baseDone () {
+function baseDone(success, json) {
 }
 
 
@@ -717,7 +875,7 @@ function baseDone () {
  * @param {XHTTPRequest} request 
  * @param {function} doneCallback will be called at the end
  */
-function baseFail (request, doneCallback) {
+function baseFail(request, doneCallback) {
     dbgPrint("Communicating with hue failed");
     if(request.status) {
         dbgPrint("Status: " + request.status);
@@ -726,7 +884,7 @@ function baseFail (request, doneCallback) {
         dbgPrint("Response: " + request.responseText);
     }
     
-    doneCallback();
+    doneCallback(false, request);
 }
 
 function parseAll(json, groupModel, lightModel, doneCallback) {
@@ -739,7 +897,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(myResult[0]) {
@@ -857,7 +1015,7 @@ function parseAll(json, groupModel, lightModel, doneCallback) {
         //TODO: config, schedules, scenes, rules, sensors once we support them
     }
     
-    doneCallback();
+    doneCallback(true, json);
 }
 
 function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
@@ -866,7 +1024,7 @@ function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(myGroups[0]) {
@@ -900,7 +1058,7 @@ function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
             continue;
         }
     }
-    doneCallback();
+    doneCallback(true, json);
 }
 
 function parseGroupsToModel(json, listModel, name, doneCallback) {
@@ -912,7 +1070,7 @@ function parseGroupsToModel(json, listModel, name, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(myGroups[0]) {
@@ -971,7 +1129,7 @@ function parseGroupsToModel(json, listModel, name, doneCallback) {
         
         listModel.append(myGroup);
     }
-    doneCallback();
+    doneCallback(true, json);
 }
 
 function parseGroupToObject(json, myObject, name, doneCallback) {
@@ -980,7 +1138,7 @@ function parseGroupToObject(json, myObject, name, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(cgroup[0]) {
@@ -1035,7 +1193,7 @@ function parseGroupToObject(json, myObject, name, doneCallback) {
         myObject.vHasTemperature = false;
     }
     
-    doneCallback();
+    doneCallback(true, json);
     
 }
 
@@ -1045,7 +1203,7 @@ function parseLightsToSimpleModel(json, listModel, name, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(myLights[0]) {
@@ -1068,7 +1226,41 @@ function parseLightsToSimpleModel(json, listModel, name, doneCallback) {
         myLight.value = "" + lightName;
         listModel.append(myLight);
     }
-    doneCallback();
+    doneCallback(true, json);
+}
+
+function parseNewLights(json, listModel, name, doneCallback) {
+    try {
+        var myLights = JSON.parse(json);
+    }
+    catch(e) {
+        dbgPrint("Failed to parse json: " + json);
+        doneCallback(false, json);
+        return;
+    }
+    if(myLights[0]) {
+        if(myLights[0].error) {
+            if(myLights[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(myLights[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    
+    for(var lightName in myLights) {
+        if(lightName != "lastscan") {
+            var cLight = myLights[lightName];
+            var myLight = {};
+            myLight.uuid = lightName;
+            myLight.name = cLight.name || i18n("Not available");
+            myLight.text = lightName + ": " + cLight.name;
+            myLight.value = "" + lightName;
+            listModel.append(myLight);
+        }
+    }
+    doneCallback(true, json);
 }
 
 function parseAvailableLightsToSimpleModel(json, listModel, name, doneCallback) {
@@ -1077,7 +1269,7 @@ function parseAvailableLightsToSimpleModel(json, listModel, name, doneCallback) 
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(myResult[0]) {
@@ -1125,7 +1317,7 @@ function parseAvailableLightsToSimpleModel(json, listModel, name, doneCallback) 
         listModel.append({ uuid: "-1", name: txtNone, text: txtNone, value: txtNone})
     }
     
-    doneCallback();
+    doneCallback(true, json);
 }
 
 function parseAllLightsToModel(json, listModel, name, doneCallback) {
@@ -1135,7 +1327,7 @@ function parseAllLightsToModel(json, listModel, name, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(myLights[0]) {
@@ -1197,7 +1389,7 @@ function parseAllLightsToModel(json, listModel, name, doneCallback) {
         listModel.append(myLight);
     }
     
-    doneCallback();
+    doneCallback(true, json);
 }
 
 function parseLightToModel(json, listModel, lightName, doneCallback) {
@@ -1206,7 +1398,7 @@ function parseLightToModel(json, listModel, lightName, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(clight[0]) {
@@ -1265,7 +1457,7 @@ function parseLightToModel(json, listModel, lightName, doneCallback) {
     
     listModel.append(myLight);
     
-    doneCallback();
+    doneCallback(true, json);
 }
 
 function parseLightToObject(json, myObject, lightName, doneCallback) {
@@ -1274,7 +1466,7 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(clight[0]) {
@@ -1330,7 +1522,7 @@ function parseLightToObject(json, myObject, lightName, doneCallback) {
         myObject.vHasTemperature = false;
     }
     
-    doneCallback();
+    doneCallback(true, json);
 }
 
 function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
@@ -1339,7 +1531,7 @@ function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
     }
     catch(e) {
         dbgPrint("Failed to parse json: " + json);
-        doneCallback();
+        doneCallback(false, json);
         return;
     }
     if(mySchedules[0]) {
@@ -1392,7 +1584,7 @@ function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
         
         listModel.append(mySchedule);
     }
-    doneCallback();
+    doneCallback(true, json);
 }
 
 /**
