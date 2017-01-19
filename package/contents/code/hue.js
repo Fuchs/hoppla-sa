@@ -377,7 +377,7 @@ function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
     var body =  '{"devicetype":"' + appname + '#' + hostname + '"}'
     var attempt = 1; 
     var attempts = 12;
-    var postUrl = bridgeUrl + "/api";;
+    var postUrl = bridgeUrl + "/api";
     postJsonToHue(postUrl, body, attempt, attempts, authSuccess, authFail, sCb, fCb)
 }
 
@@ -1369,7 +1369,7 @@ function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
         mySchedule.localtime =  cSchedule.localtime || i18n("Not available");
         mySchedule.time = cSchedule.time || i18n("Not available");
         mySchedule.created = cSchedule.created || i18n("Not available");
-        mySchedule.status = cSchedule.status || i18n("Not available");
+        mySchedule.status = cSchedule.status || i18n("disabled");
         if(mySchedule.status == "enabled") {
             mySchedule.pstatus = i18n("on");
         }
@@ -1439,7 +1439,6 @@ function getCurrentTime() {
  * @param {bool} isLocalTime whether the time is local
  */
 function fmtTimeHumReadable(strHueTime, isLocalTime) {
-    
     var isWeekly = false;
     var isTime = false;
     var isRec = false;
@@ -1586,6 +1585,121 @@ function fmtTimeHumReadable(strHueTime, isLocalTime) {
     }
     
     return strReadable;
+}
+
+function parseHueTimeString(strTime) {
+    var timeObj = {};
+    timeObj.valid = true;
+    timeObj.isRecurring = false;
+    timeObj.isWeekly = false;
+    timeObj.isOneTimer = false;
+    timeObj.isAbsolute = false;
+    
+    if(!strTime) {
+        dbgPrint("Empty string, invalid");
+        timeObj.valid = false;
+        return timeObj;
+    }
+    try {
+        if(strTime.charAt(0) == "P") {
+            timeObj.isOneTimer = true;
+            
+        }
+        else if(strTime.charAt(0) == "R") {
+            timeObj.isReccuring = true;
+            var rec = "";
+            for(var i = 0; i < 3; ++i) {
+                var cha = strTime.charAt(1 + i);
+                if(cha == "/") {
+                    break
+                }
+                else {
+                    rec += cha;
+                }
+            }
+            
+            if(rec && rec != "0") {
+                timeObj.rec = parseInt(rec);
+                timeObj.forever = false;
+            }
+            else {
+                timeObj.rec = 0;
+                timeObj.forever = true;
+            }
+        }
+        else if(strTime.charAt(0) == "W") {
+            timeObj.isWeekly = true;
+            var bitMask = "";
+            for(var i = 0; i < 3; ++i) {
+                var cha = strTime.charAt(1 + i);
+                if(cha == "/") {
+                    break
+                }
+                else {
+                    bitMask += cha;
+                }
+            }
+            
+            if(bitMask) {
+                var bits = arrayFromMask(bitMask);
+                
+                if(bits.length = 7) {
+                    timeObj.onMon = bits[6]; // 0000001
+                    timeObj.onTue = bits[5]; // 0000010
+                    timeObj.onWed = bits[4]; // 0000100
+                    timeObj.onThu = bits[3]; // 0001000
+                    timeObj.onFri = bits[2]; // 0010000
+                    timeObj.onSat = bits[1]; // 0100000
+                    timeObj.onSun = bits[0]; // 1000000
+                }
+                else {
+                    timeObj.valid = false;
+                    return timeObj;
+                }
+            }
+            else {
+                timeObj.valid = false;
+                return timeObj;
+            }
+        }
+        else {
+            timeObj.isAbsolute = true;
+            timeObj.date = strTime.substring(0, 10);
+            timeObj.year = strTime.substring(0,4);
+            timeObj.month = strTime.substring(5,7);
+            timeObj.day = strTime.substring(8,10)
+        }
+        
+        var time = strTime.indexOf("T");
+        if(time < 0) {
+            timeObj.valid = false;
+            return timeObj;
+        }
+        var timeString = strTime.substring(time + 1, time + 8)
+        timeObj.hours = parseInt(timeString.substring(0,2));
+        timeObj.minutes = parseInt(timeString.substring(3,5));
+        timeObj.seconds = parseInt(timeString.substring(6,8));
+        
+        var rand = strTime.indexOf("A");
+        if(rand < 0) {
+            timeObj.hasRandom = false;
+        }
+        else {
+            timeObj.hasRandom = true;
+            timeString = strTime.substring(rand + 1, rand + 8)
+            timeObj.randHours = parseInt(timeString.substring(0,2));
+            timeObj.randMinutes = parseInt(timeString.substring(3,5));
+            timeObj.randSeconds = parseInt(timeString.substring(6,8));
+        }
+        
+        return timeObj;
+        
+    }
+    catch (e) {
+        dbgPrint("Error in parseHueTimeString: " + e);
+        timeObj.valid = false;
+        return timeObj;
+    }
 }
 
 /**

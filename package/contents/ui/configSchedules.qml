@@ -51,6 +51,15 @@ Item {
     
     function resetDialog() {
         txtScheduleName.text = "";
+        txtDescription.text = "";
+        chkEnabled.checked = true;
+        chkAutodelete.checked = false;
+        timeEditor.reset();
+        timeEditor.strOriginalTime = "";
+        timeEditor.strOriginalLocaltime = "";
+        timeEditor.useOriginal = false;
+        timeEditor.useLocal = true;
+        timeEditor.isEnabled = true;
     }
     
     function addSchedule() {
@@ -129,10 +138,20 @@ Item {
                                 var editItem = schedulesModel.get(styleData.row);
                                 txtScheduleName.text = editItem.name;
                                 editScheduleDialogue.scheduleId = editItem.uuid;
+                                timeEditor.strOriginalLocaltime = editItem.localtime
+                                timeEditor.strOriginalTime = editItem.time;
+                                if(!editItem.localtime) {
+                                    timeEditor.useLocal = false;
+                                    timeEditor.setTime("");
+                                }
+                                else {
+                                    timeEditor.setTime(editItem.localtime);
+                                }
+                                chkEnabled.checked = editItem.status == "enabled";
+                                chkAutodelete.checked = editItem.autodelete;
                                 editScheduleDialogue.open();
                             }
                         }
-                        
                         
                         Button {
                             tooltip: i18n("Remove")
@@ -168,7 +187,48 @@ Item {
             standardButtons: StandardButton.Ok | StandardButton.Cancel
             
             onAccepted: {
-                // TODO: Sanity check string, jsonify, save 
+                
+                var strJson  = "{\"name\":"
+                strJson += "\"" + txtScheduleName.text + "\",";
+                strJson += "\"description\":"
+                strJson += "\"" + txtDescription.text + "\",";
+                strJson += "\"command\":{\"address\":";
+                strJson += "\"" + actionEditor.getAddress() + "\",";
+                strJson += "\"method\":"
+                strJson += "\"" + actionEditor.getMethod() + "\",";
+                strJson += "\"body\":";
+                strJson += actionEditor.getBody() + "},";
+                if(timeEditor.useLocal) {
+                    strJson += "\"localtime\":" ;
+                    strJson += "\"" + timeEditor.getLocaltime() + "\",";
+                }
+                else {
+                    strJson += "\"localtime\":" ;
+                    strJson += "\"" + timeEditor.getTime() + "\",";
+                }
+                
+                strJson += "\"status\":"
+                if(chkEnabled.checked) {
+                    strJson += "\"enabled\"";
+                }
+                else {
+                     strJson += "\"disabled\"";
+                }
+                
+                if(chkAutodelete.enabled) {
+                    strJson += ",\"autodelete\":"
+                    strJson += chkAutodelete.checked;
+                }
+                
+                strJson += "}"
+                
+                if(editScheduleDialogue.scheduleId == "-1") {
+                    //TODO: Create schedule
+                }
+                else {
+                    //TODO: Update Schedule
+                }
+                print("JSON: " + strJson);
                 close()
             }
             
@@ -207,6 +267,23 @@ Item {
                         Layout.fillWidth: true
                         maximumLength: 64
                     }
+                    
+                    Label {
+                        text: i18n("Settings:");
+                    }
+                    
+                    CheckBox {
+                        id: chkEnabled
+                        text: i18n("Enabled");
+                    }
+                    
+                    CheckBox {
+                        id: chkAutodelete
+                        Layout.fillWidth: true
+                        enabled: !timeEditor.isRecurring;
+                        text: i18n("Auto delete when expired");
+                    }
+                    
                 }
                 
                 GroupBox {
@@ -225,7 +302,7 @@ Item {
                     title: i18n("Command");
                     
                     ActionEditor {
-                            id: actionEditor
+                        id: actionEditor
                     }
                 }
             }

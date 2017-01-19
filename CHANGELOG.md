@@ -6,7 +6,7 @@ Manage your stuff version with:
 
 * Lights can be added and edited (renamed)
 * Groups can be added and edited
-* Actions allow fading
+* Actions allow fading, effects and blinking
 * Schedules can be added and edited
 * Bug fixes all over the place
 * 100% translated to German

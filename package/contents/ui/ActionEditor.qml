@@ -59,6 +59,45 @@ ColumnLayout {
         visible: false
     }
     
+    GroupBox {
+        id: grpStatus
+        Layout.fillWidth: true
+        anchors.left: parent.left
+        anchors.right: parent.right
+        flat: true
+        visible: false
+        
+        Rectangle {
+            id: rctStatus
+            width: parent.width
+            height: (units.gridUnit * 2.5) + units.smallSpacing
+            color: "#ff0000"
+            border.color: "black"
+            border.width: 1
+            radius: 5
+        }
+        
+        Label {
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: parent.top
+                topMargin: units.smallSpacing
+            }
+            id: lblStatusTitle
+            color: "white"
+            font.bold: true
+        }
+        Label {
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: lblStatusTitle.bottom
+                topMargin: units.smallSpacing
+            }
+            id: lblStatusText
+            color: "white"
+            font.bold: true
+        }
+    }
     
     GridLayout {
         height: parent.height
@@ -333,6 +372,7 @@ ColumnLayout {
     }
     
     function reset() {
+        grpStatus.visible = false;
         lblHue.text = "";
         lblSat.text = "";
         lblCt.text = "296";
@@ -441,22 +481,22 @@ ColumnLayout {
             
             if(chkBlink.checked) {
                 if(rbStopBlink.checked) {
-                    content.push("\"alert\": \"none\"");
+                    content.push("\"alert\":\"none\"");
                 }
                 else if(rbOnce.checked) {
-                    content.push("\"alert\": \"select\"");
+                    content.push("\"alert\":\"select\"");
                 }
                 else if(rbFifteen.checked) {
-                    content.push("\"alert\": \"lselect\"");
+                    content.push("\"alert\":\"lselect\"");
                 }
             }
             
             if(chkEffect.checked) {
                 if(rbStopEffect.checked) {
-                    content.push("\"effect\": \"none\"");
+                    content.push("\"effect\":\"none\"");
                 }
                 else if(rbColourLoop.checked) {
-                    content.push("\"effect\": \"colorloop\"");
+                    content.push("\"effect\":\"colorloop\"");
                 }
             }
             
@@ -469,19 +509,37 @@ ColumnLayout {
     }
     
     function getBody() {
-        //TODO: implement me
+        return getPayload();
     }
     
     function getAddress() {
-        //TODO: implement me
+        var strAddress = "/api/" + plasmoid.configuration.authToken;
+        if(cbType.currentIndex == 0) {
+            strAddress += "/groups/"
+            strAddress += getTargetId();
+            strAddress += "/action"
+        }
+        else {
+            strAddress += "lights/"
+            strAddress += getTargetId();
+            strAddress += "/state"
+        }
+        return strAddress;
     }
     
     function getMethod() {
-        //TODO: implement me
+        return "PUT";
     }
     
     function parseFromObject(myObject) {
-        //TODO: implement me
+        if(myObject) {
+        }
+        else {
+            isEnabled = false;
+            lblStatusTitle.text = i18n("Failed to parse the specified action.");
+            lblStatusText.text = i18n("Read only mode, original values are preserved");
+            grpStatus.visible = true;
+        }
     }
     
 }

@@ -32,11 +32,56 @@ ColumnLayout {
     
     property string strOriginalTime;
     property string strOriginalLocaltime;
-    property string strOriginalMethod;
     property bool useOriginal;
     property bool useLocal;
     property bool isEnabled;
+    property bool isRecurring: !chkOneTimer.checked && !rbOnce.checked;
     
+    CheckBox {
+        id: chkOneTimer
+        visible: false
+        checked: false
+    }
+    
+    GroupBox {
+        id: grpStatus
+        Layout.fillWidth: true
+        anchors.left: parent.left
+        anchors.right: parent.right
+        flat: true
+        visible: false
+        
+        Rectangle {
+            id: rctStatus
+            width: parent.width
+            height: (units.gridUnit * 2.5) + units.smallSpacing
+            color: "#ff0000"
+            border.color: "black"
+            border.width: 1
+            radius: 5
+        }
+        
+        Label {
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: parent.top
+                topMargin: units.smallSpacing
+            }
+            id: lblStatusTitle
+            color: "white"
+            font.bold: true
+        }
+        Label {
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: lblStatusTitle.bottom
+                topMargin: units.smallSpacing
+            }
+            id: lblStatusText
+            color: "white"
+            font.bold: true
+        }
+    }
     
     GridLayout {
         id: grdType
@@ -54,18 +99,21 @@ ColumnLayout {
             text: i18n("Recurring")
             exclusiveGroup: timeTypeGroup
             checked: true
+            enabled: isEnabled
         }
         
         RadioButton {
             id: rbWeekly
             text: i18n("Weekly")
             exclusiveGroup: timeTypeGroup
+            enabled: isEnabled
         }
         
         RadioButton {
             id: rbOnce
             text: i18n("Once")
             exclusiveGroup: timeTypeGroup
+            enabled: isEnabled
         }
     }
     
@@ -86,7 +134,7 @@ ColumnLayout {
             GridLayout {
                 columns: 4
                 Layout.fillWidth: true
-            
+                
                 CheckBox {
                     id: chkMonday
                     enabled: rbWeekly.checked && isEnabled
@@ -118,13 +166,13 @@ ColumnLayout {
                 }
                 
                 CheckBox {
-                    id: chkSaturdays
+                    id: chkSaturday
                     enabled: rbWeekly.checked && isEnabled
                     text: i18n("Saturday");
                 }
                 
                 CheckBox {
-                    id: chkSundays
+                    id: chkSunday
                     enabled: rbWeekly.checked && isEnabled
                     text: i18n("Sunday");
                 }
@@ -146,7 +194,7 @@ ColumnLayout {
             id: sbRecN
             maximumValue: 99
             minimumValue: 1
-            enabled: isEnabled && !cbForever.checked
+            enabled: isEnabled && !chkForever.checked
         }
         
         Label {
@@ -154,7 +202,7 @@ ColumnLayout {
         }
         
         CheckBox {
-            id: cbForever
+            id: chkForever
             enabled: isEnabled
             text: i18n("forever")
         }
@@ -180,7 +228,8 @@ ColumnLayout {
         
         SpinBox {
             id: sbYear
-            maximumValue: 9999
+            maximumValue: 2036
+            minimumValue: 1970
             enabled: isEnabled && rbOnce.checked
         }
         
@@ -242,7 +291,7 @@ ColumnLayout {
         Label {
             text: ":"
         }
-                
+        
         SpinBox {
             id: sbSeconds
             maximumValue: 59
@@ -252,10 +301,11 @@ ColumnLayout {
         CheckBox {
             id: chkRandom
             text: i18n("Random added time:")
+            enabled: isEnabled
         }
         
         SpinBox {
-            id: sbRandomHours
+            id: sbRandHours
             maximumValue: 11
             enabled: isEnabled && chkRandom.checked
         }
@@ -265,7 +315,7 @@ ColumnLayout {
         }
         
         SpinBox {
-            id: sbRandomMinutes
+            id: sbRandMinutes
             maximumValue: 59
             enabled: isEnabled && chkRandom.checked
         }
@@ -273,14 +323,14 @@ ColumnLayout {
         Label {
             text: ":"
         }
-                
+        
         SpinBox {
-            id: sbRandomSeconds
+            id: sbRandSeconds
             maximumValue: 59
             enabled: isEnabled && chkRandom.checked
         }
-        
     }
+    
     
     Component.onCompleted: {
         if(!Hue.isInitialized()) {
@@ -290,14 +340,163 @@ ColumnLayout {
     }
     
     function reset() {
-        //TODO: Implement me
+        grpStatus.visible = false;
+        chkOneTimer.checked = false;
+        
+        rbReccuring.checked = true;
+        sbRecN.value = 1;
+        chkForever.checked = false;
+        
+        rbWeekly.checked = false;
+        chkMonday.checked = false;
+        chkTuesday.checked = false;
+        chkWednesday.checked = false;
+        chkThursday.checked = false;
+        chkFriday.checked = false;
+        chkSaturday.checked = false;
+        chkSunday.checked = false;
+        
+        rbOnce.checked = false;
+        sbYear. value = 0;
+        sbMonth.value = 0;
+        sbDay.value = 0;
+        
+        sbHours.value = 0;
+        sbMinutes.value = 0;
+        sbSeconds.value = 0;
+        
+        chkRandom.checked = false;
+        sbRandHours.value = 0;
+        sbRandMinutes.value = 0;
+        sbRandSeconds.value = 0;
+    }
+    
+    function setTime(strTime) {
+        var timeObj = Hue.parseHueTimeString(strTime);
+        if(timeObj.valid) {
+            if(timeObj.isAbsolute) {
+                rbOnce.checked = true;
+                sbYear.value = timeObj.year;
+                sbMonth.value = timeObj.month;
+                sbDay.value = timeObj.day;
+            }
+            else if(timeObj.isWeekly) {
+                rbWeekly.checked = true;
+                chkMonday.checked = timeObj.onMon;
+                chkTuesday.checked = timeObj.onTue;
+                chkWednesday.checked = timeObj.onWed;
+                chkThursday.checked = timeObj.onThu;
+                chkFriday.checked = timeObj.onFri;
+                chkSaturday.checked = timeObj.onSat;
+                chkSunday.checked = timeObj.onSun;
+            }
+            else if(timeObj.isRecurring) {
+                rbReccuring.checked = true; 
+                if(timeObj.forever) {
+                    sbRecN.value = 1;
+                    chkForever.checked = true;
+                }
+                else {
+                    sbRecN.value = timeObj.rec
+                    chkForever.checked = false;
+                }
+            }
+            else if(timeObj.isOneTimer) {
+                chkOneTimer.checked = true;
+                rbReccuring.checked = true;
+                sbRecN.value = 1;
+                chkForever.checked = false;
+            }
+            
+            sbHours.value = timeObj.hours;
+            sbMinutes.value = timeObj.minutes;
+            sbSeconds.value = timeObj.seconds;
+            
+            chkRandom.checked = false;
+            
+            if(timeObj.hasRandom) {
+                chkRandom.checked = true;
+                sbRandHours.value = timeObj.randHours;
+                sbRandMinutes.value = timeObj.randMinutes;
+                sbRandSeconds.value = timeObj.randSeconds;
+            }
+        }
+        else {
+            isEnabled = false;
+            lblStatusTitle.text = i18n("Failed to parse the specified time.");
+            lblStatusText.text = i18n("Read only mode, original values are preserved");
+            grpStatus.visible = true;
+        }
     }
     
     function getLocaltime() {
-        //TODO: Implement me
         if(useOriginal) {
             return strOriginalLocaltime;
         }
+        
+        var strTime = "";
+        if(chkOneTimer.checked) {
+            strTime = "P";
+        }
+        else if(rbReccuring.checked) {
+            strTime = "R";
+            if(!chkForever.checked) {
+                strTime += sbRecN.value;
+            }
+            strTime += "/";
+        }
+        else if(rbWeekly.checked) {
+            strTime = "W";
+            var mask = 0;
+            if(chkMonday.checked) {
+                mask += 64;
+            }
+            if(chkTuesday.checked) {
+                mask += 32;
+            }
+            if(chkWednesday.checked) {
+                mask += 16;
+            }
+            if(chkThursday.checked) {
+                mask += 8;
+            }
+            if(chkFriday.checked) {
+                mask += 4;
+            }
+            if(chkSaturday.checked) {
+                mask += 2;
+            }
+            if(chkSunday.checked) {
+                mask += 1;
+            }
+            strTime += mask;
+            strTime += "/";
+        }
+        else if(rbOnce.checked) {
+            strTime = sbYear.value;
+            strTime += chkRandom.checked ? ":" : "-";
+            strTime += ("0" + sbMonth.value).slice(-2);
+            strTime += chkRandom.checked ? ":" : "-";
+            strTime += ("0" + sbDay.value).slice(-2);
+        }
+        
+        strTime += "T"
+        strTime += ("0" + sbHours.value).slice(-2);
+        strTime += ":"
+        strTime += ("0" + sbMinutes.value).slice(-2);
+        strTime += ":"
+        strTime += ("0" + sbSeconds.value).slice(-2);
+        
+        if(chkRandom.checked) {
+            strTime += "A"
+            strTime += ("0" + sbRandHours.value).slice(-2);
+            strTime += ":"
+            strTime += ("0" + sbRandMinutes.value).slice(-2);
+            strTime += ":"
+            strTime += ("0" + sbRandSeconds.value).slice(-2);
+        }
+        
+        return strTime;
     }
     
     function getTime() {
@@ -307,8 +506,5 @@ ColumnLayout {
         else {
             return "";
         }
-    }
-    
-    function parseFromString(strTime) {
     }
 }
