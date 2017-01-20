@@ -98,8 +98,7 @@ function getNewLights(myModel, doneCallback) {
         return;
     }
     var myUrl = "lights/new";
-    //TODO: doneCallback
-    getJsonFromHue(myUrl, parseNewLights, baseFail, baseDone, myModel, "");
+    getJsonFromHue(myUrl, parseNewLights, baseFail, doneCallback, myModel, "");
 }
 
 function scanNewLights(doneCallback) {
@@ -107,8 +106,7 @@ function scanNewLights(doneCallback) {
         return;
     }
     var myUrl = "lights";
-    //TODO: doneCallback
-    postJsonToHue(myUrl, "", baseSuccess, baseFail, baseDone);
+    postJsonToHue(myUrl, "", baseSuccess, baseFail, doneCallback);
 }
 
 /**
@@ -160,6 +158,27 @@ function updateLight(myLight) {
     }
     var myUrl = "lights/" + myLight.vuuid;
     getJsonFromHue(myUrl, parseLightToObject, baseFail, baseDone, myLight, myLight.vuuid);
+}
+
+/**
+ * Method to update an existing light
+ * @param {string} lightId id of the light to update
+ * @param {string} body JSON body
+ * @param {function} doneCallback called when done
+ */
+function modifyLight(lightId, body, doneCallback) {
+    var myUrl = "lights/" + lightId;
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, doneCallback);
+}
+
+/**
+ * Method to delete an existing light
+ * @param {string} lightId id of the light to update
+ * @param {function} doneCallback called when done
+ */
+function deleteLight(lightId, doneCallback) {
+    var myUrl = "lights/" + lightId;
+    deleteRequestToHue(myUrl, baseSuccess, baseFail, doneCallback);
 }
 
 /**
@@ -224,6 +243,37 @@ function updateGroup(myGroup) {
 }
 
 /**
+ * Method to create a new group
+ * @param {string} body JSON body
+ * @param {function} doneCallback called when done
+ */
+function createGroup(body, doneCallback) {
+    var myUrl = "groups";
+    postJsonToHue(myUrl, body, baseSuccess, baseFail, doneCallback);
+}
+
+/**
+ * Method to update an existing group
+ * @param {string} groupId id of the group to update
+ * @param {string} body JSON body
+ * @param {function} doneCallback called when done
+ */
+function modifyGroup(groupId, body, doneCallback) {
+    var myUrl = "groups/" + groupId;
+    putJsonToHue(myUrl, body, baseSuccess, baseFail, doneCallback);
+}
+
+/**
+ * Method to delete an existing group
+ * @param {string} groupId id of the group to update
+ * @param {function} doneCallback called when done
+ */
+function deleteGroup(groupId, doneCallback) {
+    var myUrl = "groups/" + groupId;
+    deleteRequestToHue(myUrl, baseSuccess, baseFail, doneCallback);
+}
+
+/**
  * method to fill schedules into a model
  * @param {ListModel} myModel model to fill
  */
@@ -252,7 +302,7 @@ function createSchedule(body, doneCallback) {
  * @param {string} body JSON body
  * @param {function} doneCallback called when done
  */
-function updateSchedule(scheduleId, body, doneCallback) {
+function modifySchedule(scheduleId, body, doneCallback) {
     var myUrl = "schedules/" + scheduleId;
     putJsonToHue(myUrl, body, baseSuccess, baseFail, doneCallback);
 }
@@ -1044,7 +1094,7 @@ function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
         myGroup.name = cgroup.name;
         myGroup.type = cgroup.type || i18n("Not available");
         myGroup.class = cgroup.class || i18n("Not available");
-        if(myGroup.type == "Group" || myGroup.type == "Room") {
+        if(myGroup.type == "LightGroup" || myGroup.type == "Room") {
             myGroup.uuid = groupName;
             myGroup.text = groupName + ": " + cgroup.name;
             myGroup.value = "" + groupName;
@@ -1249,6 +1299,8 @@ function parseNewLights(json, listModel, name, doneCallback) {
         }
     }
     
+    listModel.clear();
+    
     for(var lightName in myLights) {
         if(lightName != "lastscan") {
             var cLight = myLights[lightName];
@@ -1403,10 +1455,10 @@ function parseLightToModel(json, listModel, lightName, doneCallback) {
     }
     if(clight[0]) {
         if(clight[0].error) {
-            if(myGroups[0].error.type == 1) {
+            if(clight[0].error.type == 1) {
                 //TODO: Unauthorized
             }
-            if(myGroups[0].error.type == 3) {
+            if(clight[0].error.type == 3) {
                 //TODO: unavailable
             }
         }

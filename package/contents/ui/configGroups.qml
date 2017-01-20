@@ -50,6 +50,15 @@ Item {
         id: availableLightsModel
     }
     
+    Timer {
+        id: updateTimer
+        interval: 400
+        onTriggered: {
+            getGroups()
+        }
+    }
+    
+    
     ColumnLayout {
         Layout.fillWidth: true
         anchors.left: parent.left
@@ -177,7 +186,7 @@ Item {
                                     rbRoom.checked = true;
                                     cbClass.currentIndex = cbClass.find(editItem.tclass);
                                 }
-                                else if (editItem.type == "Group" ) {
+                                else if (editItem.type == "LightGroup" ) {
                                     rbGroup.checked = true;
                                 }
                                 else { 
@@ -197,8 +206,8 @@ Item {
                             tooltip: i18n("Remove")
                             Layout.fillHeight: true
                             onClicked: {
-                                // groupsModel.remove(styleData.row)
-                                // groupListChanged()
+                                var editItem = groupsModel.get(styleData.row);
+                                Hue.deleteGroup(editItem.uuid, deleteGroupDone)
                             }
                         }
                     }
@@ -223,17 +232,97 @@ Item {
             
             property string groupId: ""
             
-            standardButtons: StandardButton.Ok | StandardButton.Cancel
+            standardButtons: StandardButton.Apply | StandardButton.Cancel
             
-            onAccepted: {
-                // TODO: Sanity check, jsonify, save all
-                close()
+            onApply: {
+                
+                var strJson  = "{\"lights\":["
+
+                for(var i = 0; i < groupLightsModel.count; ++i) {
+                    strJson += "\"" + groupLightsModel.get(i).vuuid + "\"";
+                    if(i != groupLightsModel.count - 1) {
+                        strJson += ","
+                    }
+                }
+                strJson += "],"
+                strJson += "\"name\":"
+                strJson += "\"" + txtGroupName.text + "\"";
+                
+                if(editGroupDialogue.groupId == "-1") {
+                    strJson += ",\"type\":";
+                    
+                    if(rbRoom.checked) {
+                        strJson += "\"Room\"," ;
+                        strJson += "\"class\":";
+                        var cClass = cbClassModel.get(cbClass.currentIndex);
+                        strJson += "\"" + cClass.name + "\"";
+                    }
+                    else {
+                        strJson += "\"LightGroup\"" ;
+                    }
+                }
+                else {
+                    if(rbRoom.checked) {
+                        strJson += ",\"class\":";
+                        var cClass = cbClassModel.get(cbClass.currentIndex);
+                        strJson += "\"" + cClass.name + "\"";
+                    }
+                }
+               
+                strJson += "}"
+                
+                if(editGroupDialogue.groupId == "-1") {
+                    Hue.createGroup(strJson, createGroupDone)
+                }
+                else {
+                    Hue.modifyGroup(editGroupDialogue.groupId, strJson, updateGroupDone);
+                }
             }
             
             ColumnLayout {
                 Layout.fillWidth: true
                 anchors.left: parent.left
                 anchors.right: parent.right
+                
+                GroupBox {
+                    id: grpDiaStatus
+                    Layout.fillWidth: true
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    flat: true
+                    visible: false
+                    
+                    Rectangle {
+                        id: rctDiaStatus
+                        width: parent.width
+                        height: (units.gridUnit * 2.5) + units.smallSpacing
+                        color: "#ff0000"
+                        border.color: "black"
+                        border.width: 1
+                        radius: 5
+                    }
+                    
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.top
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblDiaStatusTitle
+                        color: "white"
+                        font.bold: true
+                    }
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: lblDiaStatusTitle.bottom
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblDiaStatusText
+                        color: "white"
+                        font.bold: true
+                    }
+                }
                 
                 GridLayout {
                     id: grdTitle
@@ -269,6 +358,7 @@ Item {
                         onClicked: { 
                             rbTypeChanged()
                         }
+                        enabled: editGroupDialogue.groupId == "-1"
                     }
                     RadioButton {
                         id: rbRoom
@@ -277,6 +367,7 @@ Item {
                         onClicked: { 
                             rbTypeChanged()
                         }
+                        enabled: editGroupDialogue.groupId == "-1"
                     }
                     
                     Label {
@@ -443,7 +534,15 @@ Item {
     }
     
     function addLight(lightId, lightName) {
-        groupLightsModel.append( { vuuid: lightId, vname: lightName });
+        var contains = false; 
+        for(var i = 0; i < groupLightsModel.count; ++i){
+            if(groupLightsModel.get(i).vuuid == lightId) {
+                contains = true;
+            }
+        }
+        if(!contains) {
+            groupLightsModel.append( { vuuid: lightId, vname: lightName });
+        }
     }
     
     function getLightsForGroup(groupId, slights) {
@@ -457,8 +556,117 @@ Item {
         editGroupDialogue.open();
     }
     
+ function updateGroupDone(succ, json) {
+        if(!succ) {
+            lblDiaStatusTitle.text = i18n("Failed to update group");
+            lblDiaStatusText.text = i18n("Communication error occured");
+            rctDiaStatus.color = errorColour;
+            grpDiaStatus.visible = true;
+            grpStatus.visible = false;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblDiaStatusTitle.text = i18n("Failed to update group");
+                        lblDiaStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctDiaStatus.color = errorColour;
+                        grpDiaStatus.visible = true;
+                        grpStatus.visible = false;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully updated group");
+                        rctStatus.color = successColour;
+                        grpDiaStatus.visible = false;
+                        grpStatus.visible = true;
+                        editGroupDialogue.close();
+                    }
+                }
+            }
+            catch(e) {
+                lblDiaStatusTitle.text = i18n("Failed to update group");
+                lblDiaStatusText.text = i18n("Unknown error occured");
+                rctStatus.color = errorColour;
+                grpDiaStatus.visible = true;
+                grpStatus.visible = false;
+            }
+        }
+        groupListChanged();
+    }
+    
+    function createGroupDone(succ, json) {
+        if(!succ) {
+            lblDiaStatusTitle.text = i18n("Failed to create group");
+            lblDiaStatusText.text = i18n("Communication error occured");
+            rctDiaStatus.color = errorColour;
+            grpDiaStatus.visible = true;
+            grpStatus.visible = false;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblDiaStatusTitle.text = i18n("Failed to create group");
+                        lblDiaStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctDiaStatus.color = errorColour;
+                        grpDiaStatus.visible = true;
+                        grpStatus.visible = false;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully created group");
+                        rctStatus.color = successColour;
+                        grpStatus.visible = true;
+                        grpDiaStatus.visible = false;
+                        editGroupDialogue.close();
+                    }
+                }
+            }
+            catch(e) {
+                lblDiaStatusTitle.text = i18n("Failed to create group");
+                lblDiaStatusText.text = i18n("Unknown error occured");
+                rctDiaStatus.color = errorColour;
+                grpDiaStatus.visible = true;
+                grpStatus.visible = false;
+            }
+        }
+        groupListChanged();
+    }
+    
+    function deleteGroupDone(succ, json) {
+        if(!succ) {
+            lblStatusTitle.text = i18n("Failed to delete group");
+            lblStatusText.text = i18n("Communication error occured");
+            rctStatus.color = errorColour;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblStatusTitle.text = i18n("Failed to delete group");
+                        lblStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctStatus.color = errorColour;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully deleted group");
+                        lblStatusText.text = "";
+                        rctStatus.color = successColour;
+                    }
+                }
+            }
+            catch(e) {
+                lblStatusTitle.text = i18n("Failed to update group");
+                lblStatusText.text = i18n("Unknown error occured");
+                rctStatus.color = errorColour;
+            }
+        }
+        grpStatus.visible = true;
+        groupListChanged();
+    }
+    
     function groupListChanged() {
-        getGroups();
-        
+       updateTimer.start();
     }
 }

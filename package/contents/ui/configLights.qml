@@ -34,6 +34,7 @@ Item {
     property string infoColour: "#5555ff"
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
+    property int attempts: 60
     
     ListModel {
         id: lightsModel
@@ -176,8 +177,8 @@ Item {
                             tooltip: i18n("Remove")
                             Layout.fillHeight: true
                             onClicked: {
-                                // lightsModel.remove(styleData.row)
-                                // lightListChanged()
+                                var editItem = lightsModel.get(styleData.row);
+                                Hue.deleteLight(editItem.uuid, deleteLightDone)
                             }
                         }
                     }
@@ -197,36 +198,221 @@ Item {
         }
         
         Dialog {
+            id: newLightsDialogue
+            title: i18n("Adding new lights")
+            width: 500
+            Layout.preferredWidth: 500
+            
+            property bool scanning : false;
+            property int attempt
+            standardButtons: StandardButton.OK
+            
+            ColumnLayout {
+                Layout.fillWidth: true
+                anchors.left: parent.left
+                anchors.right: parent.right
+                
+                GroupBox {
+                    id: grpNewStatus
+                    Layout.fillWidth: true
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    flat: true
+                    visible: false
+                    
+                    Rectangle {
+                        id: rctNewStatus
+                        width: parent.width
+                        height: (units.gridUnit * 2.5) + units.smallSpacing
+                        color: "#ff0000"
+                        border.color: "black"
+                        border.width: 1
+                        radius: 5
+                    }
+                    
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.top
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblNewStatusTitle
+                        color: "white"
+                        font.bold: true
+                    }
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: lblNewStatusTitle.bottom
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblNewStatusText
+                        color: "white"
+                        font.bold: true
+                    }
+                }
+                
+                Label {
+                    Layout.alignment: Qt.AlignCenter
+                    text: i18n("New found lights")
+                }
+                
+                TableView {
+                    id: newLightsTable
+                    width: parent.width
+                    
+                    TableViewColumn {
+                        id: newIdCol
+                        role: 'uuid'
+                        title: i18n('ID')
+                        width: parent.width * 0.1
+                        
+                        delegate: Label {
+                            text: styleData.value
+                            elide: Text.ElideRight
+                        }
+                    }
+                    
+                    TableViewColumn {
+                        id: newNameCol
+                        role: 'name'
+                        title: i18n('Name')
+                        width: parent.width * 0.65
+                        
+                        delegate: Label {
+                            text: styleData.value
+                            elide: Text.ElideRight
+                        }
+                    }
+                    
+                    TableViewColumn {
+                        title: i18n('Action')
+                        width: parent.width * 0.22
+                        
+                        delegate: Item {
+                            
+                            GridLayout {
+                                height: parent.height
+                                columns: 5
+                                rowSpacing: 0
+                                
+                                Button {
+                                    iconName: 'im-jabber'
+                                    tooltip: i18n("Switch on")
+                                    Layout.fillHeight: true
+                                    onClicked: {
+                                        var editItem = newLightsModel.get(styleData.row)
+                                        Hue.switchLight(editItem.uuid, true)
+                                    }
+                                }
+                                
+                                Button {
+                                    iconName: 'system-shutdown'
+                                    tooltip: i18n("Switch off")
+                                    Layout.fillHeight: true
+                                    onClicked: {
+                                        var editItem = newLightsModel.get(styleData.row)
+                                        Hue.switchLight(editItem.uuid, false)
+                                    }
+                                }
+                                
+                                Button {
+                                    iconName: 'contrast'
+                                    tooltip: i18n("Blink")
+                                    Layout.fillHeight: true
+                                    onClicked: {
+                                        var editItem = newLightsModel.get(styleData.row);
+                                        Hue.blinkLight(editItem.uuid, "select");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    model: newLightsModel
+                    Layout.preferredHeight: 230
+                    Layout.preferredWidth: parent.width
+                    Layout.columnSpan: 2
+                }
+            }    
+        }
+        
+        Dialog {
             id: editLightDialogue
             title: i18n('Edit light')
             width: 500
             
             property string lightId: ""
             
-            standardButtons: StandardButton.Ok | StandardButton.Cancel
+            standardButtons: StandardButton.Apply | StandardButton.Cancel
             
-            onAccepted: {
-                // TODO: Sanity check string, jsonify, save
-                close()
-                
+            onApply: {
+                var strJson  = "{\"name\":"
+                strJson += "\"" + txtLightName.text + "\"}";
+                Hue.modifyLight(editLightDialogue.lightId, strJson, updateLightDone);
             }
             
-            GridLayout {
-                id: grdTitle
+            ColumnLayout {
+                Layout.fillWidth: true
                 anchors.left: parent.left
                 anchors.right: parent.right
-                columns: 3
-                Layout.fillWidth: true
                 
-                Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Light name:")
+                GroupBox {
+                    id: grpDiaStatus
+                    Layout.fillWidth: true
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    flat: true
+                    visible: false
+                    
+                    Rectangle {
+                        id: rctDiaStatus
+                        width: parent.width
+                        height: (units.gridUnit * 2.5) + units.smallSpacing
+                        color: "#ff0000"
+                        border.color: "black"
+                        border.width: 1
+                        radius: 5
+                    }
+                    
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.top
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblDiaStatusTitle
+                        color: "white"
+                        font.bold: true
+                    }
+                    Label {
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: lblDiaStatusTitle.bottom
+                            topMargin: units.smallSpacing
+                        }
+                        id: lblDiaStatusText
+                        color: "white"
+                        font.bold: true
+                    }
                 }
                 
-                TextField {
-                    id: txtLightName
+                GridLayout {
+                    id: grdTitle
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    columns: 3
                     Layout.fillWidth: true
-                    maximumLength: 32
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Light name:")
+                    }
+                    
+                    TextField {
+                        id: txtLightName
+                        Layout.fillWidth: true
+                        maximumLength: 32
+                    }
                 }
             }
         }
@@ -251,21 +437,137 @@ Item {
     
     function addLight() {   
         // TOOD: if not scanning
-        // Hue.scanNewLights(null)
-        updateTimer.start();
+        Hue.scanNewLights(startScan)
+        newLightsDialogue.open()
         
     }
     
+    function startScan() {
+        newLightsDialogue.open()
+        if(!newLightsDialogue.scanning) {
+            lblNewStatusTitle.text = i18n("Scanning for new lights ...")
+            lblNewStatusText.text = i18n("Scanning for") + "60" + i18n("seconds");
+            rctNewStatus.color = infoColour;
+            grpNewStatus.visible = true;
+            newLightsDialogue.scanning = true;
+            updateScan(1, 60)
+            lightTimer.stop();
+            lightTimer.interval = 1000;
+            lightTimer.repeat = true;
+            lightTimer.triggered.connect(function () {
+                updateScan()
+            })
+            lightTimer.start();
+        }
+    }
+    
+    function updateScan() {
+        var att = newLightsDialogue.attempt;
+        if(att == attempts) {
+            lblNewStatusTitle.text = i18n("Scanning for new lights done")
+            lblNewStatusText.text = i18n("Check the table for new found lights");
+            rctNewStatus.color = successColour;
+            newLightsDialogue.scanning = false;
+            lightTimer.stop();
+            return;
+        }
+        newLightsDialogue.attempt++;
+        if(newLightsDialogue.attempt % 5 == 0) {
+            Hue.getNewLights(newLightsModel, doneUpdate);
+        }
+        lblNewStatusText.text = i18n("Scanning for") + " " + (attempts - att) + " " + i18n("seconds");
+    }
+    
+    function doneUpdate() {
+    }
+    
+    function updateLightDone(succ, json) {
+        if(!succ) {
+            lblDiaStatusTitle.text = i18n("Failed to update light");
+            lblDiaStatusText.text = i18n("Communication error occured");
+            rctDiaStatus.color = errorColour;
+            grpDiaStatus.visible = true;
+            grpStatus.visible = false;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblDiaStatusTitle.text = i18n("Failed to update light");
+                        lblDiaStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctDiaStatus.color = errorColour;
+                        grpDiaStatus.visible = true;
+                        grpStatus.visible = false;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully updated light");
+                        rctStatus.color = successColour;
+                        grpDiaStatus.visible = false;
+                        grpStatus.visible = true;
+                        editLightDialogue.close();
+                    }
+                }
+            }
+            catch(e) {
+                lblDiaStatusTitle.text = i18n("Failed to update light");
+                lblDiaStatusText.text = i18n("Unknown error occured");
+                rctStatus.color = errorColour;
+                grpDiaStatus.visible = true;
+                grpStatus.visible = false;
+            }
+        }
+        lightListChanged();
+    }
+    
+    
+    function deleteLightDone(succ, json) {
+        if(!succ) {
+            lblStatusTitle.text = i18n("Failed to delete light");
+            lblStatusText.text = i18n("Communication error occured");
+            rctStatus.color = errorColour;
+        }
+        else {
+            try {
+                var myResult = JSON.parse(json);
+                if(myResult[0]) {
+                    if(myResult[0].error) {
+                        lblStatusTitle.text = i18n("Failed to delete light");
+                        lblStatusText.text = i18n("Error: ") + myResult[0].error.description;
+                        rctStatus.color = errorColour;
+                    }
+                    else if(myResult[0].success) {
+                        lblStatusTitle.text = i18n("Successfully deleted light");
+                        lblStatusText.text = "";
+                        rctStatus.color = successColour;
+                    }
+                }
+            }
+            catch(e) {
+                lblStatusTitle.text = i18n("Failed to update light");
+                lblStatusText.text = i18n("Unknown error occured");
+                rctStatus.color = errorColour;
+            }
+        }
+        grpStatus.visible = true;
+        lightListChanged();
+    }
+    
+    
     function lightListChanged() {
-        // getLights();
+        updateTimer.start();
+    }
+    
+    Timer {
+        id: lightTimer
     }
     
     Timer {
         id: updateTimer
-        interval: 20000
+        interval: 400
         onTriggered: {
-            newLightsModel.clear();
-            Hue.getNewLights(newLightsModel, null);
+            getLights();
         }
     }
+    
 }

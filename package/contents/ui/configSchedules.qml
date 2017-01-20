@@ -241,7 +241,7 @@ Item {
                     Hue.createSchedule(strJson, createScheduleDone)
                 }
                 else {
-                    Hue.updateSchedule(editScheduleDialogue.scheduleId, strJson, updateScheduleDone);
+                    Hue.modifySchedule(editScheduleDialogue.scheduleId, strJson, updateScheduleDone);
                 }
             }
             
@@ -276,7 +276,6 @@ Item {
                         }
                         id: lblDiaStatusTitle
                         color: "white"
-                        text: "Test"
                         font.bold: true
                     }
                     Label {
@@ -287,7 +286,6 @@ Item {
                         }
                         id: lblDiaStatusText
                         color: "white"
-                        text: "Test"
                         font.bold: true
                     }
                 }
