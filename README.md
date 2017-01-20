@@ -20,9 +20,10 @@ It allows you to
 * Set an alternative connection, including http basic auth
   * Control your lights from outside your home network 
   * You need to set up a proxy (e.g. apache httpd) reachable from the outside
-
-As of right now, the groups and lights have to be managed (Created, removed, renamed ...) 
-from the official Hue app. This might be added in a later release.
+* Manage your stuff
+  * Search new lights, modify and delete existing ones
+  * Create new Groups and Rooms, modify and delete existing ones
+  * Create new schedules, modify and delete existing ones
 
 ## License 
 
