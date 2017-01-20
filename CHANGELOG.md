@@ -1,6 +1,6 @@
 # Changelog 
 
-## 2.0 (2017-mm-dd)
+## 2.0 (2017-01-20)
 
 Manage your stuff version with: 
 
