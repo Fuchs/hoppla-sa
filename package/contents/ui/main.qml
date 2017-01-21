@@ -27,7 +27,7 @@ Item {
     id: hopplaApplet
     property bool debug: false
     
-    Plasmoid.toolTipMainText: i18n("Philips Hue lights")
+    Plasmoid.toolTipMainText: i18n("Hue Light Control")
     Plasmoid.icon: "im-jabber"
     
     Plasmoid.compactRepresentation: CompactRepresentation { }

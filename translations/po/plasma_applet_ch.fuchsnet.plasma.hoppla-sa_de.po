@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2017-01-20 14:29+0100\n"
+"POT-Creation-Date: 2017-01-21 17:37+0100\n"
 "PO-Revision-Date: 2017-01-12 23:42+0100\n"
 "Last-Translator: Christian Loosli <develop@fuchsnet.ch>\n"
 "Language-Team: Christian Loosli <develop@fuchsnet.ch>\n"
@@ -611,7 +611,7 @@ msgstr "Kommunikation mit Bridge fehlgeschlagen"
 #: package/contents/ui/configSchedules.qml:452
 #: package/contents/ui/configSchedules.qml:490
 msgid "Error: "
-msgstr ""
+msgstr "Fehler:"
 
 #: package/contents/ui/configGroups.qml:579
 msgid "Successfully updated group"
@@ -901,8 +901,8 @@ msgid "Software Version"
 msgstr "Softwareversion"
 
 #: package/contents/ui/main.qml:30
-msgid "Philips Hue lights"
-msgstr "Philips Hue Lampen"
+msgid "Hue Light Control"
+msgstr "Hue Lichtsteuerung"
 
 #: package/contents/ui/TimeEditor.qml:92
 msgid "Schedule type:"

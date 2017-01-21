@@ -5,10 +5,9 @@
 #
 msgid ""
 msgstr ""
-
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2017-01-20 14:29+0100\n"
+"POT-Creation-Date: 2017-01-21 17:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -902,7 +901,7 @@ msgid "Software Version"
 msgstr ""
 
 #: package/contents/ui/main.qml:30
-msgid "Philips Hue lights"
+msgid "Hue Light Control"
 msgstr ""
 
 #: package/contents/ui/TimeEditor.qml:92
@@ -977,4 +976,14 @@ msgstr ""
 
 #: package/contents/ui/TimeEditor.qml:426
 msgid "Failed to parse the specified time."
+msgstr ""
+
+#: rc.cpp:1
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr ""
+
+#: rc.cpp:2
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
 msgstr ""
