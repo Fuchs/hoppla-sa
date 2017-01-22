@@ -62,8 +62,16 @@ function isInitialized () {
  * @return {bool} True if auth and bridge are set, otherwise false
  */
 function getHueConfigured() {
+    if(!isInitialized()) {
+        initHueConfig();
+    }
+    
     var base = plasmoid.configuration.baseURL 
     var auth = plasmoid.configuration.authToken
+    if(!base || !auth) {
+        // something went terribly wrong here
+        return false;
+    }
     if (!base.trim() || !auth.trim()) {
         // is empty or whitespace
         return false;

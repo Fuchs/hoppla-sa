@@ -410,6 +410,9 @@ Item {
     }
     
     Component.onCompleted: {
+        if(!Hue.isInitialized()) {
+            Hue.initHueConfig();
+        }
         actionListModel.clear();
         
         try {
