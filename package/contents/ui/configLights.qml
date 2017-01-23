@@ -436,29 +436,28 @@ Item {
     }
     
     function addLight() {   
-        // TOOD: if not scanning
-        Hue.scanNewLights(startScan)
+        if(!newLightsDialogue.scanning) {
+            newLightsDialogue.scanning = true;
+            Hue.scanNewLights(startScan)
+        }
         newLightsDialogue.open()
-        
     }
     
     function startScan() {
-        newLightsDialogue.open()
-        if(!newLightsDialogue.scanning) {
-            lblNewStatusTitle.text = i18n("Scanning for new lights ...")
-            lblNewStatusText.text = i18n("Scanning for") + "60" + i18n("seconds");
-            rctNewStatus.color = infoColour;
-            grpNewStatus.visible = true;
-            newLightsDialogue.scanning = true;
-            updateScan(1, 60)
-            lightTimer.stop();
-            lightTimer.interval = 1000;
-            lightTimer.repeat = true;
-            lightTimer.triggered.connect(function () {
-                updateScan()
-            })
-            lightTimer.start();
-        }
+        lblNewStatusTitle.text = i18n("Scanning for new lights ...")
+        lblNewStatusText.text = i18n("Scanning for") + "60" + i18n("seconds");
+        rctNewStatus.color = infoColour;
+        grpNewStatus.visible = true;
+        
+        updateScan(1, 60)
+        lightTimer.stop();
+        lightTimer.interval = 1000;
+        lightTimer.repeat = true;
+        lightTimer.triggered.connect(function () {
+            updateScan()
+        })
+        lightTimer.start();
+        
     }
     
     function updateScan() {
