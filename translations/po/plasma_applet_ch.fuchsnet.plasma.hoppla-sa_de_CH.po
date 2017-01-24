@@ -1,0 +1,993 @@
+# Hue Operation Plasmoid (Hoppla), Stand alone
+# Copyright (C) 2016-2017 Christian Loosli
+# This file is distributed under the same license as the package, see COPYING
+# Christian Loosli <develop@fuchsnet.ch> 2016
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
+"POT-Creation-Date: 2017-01-23 21:44+0100\n"
+"PO-Revision-Date: 2017-01-12 23:42+0100\n"
+"Last-Translator: Christian Loosli <develop@fuchsnet.ch>\n"
+"Language-Team: Christian Loosli <develop@fuchsnet.ch>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: package/contents/code/hue.js:979 package/contents/code/hue.js:980
+#: package/contents/code/hue.js:981 package/contents/code/hue.js:982
+#: package/contents/code/hue.js:983 package/contents/code/hue.js:986
+#: package/contents/code/hue.js:987 package/contents/code/hue.js:992
+#: package/contents/code/hue.js:994 package/contents/code/hue.js:995
+#: package/contents/code/hue.js:1017 package/contents/code/hue.js:1030
+#: package/contents/code/hue.js:1035 package/contents/code/hue.js:1060
+#: package/contents/code/hue.js:1063 package/contents/code/hue.js:1064
+#: package/contents/code/hue.js:1065 package/contents/code/hue.js:1066
+#: package/contents/code/hue.js:1067 package/contents/code/hue.js:1068
+#: package/contents/code/hue.js:1069 package/contents/code/hue.js:1105
+#: package/contents/code/hue.js:1106 package/contents/code/hue.js:1112
+#: package/contents/code/hue.js:1113 package/contents/code/hue.js:1151
+#: package/contents/code/hue.js:1152 package/contents/code/hue.js:1153
+#: package/contents/code/hue.js:1154 package/contents/code/hue.js:1155
+#: package/contents/code/hue.js:1158 package/contents/code/hue.js:1159
+#: package/contents/code/hue.js:1164 package/contents/code/hue.js:1166
+#: package/contents/code/hue.js:1167 package/contents/code/hue.js:1174
+#: package/contents/code/hue.js:1218 package/contents/code/hue.js:1219
+#: package/contents/code/hue.js:1220 package/contents/code/hue.js:1221
+#: package/contents/code/hue.js:1222 package/contents/code/hue.js:1225
+#: package/contents/code/hue.js:1226 package/contents/code/hue.js:1231
+#: package/contents/code/hue.js:1233 package/contents/code/hue.js:1234
+#: package/contents/code/hue.js:1242 package/contents/code/hue.js:1288
+#: package/contents/code/hue.js:1323 package/contents/code/hue.js:1375
+#: package/contents/code/hue.js:1413 package/contents/code/hue.js:1418
+#: package/contents/code/hue.js:1436 package/contents/code/hue.js:1439
+#: package/contents/code/hue.js:1440 package/contents/code/hue.js:1441
+#: package/contents/code/hue.js:1442 package/contents/code/hue.js:1443
+#: package/contents/code/hue.js:1444 package/contents/code/hue.js:1445
+#: package/contents/code/hue.js:1482 package/contents/code/hue.js:1487
+#: package/contents/code/hue.js:1498 package/contents/code/hue.js:1501
+#: package/contents/code/hue.js:1502 package/contents/code/hue.js:1503
+#: package/contents/code/hue.js:1504 package/contents/code/hue.js:1505
+#: package/contents/code/hue.js:1506 package/contents/code/hue.js:1507
+#: package/contents/code/hue.js:1549 package/contents/code/hue.js:1554
+#: package/contents/code/hue.js:1565 package/contents/code/hue.js:1568
+#: package/contents/code/hue.js:1569 package/contents/code/hue.js:1570
+#: package/contents/code/hue.js:1571 package/contents/code/hue.js:1572
+#: package/contents/code/hue.js:1573 package/contents/code/hue.js:1574
+#: package/contents/code/hue.js:1621 package/contents/code/hue.js:1627
+#: package/contents/code/hue.js:1628 package/contents/code/hue.js:1629
+#: package/contents/code/hue.js:1637 package/contents/code/hue.js:1648
+#: package/contents/ui/LightItem.qml:138 package/contents/ui/LightItem.qml:442
+msgid "Not available"
+msgstr "Nid verfüägbar"
+
+#: package/contents/code/hue.js:1382
+msgid "No lights without a room available"
+msgstr "Kei Lampe ohni Ruum verfüägbar"
+
+#: package/contents/code/hue.js:1630
+msgid "disabled"
+msgstr "deaktiviärt"
+
+#: package/contents/code/hue.js:1632
+msgid "on"
+msgstr "Ah"
+
+#: package/contents/code/hue.js:1635
+msgid "off"
+msgstr "Uus"
+
+#: package/contents/code/hue.js:1664
+msgid "Living room"
+msgstr "Wohnzimmer"
+
+#: package/contents/code/hue.js:1665
+msgid "Kitchen"
+msgstr "Chuchi"
+
+#: package/contents/code/hue.js:1666
+msgid "Dining"
+msgstr "Ässeggä"
+
+#: package/contents/code/hue.js:1667
+msgid "Bedroom"
+msgstr "Schlafzimmer"
+
+#: package/contents/code/hue.js:1668
+msgid "Kids bedroom"
+msgstr "Chinderzimmer"
+
+#: package/contents/code/hue.js:1669
+msgid "Bathroom"
+msgstr "Badzimmer"
+
+#: package/contents/code/hue.js:1670
+msgid "Nursery"
+msgstr "Bebezimmer"
+
+#: package/contents/code/hue.js:1671
+msgid "Recreation"
+msgstr "Freizyt"
+
+#: package/contents/code/hue.js:1672
+msgid "Office"
+msgstr "Bureau"
+
+#: package/contents/code/hue.js:1673
+msgid "Gym"
+msgstr "Fitnessruum"
+
+#: package/contents/code/hue.js:1674
+msgid "Hallway"
+msgstr "Gang"
+
+#: package/contents/code/hue.js:1675
+msgid "Toilet"
+msgstr "Toilettä"
+
+#: package/contents/code/hue.js:1676
+msgid "Front door"
+msgstr "Ygangstür"
+
+#: package/contents/code/hue.js:1677
+msgid "Garage"
+msgstr "Garage"
+
+#: package/contents/code/hue.js:1678
+msgid "Terrace"
+msgstr "Terrassä"
+
+#: package/contents/code/hue.js:1679
+msgid "Garden"
+msgstr "Gartä"
+
+#: package/contents/code/hue.js:1680
+msgid "Driveway"
+msgstr "Yfahrt"
+
+#: package/contents/code/hue.js:1681
+msgid "Carport"
+msgstr "Ysteuplatz"
+
+#: package/contents/code/hue.js:1682
+msgid "Other"
+msgstr "Angeres"
+
+#: package/contents/code/hue.js:1778
+msgid "Every"
+msgstr "Jedä"
+
+#: package/contents/code/hue.js:1781
+msgid "day"
+msgstr "Tag"
+
+#: package/contents/code/hue.js:1784
+msgid "weekday"
+msgstr "Wuchätag"
+
+#: package/contents/code/hue.js:1787
+msgid "weekend"
+msgstr "Wuchänändtag"
+
+#: package/contents/code/hue.js:1791
+msgid "Mon, "
+msgstr "Män, "
+
+#: package/contents/code/hue.js:1794
+msgid "Tue, "
+msgstr "Dsi, "
+
+#: package/contents/code/hue.js:1797
+msgid "Wed, "
+msgstr "Mit, "
+
+#: package/contents/code/hue.js:1800
+msgid "Thu, "
+msgstr "Don, "
+
+#: package/contents/code/hue.js:1803
+msgid "Fri, "
+msgstr "Fry, "
+
+#: package/contents/code/hue.js:1806
+msgid "Sat, "
+msgstr "Sam, "
+
+#: package/contents/code/hue.js:1809
+msgid "Sun, "
+msgstr "Sun, "
+
+#: package/contents/code/hue.js:1816 package/contents/ui/ActionEditor.qml:340
+#: package/contents/ui/TimeEditor.qml:114
+msgid "Once"
+msgstr "Einisch"
+
+#: package/contents/code/hue.js:1819
+msgid "times"
+msgstr "mau"
+
+#: package/contents/code/hue.js:1822
+msgid "Forever"
+msgstr "Für immer"
+
+#: package/contents/code/hue.js:1826
+msgid "At"
+msgstr "Am"
+
+#: package/contents/code/hue.js:1832
+msgid "at"
+msgstr "am"
+
+#: package/contents/code/hue.js:1834 package/contents/code/hue.js:1841
+msgid "UTC"
+msgstr "UTC"
+
+#: package/contents/code/hue.js:1839
+msgid "+ random:"
+msgstr "Zuäfau"
+
+#: package/contents/config/config.qml:27
+msgid "Bridge"
+msgstr "Brügg"
+
+#: package/contents/config/config.qml:32
+#: package/contents/ui/FullRepresentation.qml:104
+msgid "Actions"
+msgstr "Aktionä"
+
+#: package/contents/config/config.qml:37
+#: package/contents/ui/configGroups.qml:409
+#: package/contents/ui/FullRepresentation.qml:114
+msgid "Lights"
+msgstr "Lampä"
+
+#: package/contents/config/config.qml:42
+#: package/contents/ui/FullRepresentation.qml:109
+msgid "Groups"
+msgstr "Gruppä"
+
+#: package/contents/config/config.qml:47
+msgid "Schedules"
+msgstr "Zytplän"
+
+#: package/contents/ui/ActionEditor.qml:108
+msgid "Target"
+msgstr "Ziu"
+
+#: package/contents/ui/ActionEditor.qml:128
+#: package/contents/ui/GroupItem.qml:500 package/contents/ui/LightItem.qml:436
+msgid "State"
+msgstr "Status"
+
+#: package/contents/ui/ActionEditor.qml:136
+#: package/contents/ui/LightItem.qml:434
+msgid "On"
+msgstr "Iigschaltä"
+
+#: package/contents/ui/ActionEditor.qml:144
+#: package/contents/ui/LightItem.qml:434
+msgid "Off"
+msgstr "Uusgschaltä"
+
+#: package/contents/ui/ActionEditor.qml:151
+#: package/contents/ui/GroupItem.qml:512 package/contents/ui/LightItem.qml:439
+msgid "Brightness"
+msgstr "Häuigkeit"
+
+#: package/contents/ui/ActionEditor.qml:169
+msgid "Effect"
+msgstr "Effekt"
+
+#: package/contents/ui/ActionEditor.qml:177
+msgid "None"
+msgstr "Ohni"
+
+#: package/contents/ui/ActionEditor.qml:185
+msgid "Colourloop"
+msgstr "Farbschleifä"
+
+#: package/contents/ui/ActionEditor.qml:193
+#: package/contents/ui/ActionEditor.qml:207
+msgid "Colour"
+msgstr "Farb"
+
+#: package/contents/ui/ActionEditor.qml:200
+msgid "Temperature"
+msgstr "Farbtämperatur"
+
+#: package/contents/ui/ActionEditor.qml:287
+msgid "Fade"
+msgstr "Duur"
+
+#: package/contents/ui/ActionEditor.qml:309
+#: package/contents/ui/configLights.qml:448
+#: package/contents/ui/configLights.qml:477
+msgid "seconds"
+msgstr "Sekundä"
+
+#: package/contents/ui/ActionEditor.qml:317
+#: package/contents/ui/configGroups.qml:168
+#: package/contents/ui/configLights.qml:153
+#: package/contents/ui/configLights.qml:321
+msgid "Blink"
+msgstr "Blinkä"
+
+#: package/contents/ui/ActionEditor.qml:333
+msgid "Stop"
+msgstr "Stopp"
+
+#: package/contents/ui/ActionEditor.qml:347
+msgid "15 seconds"
+msgstr "15 Sekundä"
+
+#: package/contents/ui/ActionEditor.qml:357
+#: package/contents/ui/configGroups.qml:355
+msgid "Group"
+msgstr "Gruppä"
+
+#: package/contents/ui/ActionEditor.qml:358
+msgid "Light"
+msgstr "Lampä"
+
+#: package/contents/ui/ActionEditor.qml:402
+msgid "All lights"
+msgstr "Aui Lampänä"
+
+#: package/contents/ui/ActionEditor.qml:539
+msgid "Failed to parse the specified action."
+msgstr "Ig ha diä Aktion nid verstandä"
+
+#: package/contents/ui/ActionEditor.qml:540
+#: package/contents/ui/TimeEditor.qml:427
+msgid "Read only mode, original values are preserved"
+msgstr "Numä läsä, Originauiistelligä blybä defüür"
+
+#: package/contents/ui/ActionItem.qml:115
+msgid "OK"
+msgstr "Iu"
+
+#: package/contents/ui/configActions.qml:102
+msgid "Title"
+msgstr "Titu"
+
+#: package/contents/ui/configActions.qml:114
+msgid "Subtitle"
+msgstr "Ungertitu"
+
+#: package/contents/ui/configActions.qml:124
+#: package/contents/ui/configGroups.qml:136
+#: package/contents/ui/configLights.qml:121
+#: package/contents/ui/configLights.qml:289
+#: package/contents/ui/configSchedules.qml:136
+msgid "Action"
+msgstr "Aktion"
+
+#: package/contents/ui/configActions.qml:137
+#: package/contents/ui/configGroups.qml:178
+#: package/contents/ui/configLights.qml:163
+#: package/contents/ui/configSchedules.qml:149
+msgid "Edit"
+msgstr "Bearbeitä"
+
+#: package/contents/ui/configActions.qml:157
+msgid "Move up"
+msgstr "Uufäschiäbä"
+
+#: package/contents/ui/configActions.qml:168
+msgid "Move down"
+msgstr "Aabäschiäbä"
+
+#: package/contents/ui/configActions.qml:179
+#: package/contents/ui/configActions.qml:362
+#: package/contents/ui/configActions.qml:374
+#: package/contents/ui/configGroups.qml:206
+#: package/contents/ui/configGroups.qml:470
+#: package/contents/ui/configGroups.qml:482
+#: package/contents/ui/configLights.qml:177
+#: package/contents/ui/configSchedules.qml:172
+msgid "Remove"
+msgstr "Wägnäh"
+
+#: package/contents/ui/configActions.qml:197
+msgid "Add new action"
+msgstr "Aktion derzuätuä"
+
+#: package/contents/ui/configActions.qml:215
+msgid "Add or edit action"
+msgstr "Aktion derzuätuä oder bearbeitä"
+
+#: package/contents/ui/configActions.qml:268
+msgid "Title:"
+msgstr "Titu:"
+
+#: package/contents/ui/configActions.qml:279
+msgid "Subtitle:"
+msgstr "Ungertitu:"
+
+#: package/contents/ui/configActions.qml:290
+msgid "Icon:"
+msgstr "Biudli:"
+
+#: package/contents/ui/configActions.qml:315
+msgid "Commands:"
+msgstr "Aktionä:"
+
+#: package/contents/ui/configActions.qml:325
+#: package/contents/ui/GroupItem.qml:530 package/contents/ui/LightItem.qml:458
+msgid "Type"
+msgstr "Typ"
+
+#: package/contents/ui/configActions.qml:341
+#: package/contents/ui/configGroups.qml:449
+msgid "Id"
+msgstr "Id"
+
+#: package/contents/ui/configActions.qml:352
+msgid "Payload"
+msgstr "Inhaut"
+
+#: package/contents/ui/configActions.qml:392
+msgid "New command"
+msgstr "Neui Aktion"
+
+#: package/contents/ui/configActions.qml:404
+msgid "Add new command"
+msgstr "Neui Aktion derzuätuä"
+
+#: package/contents/ui/configBridge.qml:112
+msgid "Bridge Address:"
+msgstr "Adrässä vor Brügg"
+
+#: package/contents/ui/configBridge.qml:118
+msgid "Find bridge"
+msgstr "Brügg fingä"
+
+#: package/contents/ui/configBridge.qml:129
+msgid "Authentication Name:"
+msgstr "Zeichäsalat:"
+
+#: package/contents/ui/configBridge.qml:134
+msgid "Authenticate"
+msgstr "Outäntisiärä"
+
+#: package/contents/ui/configBridge.qml:147
+msgid "Use a fallback connection when the bridge is out of reach"
+msgstr "Angeri verbindig wenn d Brügg nid erreichbar isch"
+
+#: package/contents/ui/configBridge.qml:166
+msgid "Alternative bridge URL:"
+msgstr "Auternativi Adrässä vor Brügg:"
+
+#: package/contents/ui/configBridge.qml:176
+msgid "Requires basic authentication:"
+msgstr "Bruucht e so äs Passwort u so:"
+
+#: package/contents/ui/configBridge.qml:187
+msgid "Username:"
+msgstr "Nutzernamä:"
+
+#: package/contents/ui/configBridge.qml:199
+msgid "Password:"
+msgstr "Passwort:"
+
+#: package/contents/ui/configBridge.qml:214
+msgid "Trying to find your bridge ..."
+msgstr "Ig suächä mau dyni Brügg, gäu ..."
+
+#: package/contents/ui/configBridge.qml:215
+msgid "Please wait while I am searching."
+msgstr "Gang afa ga nes Kafi ha oder so"
+
+#: package/contents/ui/configBridge.qml:223
+msgid "Found your bridge"
+msgstr "Brügg gfungä"
+
+#: package/contents/ui/configBridge.qml:224
+msgid "Please apply the configuration"
+msgstr "Tue bitte ungä spycherä"
+
+#: package/contents/ui/configBridge.qml:230
+msgid "Failed to find your bridge"
+msgstr "Sorry, ha dyni Brügg nid gfungä"
+
+#: package/contents/ui/configBridge.qml:231
+msgid "Are you in the same network and connected to the internet?"
+msgstr "Isch si i dim Netz, u hesch ä Internetverbindig?"
+
+#: package/contents/ui/configBridge.qml:239
+msgid "Trying to authenticate with your bridge ..."
+msgstr "Ig mäudä mi mau bir Brügg ah, gäu"
+
+#: package/contents/ui/configBridge.qml:240
+msgid "Push the authenticate button on your Hue bridge within 60 seconds"
+msgstr "Drück bitte mau dä gross rund Chnopf uf der Brügg, hesch 60 Sekundä"
+
+#: package/contents/ui/configBridge.qml:252
+msgid "Authenticated with your bridge"
+msgstr "Ja, jetz red d Brügg mitmer, icsh guät"
+
+#: package/contents/ui/configBridge.qml:253
+msgid "Successfully authenticated, please apply the configuration"
+msgstr "Outäntisiärig erfougriich, tuä bitte spycherä ungä"
+
+#: package/contents/ui/configBridge.qml:261
+msgid "Failed to authenticate with your bridge"
+msgstr "Hoppla, d Outäntisiärig isch schiäfglüffä"
+
+#: package/contents/ui/configBridge.qml:262
+msgid "Make sure the bridge is reachable and the button clicked"
+msgstr "Isch d Brügg erreichbar u hesch ds Chnöpfli drückt, Du Lappi?"
+
+#: package/contents/ui/configGroups.qml:114
+#: package/contents/ui/configLights.qml:99
+#: package/contents/ui/configLights.qml:267
+msgid "ID"
+msgstr "ID"
+
+#: package/contents/ui/configGroups.qml:126
+#: package/contents/ui/configGroups.qml:460
+#: package/contents/ui/configLights.qml:111
+#: package/contents/ui/configLights.qml:279
+#: package/contents/ui/configSchedules.qml:102
+msgid "Name"
+msgstr "Namä"
+
+#: package/contents/ui/configGroups.qml:148
+#: package/contents/ui/configLights.qml:133
+#: package/contents/ui/configLights.qml:301
+msgid "Switch on"
+msgstr "Iischautä"
+
+#: package/contents/ui/configGroups.qml:158
+#: package/contents/ui/configLights.qml:143
+#: package/contents/ui/configLights.qml:311
+msgid "Switch off"
+msgstr "Uusschautä"
+
+#: package/contents/ui/configGroups.qml:224
+msgid "Add new group"
+msgstr "Nöi Gruppe derzuätuä"
+
+#: package/contents/ui/configGroups.qml:230
+msgid "Create or edit group"
+msgstr "Gruppe derzuätuä oder bearbeitä"
+
+#: package/contents/ui/configGroups.qml:336
+msgid "Group name:"
+msgstr "Gruppänamä:"
+
+#: package/contents/ui/configGroups.qml:348
+msgid "Group type:"
+msgstr "Gruppätyp"
+
+#: package/contents/ui/configGroups.qml:365
+msgid "Room"
+msgstr "Ruum"
+
+#: package/contents/ui/configGroups.qml:379
+msgid "A light can only be in one room but multiple groups at the same time."
+msgstr "Lampä chöi glychzytig numä i eim Ruum si, aber i mehrerä Gruppä."
+
+#: package/contents/ui/configGroups.qml:388
+msgid "Only rooms have a class with a specific icon, groups only have a name"
+msgstr "Rüüm hei ou e Klass u so es Biudli, Gruppä haut numä e Name"
+
+#: package/contents/ui/configGroups.qml:393
+#: package/contents/ui/GroupItem.qml:533
+msgid "Class"
+msgstr "Klass"
+
+#: package/contents/ui/configGroups.qml:420
+msgid "light: "
+msgstr "Lampä"
+
+#: package/contents/ui/configGroups.qml:433
+msgid "Add light"
+msgstr "Lampä derzuätuä"
+
+#: package/contents/ui/configGroups.qml:561
+#: package/contents/ui/configGroups.qml:572
+#: package/contents/ui/configGroups.qml:588
+#: package/contents/ui/configGroups.qml:660
+msgid "Failed to update group"
+msgstr "Sorry, ha d Gruppe nid chönnä aapassä"
+
+#: package/contents/ui/configGroups.qml:562
+#: package/contents/ui/configGroups.qml:601
+#: package/contents/ui/configGroups.qml:640
+#: package/contents/ui/configLights.qml:486
+#: package/contents/ui/configLights.qml:526
+#: package/contents/ui/configSchedules.qml:402
+#: package/contents/ui/configSchedules.qml:441
+#: package/contents/ui/configSchedules.qml:481
+msgid "Communication error occured"
+msgstr "D Brügg het nid mit mir gredt wiä sy sött"
+
+#: package/contents/ui/configGroups.qml:573
+#: package/contents/ui/configGroups.qml:612
+#: package/contents/ui/configGroups.qml:649
+#: package/contents/ui/configLights.qml:497
+#: package/contents/ui/configLights.qml:535
+#: package/contents/ui/configSchedules.qml:413
+#: package/contents/ui/configSchedules.qml:452
+#: package/contents/ui/configSchedules.qml:490
+msgid "Error: "
+msgstr "Fähler:"
+
+#: package/contents/ui/configGroups.qml:579
+msgid "Successfully updated group"
+msgstr "Gruppä erfougriich aapasst"
+
+#: package/contents/ui/configGroups.qml:589
+#: package/contents/ui/configGroups.qml:628
+#: package/contents/ui/configGroups.qml:661
+#: package/contents/ui/configLights.qml:513
+#: package/contents/ui/configLights.qml:547
+#: package/contents/ui/configSchedules.qml:429
+#: package/contents/ui/configSchedules.qml:469
+#: package/contents/ui/configSchedules.qml:502
+msgid "Unknown error occured"
+msgstr "Öppis ganz komischs isch passiärt"
+
+#: package/contents/ui/configGroups.qml:600
+#: package/contents/ui/configGroups.qml:611
+#: package/contents/ui/configGroups.qml:627
+msgid "Failed to create group"
+msgstr "Gruppä derzuätuä isch schiefgloffä"
+
+#: package/contents/ui/configGroups.qml:618
+msgid "Successfully created group"
+msgstr "Gruppä erfougriich drzuätah"
+
+#: package/contents/ui/configGroups.qml:639
+#: package/contents/ui/configGroups.qml:648
+msgid "Failed to delete group"
+msgstr "Gruppä hett nid chönnä glöscht wärdä"
+
+#: package/contents/ui/configGroups.qml:653
+msgid "Successfully deleted group"
+msgstr "Gruppä erfougriich glöscht"
+
+#: package/contents/ui/configLights.qml:195
+msgid "Add new light"
+msgstr "Lampe hinzufügen"
+
+#: package/contents/ui/configLights.qml:202
+msgid "Adding new lights"
+msgstr "Lampä derzuätuä"
+
+#: package/contents/ui/configLights.qml:257
+msgid "New found lights"
+msgstr "Die Lampänä hani gfungä"
+
+#: package/contents/ui/configLights.qml:341
+msgid "Edit light"
+msgstr "Lampä bearbeitä"
+
+#: package/contents/ui/configLights.qml:408
+msgid "Light name:"
+msgstr "Lampänamä:"
+
+#: package/contents/ui/configLights.qml:447
+msgid "Scanning for new lights ..."
+msgstr "Ig suächä mou nöi Lampänä ..."
+
+#: package/contents/ui/configLights.qml:448
+#: package/contents/ui/configLights.qml:477
+msgid "Scanning for"
+msgstr "Ig suächä no öppä"
+
+#: package/contents/ui/configLights.qml:466
+msgid "Scanning for new lights done"
+msgstr "D Suechi nach nöiä Lampänä isch abgschlossä"
+
+#: package/contents/ui/configLights.qml:467
+msgid "Check the table for new found lights"
+msgstr "Neue Lampen sind in der Tabelle unten aufgeführt"
+
+#: package/contents/ui/configLights.qml:485
+#: package/contents/ui/configLights.qml:496
+#: package/contents/ui/configLights.qml:512
+#: package/contents/ui/configLights.qml:546
+msgid "Failed to update light"
+msgstr "Lampä aapassä fäugschlagä"
+
+#: package/contents/ui/configLights.qml:503
+msgid "Successfully updated light"
+msgstr "Lampä erfougriich aapasst"
+
+#: package/contents/ui/configLights.qml:525
+#: package/contents/ui/configLights.qml:534
+msgid "Failed to delete light"
+msgstr "Ha d Lampä nid chönnä löschä"
+
+#: package/contents/ui/configLights.qml:539
+msgid "Successfully deleted light"
+msgstr "Lampä erfougriich glöscht"
+
+#: package/contents/ui/configSchedules.qml:114
+#: package/contents/ui/configSchedules.qml:345
+msgid "Time"
+msgstr "Zyt"
+
+#: package/contents/ui/configSchedules.qml:126
+msgid "Status"
+msgstr "Status"
+
+#: package/contents/ui/configSchedules.qml:191
+msgid "Add new schedule"
+msgstr "Neuä Zytplan drzuätah"
+
+#: package/contents/ui/configSchedules.qml:197
+msgid "Create or edit schedule"
+msgstr "Zytplan drzuätah oder anpassen"
+
+#: package/contents/ui/configSchedules.qml:302
+msgid "Schedule name:"
+msgstr "Zytplannamä:"
+
+#: package/contents/ui/configSchedules.qml:314
+msgid "Description:"
+msgstr "Beschrybig:"
+
+#: package/contents/ui/configSchedules.qml:325
+msgid "Settings:"
+msgstr "Iistelligä:"
+
+#: package/contents/ui/configSchedules.qml:330
+msgid "Enabled"
+msgstr "Aktiviärt"
+
+#: package/contents/ui/configSchedules.qml:337
+msgid "Auto delete when expired"
+msgstr "Nächär outomatisch löschä"
+
+#: package/contents/ui/configSchedules.qml:355
+msgid "Command"
+msgstr "Aktion"
+
+#: package/contents/ui/configSchedules.qml:401
+#: package/contents/ui/configSchedules.qml:412
+#: package/contents/ui/configSchedules.qml:428
+#: package/contents/ui/configSchedules.qml:501
+msgid "Failed to update schedule"
+msgstr "Ha de Zytplan nid chönnä apassä"
+
+#: package/contents/ui/configSchedules.qml:419
+msgid "Successfully updated schedule"
+msgstr "Zytplan erfougrych aapasst"
+
+#: package/contents/ui/configSchedules.qml:440
+#: package/contents/ui/configSchedules.qml:451
+#: package/contents/ui/configSchedules.qml:468
+msgid "Failed to create schedule"
+msgstr "Zytplan drzuätah het nid klappet"
+
+#: package/contents/ui/configSchedules.qml:458
+msgid "Successfully created schedule"
+msgstr "Zytplan erfougrych ersteut"
+
+#: package/contents/ui/configSchedules.qml:480
+#: package/contents/ui/configSchedules.qml:489
+msgid "Failed to delete schedule"
+msgstr "Zytplan hed nid chönne glöscht wärdä"
+
+#: package/contents/ui/configSchedules.qml:494
+msgid "Successfully deleted schedule"
+msgstr "Zytplan erfougrych glöscht"
+
+#: package/contents/ui/FullRepresentation.qml:74
+msgid "Refresh"
+msgstr "Aktualisiärä"
+
+#: package/contents/ui/FullRepresentation.qml:84
+msgid "Configure Philips Hue..."
+msgstr "Philips Hue konfiguriärä ..."
+
+#: package/contents/ui/FullRepresentation.qml:129
+msgid "No Hue bridge configured"
+msgstr "Kei Hue Brügg iigrychtet"
+
+#: package/contents/ui/FullRepresentation.qml:151
+msgid "You need to configure your Hue bridge"
+msgstr "Du muesch eini iirychtä, Du Globivogu"
+
+#: package/contents/ui/FullRepresentation.qml:157
+#: package/contents/ui/FullRepresentation.qml:208
+msgid "Configure Hue Bridge"
+msgstr "Hue Bridge iirychtä"
+
+#: package/contents/ui/FullRepresentation.qml:186
+msgid "Not authenticated"
+msgstr "Nid Outäntisiärt"
+
+#: package/contents/ui/FullRepresentation.qml:186
+msgid "Hue not reachable"
+msgstr "Hue nid erreichbar"
+
+#: package/contents/ui/FullRepresentation.qml:202
+msgid "Authenticate with your bridge"
+msgstr "Mit dr Brügg Outäntisiärä"
+
+#: package/contents/ui/FullRepresentation.qml:202
+msgid "Check if your Hue bridge is configured and reachable"
+msgstr "Luäg mau, öb d Brügg konfiguriärt u erreichbar isch"
+
+#: package/contents/ui/FullRepresentation.qml:379
+msgid "Hue bridge not reachable"
+msgstr "Hue Brügg nid erreichbar"
+
+#: package/contents/ui/FullRepresentation.qml:386
+msgid "Not authenticated with Hue bridge"
+msgstr "Bisch nid mit dr Brügg Outäntisiärt"
+
+#: package/contents/ui/FullRepresentation.qml:393
+msgid "Main connection"
+msgstr "Houptverbindig"
+
+#: package/contents/ui/FullRepresentation.qml:399
+msgid "Alternative connection"
+msgstr "Auternativverbindig"
+
+#: package/contents/ui/FullRepresentation.qml:418
+msgid "lights on"
+msgstr "Iigschauteti Lampä"
+
+#: package/contents/ui/GroupItem.qml:131
+msgid "not available"
+msgstr "Nid verfüägbar"
+
+#: package/contents/ui/GroupItem.qml:414
+msgid "light"
+msgstr "Lampä"
+
+#: package/contents/ui/GroupItem.qml:417
+msgid "lights"
+msgstr "Lampänä"
+
+#: package/contents/ui/GroupItem.qml:495 package/contents/ui/LightItem.qml:431
+msgid "ID and name"
+msgstr "ID und Namä"
+
+#: package/contents/ui/GroupItem.qml:498
+msgid "Number of lights"
+msgstr "Aazau Lamänä"
+
+#: package/contents/ui/GroupItem.qml:501
+msgid "All lights off"
+msgstr "Aui uusgschautä"
+
+#: package/contents/ui/GroupItem.qml:503
+msgid "All lights on"
+msgstr "Aui iigschautä"
+
+#: package/contents/ui/GroupItem.qml:506
+msgid "Some lights on"
+msgstr "Es paar si iigschautä"
+
+#: package/contents/ui/GroupItem.qml:518 package/contents/ui/LightItem.qml:444
+msgid "Colour in CIE space, x: "
+msgstr "Farb im CIE Ruum, x:"
+
+#: package/contents/ui/GroupItem.qml:518 package/contents/ui/LightItem.qml:444
+msgid " y: "
+msgstr "y:"
+
+#: package/contents/ui/GroupItem.qml:521 package/contents/ui/LightItem.qml:448
+msgid "Colour in HS, hue: "
+msgstr "Farb aus HS: hue: "
+
+#: package/contents/ui/GroupItem.qml:521 package/contents/ui/LightItem.qml:448
+msgid " sat: "
+msgstr " sat: "
+
+#: package/contents/ui/GroupItem.qml:524 package/contents/ui/LightItem.qml:452
+msgid "White by temperature: "
+msgstr "Wysstämperatur:"
+
+#: package/contents/ui/GroupItem.qml:527 package/contents/ui/LightItem.qml:455
+msgid "Colour mode"
+msgstr "Farbmodus"
+
+#: package/contents/ui/LightItem.qml:461
+msgid "Model ID"
+msgstr "Modäu-Id"
+
+#: package/contents/ui/LightItem.qml:464
+msgid "Unique ID"
+msgstr "Eidütigi Id"
+
+#: package/contents/ui/LightItem.qml:467
+msgid "Software Version"
+msgstr "Softwareversion"
+
+#: package/contents/ui/main.qml:30
+msgid "Hue Light Control"
+msgstr "Hue Liechtstüürig"
+
+#: package/contents/ui/TimeEditor.qml:92
+msgid "Schedule type:"
+msgstr "Zytplantyp:"
+
+#: package/contents/ui/TimeEditor.qml:99
+msgid "Recurring"
+msgstr "Mehrmaus"
+
+#: package/contents/ui/TimeEditor.qml:107
+msgid "Weekly"
+msgstr "Wüchentlech"
+
+#: package/contents/ui/TimeEditor.qml:127
+#: package/contents/ui/TimeEditor.qml:218
+msgid "Execute on:"
+msgstr "Uusfüärä am:"
+
+#: package/contents/ui/TimeEditor.qml:141
+msgid "Monday"
+msgstr "Mäntig"
+
+#: package/contents/ui/TimeEditor.qml:147
+msgid "Tuesday"
+msgstr "Dsischtig"
+
+#: package/contents/ui/TimeEditor.qml:153
+msgid "Wednesday"
+msgstr "Mittwuch"
+
+#: package/contents/ui/TimeEditor.qml:159
+msgid "Thursday"
+msgstr "Donnschtig"
+
+#: package/contents/ui/TimeEditor.qml:165
+msgid "Friday"
+msgstr "Frytig"
+
+#: package/contents/ui/TimeEditor.qml:171
+msgid "Saturday"
+msgstr "Samschtig"
+
+#: package/contents/ui/TimeEditor.qml:177
+msgid "Sunday"
+msgstr "Sunntig"
+
+#: package/contents/ui/TimeEditor.qml:190
+msgid "Execute:"
+msgstr "Uusfüärä:"
+
+#: package/contents/ui/TimeEditor.qml:201
+msgid "times or"
+msgstr "mau odr"
+
+#: package/contents/ui/TimeEditor.qml:207
+msgid "forever"
+msgstr "für immer"
+
+#: package/contents/ui/TimeEditor.qml:225
+#: package/contents/ui/TimeEditor.qml:251
+msgid "Pick a date"
+msgstr "Datum uuswählä"
+
+#: package/contents/ui/TimeEditor.qml:272
+msgid "Execution time (HH:MM:SS):"
+msgstr "Uusfüehrigszyt (SS:MM:ss):"
+
+#: package/contents/ui/TimeEditor.qml:303
+msgid "Random added time:"
+msgstr "Zuäfäuigi Zsuäsatzzyt:"
+
+#: package/contents/ui/TimeEditor.qml:426
+msgid "Failed to parse the specified time."
+msgstr "Ig ha diä Aktion nid verstandä"
+
+#: rc.cpp:1
+#, fuzzy
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Gruppänamä:"
+
+#: rc.cpp:2
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
