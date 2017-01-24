@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2017-01-21 17:37+0100\n"
+"POT-Creation-Date: 2017-01-23 21:44+0100\n"
 "PO-Revision-Date: 2017-01-12 23:42+0100\n"
 "Last-Translator: Christian Loosli <develop@fuchsnet.ch>\n"
 "Language-Team: Christian Loosli <develop@fuchsnet.ch>\n"
@@ -16,212 +16,215 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: package/contents/code/hue.js:971 package/contents/code/hue.js:972
-#: package/contents/code/hue.js:973 package/contents/code/hue.js:974
-#: package/contents/code/hue.js:977 package/contents/code/hue.js:982
-#: package/contents/code/hue.js:984 package/contents/code/hue.js:985
-#: package/contents/code/hue.js:1007 package/contents/code/hue.js:1020
-#: package/contents/code/hue.js:1025 package/contents/code/hue.js:1050
-#: package/contents/code/hue.js:1053 package/contents/code/hue.js:1054
-#: package/contents/code/hue.js:1055 package/contents/code/hue.js:1056
-#: package/contents/code/hue.js:1057 package/contents/code/hue.js:1058
-#: package/contents/code/hue.js:1059 package/contents/code/hue.js:1095
-#: package/contents/code/hue.js:1096 package/contents/code/hue.js:1102
-#: package/contents/code/hue.js:1103 package/contents/code/hue.js:1141
-#: package/contents/code/hue.js:1142 package/contents/code/hue.js:1143
-#: package/contents/code/hue.js:1144 package/contents/code/hue.js:1147
-#: package/contents/code/hue.js:1152 package/contents/code/hue.js:1154
-#: package/contents/code/hue.js:1155 package/contents/code/hue.js:1162
-#: package/contents/code/hue.js:1206 package/contents/code/hue.js:1207
-#: package/contents/code/hue.js:1208 package/contents/code/hue.js:1209
-#: package/contents/code/hue.js:1212 package/contents/code/hue.js:1217
-#: package/contents/code/hue.js:1219 package/contents/code/hue.js:1220
-#: package/contents/code/hue.js:1228 package/contents/code/hue.js:1274
-#: package/contents/code/hue.js:1309 package/contents/code/hue.js:1361
-#: package/contents/code/hue.js:1399 package/contents/code/hue.js:1404
-#: package/contents/code/hue.js:1422 package/contents/code/hue.js:1425
-#: package/contents/code/hue.js:1426 package/contents/code/hue.js:1427
-#: package/contents/code/hue.js:1428 package/contents/code/hue.js:1429
-#: package/contents/code/hue.js:1430 package/contents/code/hue.js:1431
-#: package/contents/code/hue.js:1468 package/contents/code/hue.js:1473
-#: package/contents/code/hue.js:1484 package/contents/code/hue.js:1487
-#: package/contents/code/hue.js:1488 package/contents/code/hue.js:1489
-#: package/contents/code/hue.js:1490 package/contents/code/hue.js:1491
-#: package/contents/code/hue.js:1492 package/contents/code/hue.js:1493
-#: package/contents/code/hue.js:1535 package/contents/code/hue.js:1540
-#: package/contents/code/hue.js:1551 package/contents/code/hue.js:1554
-#: package/contents/code/hue.js:1555 package/contents/code/hue.js:1556
-#: package/contents/code/hue.js:1557 package/contents/code/hue.js:1558
-#: package/contents/code/hue.js:1559 package/contents/code/hue.js:1560
-#: package/contents/code/hue.js:1607 package/contents/code/hue.js:1613
-#: package/contents/code/hue.js:1614 package/contents/code/hue.js:1615
-#: package/contents/code/hue.js:1623 package/contents/code/hue.js:1634
+#: package/contents/code/hue.js:979 package/contents/code/hue.js:980
+#: package/contents/code/hue.js:981 package/contents/code/hue.js:982
+#: package/contents/code/hue.js:983 package/contents/code/hue.js:986
+#: package/contents/code/hue.js:987 package/contents/code/hue.js:992
+#: package/contents/code/hue.js:994 package/contents/code/hue.js:995
+#: package/contents/code/hue.js:1017 package/contents/code/hue.js:1030
+#: package/contents/code/hue.js:1035 package/contents/code/hue.js:1060
+#: package/contents/code/hue.js:1063 package/contents/code/hue.js:1064
+#: package/contents/code/hue.js:1065 package/contents/code/hue.js:1066
+#: package/contents/code/hue.js:1067 package/contents/code/hue.js:1068
+#: package/contents/code/hue.js:1069 package/contents/code/hue.js:1105
+#: package/contents/code/hue.js:1106 package/contents/code/hue.js:1112
+#: package/contents/code/hue.js:1113 package/contents/code/hue.js:1151
+#: package/contents/code/hue.js:1152 package/contents/code/hue.js:1153
+#: package/contents/code/hue.js:1154 package/contents/code/hue.js:1155
+#: package/contents/code/hue.js:1158 package/contents/code/hue.js:1159
+#: package/contents/code/hue.js:1164 package/contents/code/hue.js:1166
+#: package/contents/code/hue.js:1167 package/contents/code/hue.js:1174
+#: package/contents/code/hue.js:1218 package/contents/code/hue.js:1219
+#: package/contents/code/hue.js:1220 package/contents/code/hue.js:1221
+#: package/contents/code/hue.js:1222 package/contents/code/hue.js:1225
+#: package/contents/code/hue.js:1226 package/contents/code/hue.js:1231
+#: package/contents/code/hue.js:1233 package/contents/code/hue.js:1234
+#: package/contents/code/hue.js:1242 package/contents/code/hue.js:1288
+#: package/contents/code/hue.js:1323 package/contents/code/hue.js:1375
+#: package/contents/code/hue.js:1413 package/contents/code/hue.js:1418
+#: package/contents/code/hue.js:1436 package/contents/code/hue.js:1439
+#: package/contents/code/hue.js:1440 package/contents/code/hue.js:1441
+#: package/contents/code/hue.js:1442 package/contents/code/hue.js:1443
+#: package/contents/code/hue.js:1444 package/contents/code/hue.js:1445
+#: package/contents/code/hue.js:1482 package/contents/code/hue.js:1487
+#: package/contents/code/hue.js:1498 package/contents/code/hue.js:1501
+#: package/contents/code/hue.js:1502 package/contents/code/hue.js:1503
+#: package/contents/code/hue.js:1504 package/contents/code/hue.js:1505
+#: package/contents/code/hue.js:1506 package/contents/code/hue.js:1507
+#: package/contents/code/hue.js:1549 package/contents/code/hue.js:1554
+#: package/contents/code/hue.js:1565 package/contents/code/hue.js:1568
+#: package/contents/code/hue.js:1569 package/contents/code/hue.js:1570
+#: package/contents/code/hue.js:1571 package/contents/code/hue.js:1572
+#: package/contents/code/hue.js:1573 package/contents/code/hue.js:1574
+#: package/contents/code/hue.js:1621 package/contents/code/hue.js:1627
+#: package/contents/code/hue.js:1628 package/contents/code/hue.js:1629
+#: package/contents/code/hue.js:1637 package/contents/code/hue.js:1648
 #: package/contents/ui/LightItem.qml:138 package/contents/ui/LightItem.qml:442
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: package/contents/code/hue.js:1368
+#: package/contents/code/hue.js:1382
 msgid "No lights without a room available"
 msgstr "Keine Lampen ohne dazugehörigen Raum verfügbar"
 
-#: package/contents/code/hue.js:1616
+#: package/contents/code/hue.js:1630
 msgid "disabled"
 msgstr "deaktiviert"
 
-#: package/contents/code/hue.js:1618
+#: package/contents/code/hue.js:1632
 msgid "on"
 msgstr "ein"
 
-#: package/contents/code/hue.js:1621
+#: package/contents/code/hue.js:1635
 msgid "off"
 msgstr "aus"
 
-#: package/contents/code/hue.js:1650
+#: package/contents/code/hue.js:1664
 msgid "Living room"
 msgstr "Wohnzimmer"
 
-#: package/contents/code/hue.js:1651
+#: package/contents/code/hue.js:1665
 msgid "Kitchen"
 msgstr "Küche"
 
-#: package/contents/code/hue.js:1652
+#: package/contents/code/hue.js:1666
 msgid "Dining"
 msgstr "Esszimmer"
 
-#: package/contents/code/hue.js:1653
+#: package/contents/code/hue.js:1667
 msgid "Bedroom"
 msgstr "Schlafzimmer"
 
-#: package/contents/code/hue.js:1654
+#: package/contents/code/hue.js:1668
 msgid "Kids bedroom"
 msgstr "Kinderzimmer"
 
-#: package/contents/code/hue.js:1655
+#: package/contents/code/hue.js:1669
 msgid "Bathroom"
 msgstr "Badezimmer"
 
-#: package/contents/code/hue.js:1656
+#: package/contents/code/hue.js:1670
 msgid "Nursery"
 msgstr "Kleinkinderzimmer"
 
-#: package/contents/code/hue.js:1657
+#: package/contents/code/hue.js:1671
 msgid "Recreation"
 msgstr "Freizeit"
 
-#: package/contents/code/hue.js:1658
+#: package/contents/code/hue.js:1672
 msgid "Office"
 msgstr "Büro"
 
-#: package/contents/code/hue.js:1659
+#: package/contents/code/hue.js:1673
 msgid "Gym"
 msgstr "Fitnessraum"
 
-#: package/contents/code/hue.js:1660
+#: package/contents/code/hue.js:1674
 msgid "Hallway"
 msgstr "Flur"
 
-#: package/contents/code/hue.js:1661
+#: package/contents/code/hue.js:1675
 msgid "Toilet"
 msgstr "Klo"
 
-#: package/contents/code/hue.js:1662
+#: package/contents/code/hue.js:1676
 msgid "Front door"
 msgstr "Eingangstüre"
 
-#: package/contents/code/hue.js:1663
+#: package/contents/code/hue.js:1677
 msgid "Garage"
 msgstr "Garage"
 
-#: package/contents/code/hue.js:1664
+#: package/contents/code/hue.js:1678
 msgid "Terrace"
 msgstr "Terrasse"
 
-#: package/contents/code/hue.js:1665
+#: package/contents/code/hue.js:1679
 msgid "Garden"
 msgstr "Garten"
 
-#: package/contents/code/hue.js:1666
+#: package/contents/code/hue.js:1680
 msgid "Driveway"
 msgstr "Einfahrt"
 
-#: package/contents/code/hue.js:1667
+#: package/contents/code/hue.js:1681
 msgid "Carport"
 msgstr "Einstellplatz"
 
-#: package/contents/code/hue.js:1668
+#: package/contents/code/hue.js:1682
 msgid "Other"
 msgstr "Anderes"
 
-#: package/contents/code/hue.js:1764
+#: package/contents/code/hue.js:1778
 msgid "Every"
 msgstr "Jeden"
 
-#: package/contents/code/hue.js:1767
+#: package/contents/code/hue.js:1781
 msgid "day"
 msgstr "Tag"
 
-#: package/contents/code/hue.js:1770
+#: package/contents/code/hue.js:1784
 msgid "weekday"
 msgstr "Wochentag"
 
-#: package/contents/code/hue.js:1773
+#: package/contents/code/hue.js:1787
 msgid "weekend"
 msgstr "Wochenendtag"
 
-#: package/contents/code/hue.js:1777
+#: package/contents/code/hue.js:1791
 msgid "Mon, "
 msgstr "Mon, "
 
-#: package/contents/code/hue.js:1780
+#: package/contents/code/hue.js:1794
 msgid "Tue, "
 msgstr "Die, "
 
-#: package/contents/code/hue.js:1783
+#: package/contents/code/hue.js:1797
 msgid "Wed, "
 msgstr "Mit, "
 
-#: package/contents/code/hue.js:1786
+#: package/contents/code/hue.js:1800
 msgid "Thu, "
 msgstr "Don, "
 
-#: package/contents/code/hue.js:1789
+#: package/contents/code/hue.js:1803
 msgid "Fri, "
 msgstr "Fre, "
 
-#: package/contents/code/hue.js:1792
+#: package/contents/code/hue.js:1806
 msgid "Sat, "
 msgstr "Sam, "
 
-#: package/contents/code/hue.js:1795
+#: package/contents/code/hue.js:1809
 msgid "Sun, "
 msgstr "Son, "
 
-#: package/contents/code/hue.js:1802 package/contents/ui/ActionEditor.qml:340
+#: package/contents/code/hue.js:1816 package/contents/ui/ActionEditor.qml:340
 #: package/contents/ui/TimeEditor.qml:114
 msgid "Once"
 msgstr "Einmal"
 
-#: package/contents/code/hue.js:1805
+#: package/contents/code/hue.js:1819
 msgid "times"
 msgstr "mal"
 
-#: package/contents/code/hue.js:1808
+#: package/contents/code/hue.js:1822
 msgid "Forever"
 msgstr "Für immer"
 
-#: package/contents/code/hue.js:1812
+#: package/contents/code/hue.js:1826
 msgid "At"
 msgstr "Am"
 
-#: package/contents/code/hue.js:1818
+#: package/contents/code/hue.js:1832
 msgid "at"
 msgstr "um"
 
-#: package/contents/code/hue.js:1820 package/contents/code/hue.js:1827
+#: package/contents/code/hue.js:1834 package/contents/code/hue.js:1841
 msgid "UTC"
 msgstr "UTC"
 
-#: package/contents/code/hue.js:1825
+#: package/contents/code/hue.js:1839
 msgid "+ random:"
 msgstr "Zufall"
 
@@ -299,8 +302,8 @@ msgid "Fade"
 msgstr "Dauer"
 
 #: package/contents/ui/ActionEditor.qml:309
-#: package/contents/ui/configLights.qml:449
-#: package/contents/ui/configLights.qml:478
+#: package/contents/ui/configLights.qml:448
+#: package/contents/ui/configLights.qml:477
 msgid "seconds"
 msgstr "Sekunden"
 
@@ -594,8 +597,8 @@ msgstr "Gruppe anpassen fehlgeschlagen"
 #: package/contents/ui/configGroups.qml:562
 #: package/contents/ui/configGroups.qml:601
 #: package/contents/ui/configGroups.qml:640
-#: package/contents/ui/configLights.qml:487
-#: package/contents/ui/configLights.qml:527
+#: package/contents/ui/configLights.qml:486
+#: package/contents/ui/configLights.qml:526
 #: package/contents/ui/configSchedules.qml:402
 #: package/contents/ui/configSchedules.qml:441
 #: package/contents/ui/configSchedules.qml:481
@@ -605,8 +608,8 @@ msgstr "Kommunikation mit Bridge fehlgeschlagen"
 #: package/contents/ui/configGroups.qml:573
 #: package/contents/ui/configGroups.qml:612
 #: package/contents/ui/configGroups.qml:649
-#: package/contents/ui/configLights.qml:498
-#: package/contents/ui/configLights.qml:536
+#: package/contents/ui/configLights.qml:497
+#: package/contents/ui/configLights.qml:535
 #: package/contents/ui/configSchedules.qml:413
 #: package/contents/ui/configSchedules.qml:452
 #: package/contents/ui/configSchedules.qml:490
@@ -620,8 +623,8 @@ msgstr "Gruppe erfolgreich angepasst"
 #: package/contents/ui/configGroups.qml:589
 #: package/contents/ui/configGroups.qml:628
 #: package/contents/ui/configGroups.qml:661
-#: package/contents/ui/configLights.qml:514
-#: package/contents/ui/configLights.qml:548
+#: package/contents/ui/configLights.qml:513
+#: package/contents/ui/configLights.qml:547
 #: package/contents/ui/configSchedules.qml:429
 #: package/contents/ui/configSchedules.qml:469
 #: package/contents/ui/configSchedules.qml:502
@@ -667,40 +670,40 @@ msgstr "Lampe anpassen"
 msgid "Light name:"
 msgstr "Lampenname:"
 
-#: package/contents/ui/configLights.qml:448
+#: package/contents/ui/configLights.qml:447
 msgid "Scanning for new lights ..."
 msgstr "Suche nach neuen Lampen ..."
 
-#: package/contents/ui/configLights.qml:449
-#: package/contents/ui/configLights.qml:478
+#: package/contents/ui/configLights.qml:448
+#: package/contents/ui/configLights.qml:477
 msgid "Scanning for"
 msgstr "Suche noch"
 
-#: package/contents/ui/configLights.qml:467
+#: package/contents/ui/configLights.qml:466
 msgid "Scanning for new lights done"
 msgstr "Suche nach neuen Lampen abgeschlossen"
 
-#: package/contents/ui/configLights.qml:468
+#: package/contents/ui/configLights.qml:467
 msgid "Check the table for new found lights"
 msgstr "Neue Lampen sind in der Tabelle unten aufgeführt"
 
-#: package/contents/ui/configLights.qml:486
-#: package/contents/ui/configLights.qml:497
-#: package/contents/ui/configLights.qml:513
-#: package/contents/ui/configLights.qml:547
+#: package/contents/ui/configLights.qml:485
+#: package/contents/ui/configLights.qml:496
+#: package/contents/ui/configLights.qml:512
+#: package/contents/ui/configLights.qml:546
 msgid "Failed to update light"
 msgstr "Lampe anpassen fehlgeschlagen"
 
-#: package/contents/ui/configLights.qml:504
+#: package/contents/ui/configLights.qml:503
 msgid "Successfully updated light"
 msgstr "Lampe erfolgreich angepasst"
 
-#: package/contents/ui/configLights.qml:526
-#: package/contents/ui/configLights.qml:535
+#: package/contents/ui/configLights.qml:525
+#: package/contents/ui/configLights.qml:534
 msgid "Failed to delete light"
 msgstr "Lampe löschen fehlgeschlagen"
 
-#: package/contents/ui/configLights.qml:540
+#: package/contents/ui/configLights.qml:539
 msgid "Successfully deleted light"
 msgstr "Lampe erfolgreich gelöscht"
 
@@ -880,13 +883,13 @@ msgstr "Farbe als HS: hue: "
 msgid " sat: "
 msgstr " sat: "
 
+#: package/contents/ui/GroupItem.qml:524 package/contents/ui/LightItem.qml:452
+msgid "White by temperature: "
+msgstr "Weisstemperatur:"
+
 #: package/contents/ui/GroupItem.qml:527 package/contents/ui/LightItem.qml:455
 msgid "Colour mode"
 msgstr "Farbmodus"
-
-#: package/contents/ui/LightItem.qml:452
-msgid "White by temperature: "
-msgstr "Weisstemperatur:"
 
 #: package/contents/ui/LightItem.qml:461
 msgid "Model ID"

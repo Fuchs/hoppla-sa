@@ -48,4 +48,14 @@ ConfigModel {
         icon: "clock"
         source: "configSchedules.qml"
     }
+    ConfigCategory {
+        name: i18n("Groups")
+        icon: "view-group"
+        source: "configGroups.qml"
+    }
+    ConfigCategory {
+        name: i18n("Schedules")
+        icon: "clock"
+        source: "configSchedules.qml"
+    }
 }

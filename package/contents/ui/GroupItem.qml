@@ -521,17 +521,17 @@ PlasmaComponents.ListItem {
             myColor = i18n("Colour in HS, hue: ") + vhue + i18n(" sat: ") + vsat;
         }
         else if(vcolormode === 'ct') {
-            myColor = "White by temperature: " + vct;
+            myColor = i18n("White by temperature: ") + vct;
         }
         
         groupDtls.push(i18n("Colour mode"));
         groupDtls.push(myColor);
         
         groupDtls.push(i18n("Type"));
-        groupDtls.push(vtype)
+        groupDtls.push(ttype)
         
         groupDtls.push(i18n("Class"));
-        groupDtls.push(vclass);
+        groupDtls.push(tclass);
         
         return groupDtls;
     }
