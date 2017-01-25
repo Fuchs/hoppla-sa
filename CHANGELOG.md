@@ -1,5 +1,10 @@
 # Changelog 
 
+## 2.2 (2017-01-22)
+
+* Fix potential bug when opening the config before the plasmoid
+* Update translations 
+
 ## 2.0 (2017-01-20)
 
 Manage your stuff version with: 
