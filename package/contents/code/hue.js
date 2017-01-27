@@ -2066,6 +2066,9 @@ function arrayFromMask (intMask) {
     }
     for (var nShifted = intMask, resultArray = []; nShifted; 
          resultArray.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+    for (var i = resultArray.length; i < 7; ++i) {
+        resultArray.push(false)
+    }
     return resultArray;
 }
 
