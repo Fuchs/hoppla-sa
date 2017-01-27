@@ -29,11 +29,13 @@ ColumnLayout {
     anchors.left: parent.left
     anchors.right: parent.right
     
-    property string strOriginalBody;
-    property string strOriginalAddress;
-    property string strOriginalMethod;
-    property bool useOriginal;
-    property bool isEnabled;
+    property string strOriginalBody
+    property string strOriginalAddress
+    property string strOriginalMethod
+    property bool useOriginalAddress: false
+    property bool useOriginalMethod: false
+    property bool useOriginalBody: false
+    property bool isEnabled
     
     ListModel {
         id: typeModel
@@ -56,6 +58,16 @@ ColumnLayout {
     
     Label {
         id: lblSat
+        visible: false
+    }
+    
+    Label {
+        id: lblGroupId
+        visible: false
+    }
+    
+    Label {
+        id: lblLightId
         visible: false
     }
     
@@ -149,6 +161,7 @@ ColumnLayout {
         CheckBox {
             id: chkBri
             text: i18n("Brightness")
+            enabled: isEnabled
         }
         
         Slider {
@@ -191,6 +204,7 @@ ColumnLayout {
         CheckBox {
             id: chkCol
             text: i18n("Colour")
+            enabled: isEnabled
         }
         
         ExclusiveGroup { id: colorGroup }
@@ -353,9 +367,7 @@ ColumnLayout {
     }
     
     Component.onCompleted: {
-        typeModel.clear();
-        typeModel.append( { text: i18n("Group"), value: "groups" });
-        typeModel.append( { text: i18n("Light"), value: "lights" });
+        initType();
         if(!Hue.isInitialized()) {
             Hue.initHueConfig();
         }
@@ -372,12 +384,15 @@ ColumnLayout {
     }
     
     function reset() {
+        isEnabled = true;
         grpStatus.visible = false;
         lblHue.text = "";
         lblSat.text = "";
+        lblGroupId.text = "";
+        lblLightId.text = "";
         lblCt.text = "296";
-        cbType.currentIndex = 0; 
         cbTarget.currentIndex = 0;
+        cbType.currentIndex = 0;
         chkBri.checked = false;
         chkCol.checked = false;
         chkOn.checked = false;
@@ -397,15 +412,41 @@ ColumnLayout {
         fetchGroups();
     }
     
+    function initType() {
+        typeModel.clear();
+        typeModel.append( { text: i18n("Group"), value: "groups" });
+        typeModel.append( { text: i18n("Light"), value: "lights" });
+    }
+    
     function fetchGroups() {
         targetModel.clear()
         targetModel.append( { text: "0: " + i18n("All lights"), value: "0" } );
-        Hue.getGroupsIdName(targetModel);
+        Hue.getGroupsIdName(targetModel, gotGroups);
     }
     
     function fetchLights() {
         targetModel.clear()
-        Hue.getLightsIdName(targetModel);
+        Hue.getLightsIdName(targetModel, gotLights);
+    }
+    
+    function gotGroups() {
+        if(lblGroupId.text) {
+            for(var i = 0; i < targetModel.count; ++i) {
+                if(lblGroupId.text == targetModel.get(i).value) {
+                    cbTarget.currentIndex = i;
+                }
+            }
+        }
+    }
+    
+    function gotLights() {
+        if(lblLightId.text) {
+            for(var i = 0; i < targetModel.count; ++i) {
+                if(lblLightId.text == targetModel.get(i).value) {
+                    cbTarget.currentIndex = i;
+                }
+            }
+        }
     }
     
     function getType() {
@@ -509,10 +550,17 @@ ColumnLayout {
     }
     
     function getBody() {
+        if(useOriginalBody) {
+            return strOriginalBody;
+        }
         return getPayload();
     }
     
     function getAddress() {
+        if(useOriginalAddress) {
+            return strOriginalAddress;
+        }
+        
         var strAddress = "/api/" + plasmoid.configuration.authToken;
         if(cbType.currentIndex == 0) {
             strAddress += "/groups/"
@@ -520,7 +568,7 @@ ColumnLayout {
             strAddress += "/action"
         }
         else {
-            strAddress += "lights/"
+            strAddress += "/lights/"
             strAddress += getTargetId();
             strAddress += "/state"
         }
@@ -528,14 +576,82 @@ ColumnLayout {
     }
     
     function getMethod() {
+        if(useOriginalMethod) {
+            return strOriginalMethod;
+        }
         return "PUT";
     }
     
-    function parseFromObject(myObject) {
-        if(myObject) {
+    function setCommand(objAction) {
+        var commandObj = Hue.parseHueCommandObject(objAction);
+        if(commandObj.valid) {
+            initType();
+            if(commandObj.group) {
+                lblGroupId.text = commandObj.targetId;
+            }
+            else {
+                lblLightId.text = commandObj.targetId;
+            }
+            if(commandObj.group) {
+                cbType.currentIndex = 0; 
+            }
+            else {
+                cbType.currentIndex = 1;
+            }
+            if(commandObj.on) {
+                chkOn.checked = true;
+                rbOn.checked = commandObj.on;
+                rbOff.checked = !commandObj.on;
+            }
+            if(commandObj.bri) {
+                chkBri.checked = true;
+                sldBri.value = commandObj.bri;
+            }
+            chkCol.checked = false;
+            if(commandObj.hue && commandObj.sat) {
+                chkCol.checked = true;
+                rbColour.checked = true;
+                lblHue.text = commandObj.hue;
+                lblSat.text = commandObj.sat;
+                setColourHS(lblHue.text, lblSat.text);
+            }
+            if(commandObj.ct) {
+                chkCol.checked = true;
+                rbTemp.checked = true;
+                lblCt.text = commandObj.ct;
+                setColourCT(lblCt.text);
+            }
+            if(commandObj.transitiontime) {
+                chkFade.checked = true;
+                sbTime.value = commandObj.transitiontime;
+            }
+            if(commandObj.alert) {
+                chkBlink.checked = true;
+                if(commandObj.alert == "none") {
+                    rbStopBlink.checked = true;
+                }
+                else if(commandObj.alert = "select") {
+                    rbOnce.checked = true;
+                }
+                else if(commandObj.alert = "lselect") {
+                    rbFifteen.checked = true;
+                }
+            }
+            if(commandObj.effect) {
+                chkEffect.checked = true;
+                if(commandObj.effect == "none") {
+                    rbStopEffect.checked = true;
+                }
+                else if(commandObj.effect == "colorloop") {
+                    rbColourLoop.checked = true;
+                }
+            }
         }
         else {
             isEnabled = false;
+            useOriginalBody = true;
+            useOriginalAddress = true;
+            useOriginalMethod = true;
             lblStatusTitle.text = i18n("Failed to parse the specified action.");
             lblStatusText.text = i18n("Read only mode, original values are preserved");
             grpStatus.visible = true;

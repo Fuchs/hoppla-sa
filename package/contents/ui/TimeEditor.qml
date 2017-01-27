@@ -340,6 +340,7 @@ ColumnLayout {
     }
     
     function reset() {
+        isEnabled = true;
         grpStatus.visible = false;
         chkOneTimer.checked = false;
         

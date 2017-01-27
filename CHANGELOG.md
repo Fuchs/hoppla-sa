@@ -1,5 +1,12 @@
 # Changelog 
 
+## 2.2.0 (2017-01-28)
+
+* ActionEditor now can load existing actions, thus you can modify existing schedule commands
+* Added Swiss German as translation
+* Bug fixes 
+* Translation updates
+
 ## 2.0.2 (2017-01-22)
 
 * Fix potential bug when opening the config before the plasmoid

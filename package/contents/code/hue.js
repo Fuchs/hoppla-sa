@@ -137,13 +137,16 @@ function getLight(myModel, lightId) {
  * The model will not be cleared beforehand.
  * @param {ListModel} myModel model to fill with text and value
  */
-function getLightsIdName(myModel) {
+function getLightsIdName(myModel, doneCb) {
     if(noConnection) {
         dbgPrint("No connection");
         return;
     }
+    if(!doneCb) {
+        doneCb = baseDone;
+    }
     var myUrl = "lights";
-    getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, baseDone, myModel, "");
+    getJsonFromHue(myUrl, parseLightsToSimpleModel, baseFail, doneCb, myModel, "");
 }
 
 function getAvailableLightsIdName(myModel) {
@@ -209,12 +212,15 @@ function getGroups(myModel) {
  * The model will not be cleared beforehand.
  * @param {ListModel} myModel model to fill with text and value
  */
-function getGroupsIdName(myModel) {
+function getGroupsIdName(myModel, doneCb) {
     if(noConnection) {
         return;
     }
+    if(!doneCb) {
+        doneCb = baseDone;
+    }
     var myUrl = "groups";
-    getJsonFromHue(myUrl, parseGroupsToSimpleModel, baseFail, baseDone, myModel, "");
+    getJsonFromHue(myUrl, parseGroupsToSimpleModel, baseFail, doneCb, myModel, "");
 }
 
 /**
@@ -1620,9 +1626,10 @@ function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
         mySchedule.value = "" + scheduleName
         mySchedule.description = cSchedule.description || i18n("Not available");
         if(cSchedule.command) {
-            mySchedule.address = cSchedule.address;
-            mySchedule.body = cSchedule.command.body + "";
+            mySchedule.address = cSchedule.command.address;
+            mySchedule.body = JSON.stringify(cSchedule.command.body);
             mySchedule.method = cSchedule.command.method;
+            mySchedule.command = cSchedule.command;
         }
         mySchedule.localtime =  cSchedule.localtime || i18n("Not available");
         mySchedule.time = cSchedule.time || i18n("Not available");
@@ -1845,6 +1852,11 @@ function fmtTimeHumReadable(strHueTime, isLocalTime) {
     return strReadable;
 }
 
+/**
+ * Helper method to parse a hue time string
+ * @param {string} strTime the time to parse
+ * @return {object} timeObject with values
+ */
 function parseHueTimeString(strTime) {
     var timeObj = {};
     timeObj.valid = true;
@@ -1960,6 +1972,88 @@ function parseHueTimeString(strTime) {
     }
 }
 
+
+/**
+ * Helper method to parse a hue time string
+ * @param {object} commandObj the object to parse
+ * @return {object} commandObject with values
+ */
+function parseHueCommandObject(pObj) {
+    var commandObj = {};
+    commandObj.valid = true;
+    
+    if(!pObj) {
+        dbgPrint("Empty Object, invalid");
+        commandObj.valid = false;
+        return commandObj;
+    }
+    try {
+        var method = pObj.method;
+        // We only support PUT for now
+        if(method != "PUT") {
+            commandObj.valid = false;
+            return commandObj;
+        }
+        
+        var addr = pObj.address;
+        var sAddr = addr.split("/")
+        // For now we also allow editing schedules created for someone else. 
+        // if that is not wanted, sAddr[2] has to be compared against
+        // plasmoid.configuration.authToken
+        var type = sAddr[3]
+        commandObj.group = (type == "groups")
+        var target = sAddr[4];
+        commandObj.targetId = target;
+        
+        var body = pObj.body;
+        
+        // For loop is needed to see if there are additional values we don't support. 
+        // In this case we mark the object as invalid, so that the editor preserves
+        // the original values and they aren't lost on saving.
+        for(var currentItem in body) {
+            if(currentItem == "on") {
+                commandObj.on = body.on;
+            }
+            else if(currentItem == "bri") {
+                commandObj.bri = body.bri;
+            }
+            else if(currentItem == "hue") {
+                commandObj.hue = body.hue;
+            }
+            else if(currentItem == "sat") {
+                commandObj.sat = body.sat;
+            }
+            else if(currentItem == "ct") {
+                commandObj.ct = body.ct;
+            }
+            else if(currentItem == "transitiontime") {
+                commandObj.transitiontime = body.transitiontime;
+            }
+            else if(currentItem == "alert") {
+                commandObj.alert = body.alert;
+            }
+            else if(currentItem == "effect") {
+                commandObj.effect = body.effect;
+            }
+            else if(currentItem == "colormode") {
+                commandObj.colormode = body.colormode;
+            }
+            else {
+                dbgPrint("Got unknown value: " + currentItem);
+                commandObj.valid = false;
+                return commandObj;
+            }
+        }
+        
+        return commandObj;
+    }
+    catch (e) {
+        dbgPrint("Error in parseHueCommandObject: " + e);
+        commandObj.valid = false;
+        return commandObj;
+    }
+}
+
 /**
  * Helper to create an array from a bit mask
  * @param {int} intMask: bitmask as integer
@@ -2007,6 +2101,14 @@ function getHueIp (callback) {
 
 function dbgPrint(msg) {
     print('[Hoppla] ' + msg)
+}
+
+function dummyTranslator() {
+    var str = i18n("Switch all lights on");
+    str = i18n("Switches all reachable lights on");
+    str = i18n("Switch all lights off");
+    str = i18n("Switches all reachable lights off");
+    str = i18n("LightGroup");
 }
 
 

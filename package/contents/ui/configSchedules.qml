@@ -153,6 +153,8 @@ Item {
                                 var editItem = schedulesModel.get(styleData.row);
                                 txtScheduleName.text = editItem.name;
                                 editScheduleDialogue.scheduleId = editItem.uuid;
+                                txtDescription.text = editItem.description;
+                                
                                 timeEditor.strOriginalLocaltime = editItem.localtime
                                 timeEditor.strOriginalTime = editItem.time;
                                 if(!editItem.localtime) {
@@ -162,6 +164,13 @@ Item {
                                 else {
                                     timeEditor.setTime(editItem.localtime);
                                 }
+                                
+                                actionEditor.strOriginalAddress = editItem.address;
+                                actionEditor.strOriginalMethod = editItem.method;
+                                actionEditor.strOriginalBody = editItem.body;
+                                
+                                actionEditor.setCommand(editItem.command);
+                                
                                 chkEnabled.checked = editItem.status == "enabled";
                                 chkAutodelete.checked = editItem.autodelete;
                                 editScheduleDialogue.open();
@@ -241,7 +250,7 @@ Item {
                     Hue.createSchedule(strJson, createScheduleDone)
                 }
                 else {
-                    Hue.modifySchedule(editScheduleDialogue.scheduleId, strJson, updateScheduleDone);
+                   Hue.modifySchedule(editScheduleDialogue.scheduleId, strJson, updateScheduleDone);
                 }
             }
             
@@ -388,6 +397,13 @@ Item {
         timeEditor.useOriginal = false;
         timeEditor.useLocal = true;
         timeEditor.isEnabled = true;
+        actionEditor.reset();
+        actionEditor.strOriginalBody = "";
+        actionEditor.strOriginalAddress = "";
+        actionEditor.strOriginalMethod = "";
+        actionEditor.useOriginalAddress = false;
+        actionEditor.useOriginalMethod = false
+        actionEditor.useOriginalBody = false
     }
     
     function addSchedule() {
