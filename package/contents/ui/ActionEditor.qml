@@ -32,9 +32,13 @@ ColumnLayout {
     property string strOriginalBody
     property string strOriginalAddress
     property string strOriginalMethod
+    property string strOiginalTid
+    property string strOriginalTtype
     property bool useOriginalAddress: false
     property bool useOriginalMethod: false
     property bool useOriginalBody: false
+    property bool useOriginalTtype: false
+    property bool useOriginalTid: false
     property bool isEnabled
     
     ListModel {
@@ -457,7 +461,20 @@ ColumnLayout {
         return targetModel.get(cbTarget.currentIndex).value
     }
     
-        
+    function getTtype() {
+        if(useOriginalTtype) {
+            return strOriginalTtype;
+        }
+        return typeModel.get(cbType.currentIndex).value;
+    }
+    
+    function getTid() {
+        if(useOriginalTid) {
+            return strOiginalTid;
+        }
+        return targetModel.get(cbTarget.currentIndex).value;
+    }
+    
     function setColourHS(phue, psat) {
         // qt expects hue and saturation as 0..1 value, so we have to convert
         var hue = 0.00001525902 * phue
@@ -582,8 +599,7 @@ ColumnLayout {
         return "PUT";
     }
     
-    function setCommand(objAction) {
-        var commandObj = Hue.parseHueCommandObject(objAction);
+    function fillValues(commandObj) {
         if(commandObj.valid) {
             initType();
             if(commandObj.group) {
@@ -598,7 +614,7 @@ ColumnLayout {
             else {
                 cbType.currentIndex = 1;
             }
-            if(commandObj.on) {
+            if(commandObj.setOn) {
                 chkOn.checked = true;
                 rbOn.checked = commandObj.on;
                 rbOff.checked = !commandObj.on;
@@ -652,10 +668,22 @@ ColumnLayout {
             useOriginalBody = true;
             useOriginalAddress = true;
             useOriginalMethod = true;
+            useOriginalTid = true;
+            useOriginalTtype = true;
             lblStatusTitle.text = i18n("Failed to parse the specified action.");
             lblStatusText.text = i18n("Read only mode, original values are preserved");
             grpStatus.visible = true;
         }
+    }
+    
+    function setCommand(objCommand) {
+        var commandObj = Hue.parseHueCommandObject(objCommand);
+        fillValues(commandObj);
+    }
+    
+    function setAction(objAction) {
+        var commandObj = Hue.parseHopplaActionObject(objAction);
+        fillValues(commandObj);
     }
     
 }

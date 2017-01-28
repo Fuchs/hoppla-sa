@@ -34,6 +34,8 @@ Item {
     property string infoColour: "#5555ff"
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
+    property bool isEditing: false
+    property int editId: -1
     
     width: parent.width
     anchors.left: parent.left
@@ -318,6 +320,7 @@ Item {
             TableView {
                 id: actTable
                 width: parent.width
+                enabled: !isEditing
                 
                 TableViewColumn {
                     id: typeCol
@@ -350,7 +353,7 @@ Item {
                     id: payloadCol
                     role: 'payload'
                     title: i18n('Payload')
-                    width: parent.width * 0.62
+                    width: parent.width * 0.58
                     
                     delegate: Label {
                         text: styleData.value
@@ -359,20 +362,41 @@ Item {
                 }
                 
                 TableViewColumn {
-                    title: i18n('Remove')
-                    width: parent.width * 0.15
+                    title: i18n('Action')
+                    width: parent.width * 0.16
                     
                     delegate: Item {
                         
                         GridLayout {
                             height: parent.height
-                            columns: 1
+                            columns: 2
                             rowSpacing: 0
+                            
+                            Button {
+                                iconName: 'entry-edit'
+                                tooltip: i18n("Edit")
+                                Layout.fillHeight: true
+                                enabled: !isEditing
+                                onClicked: {
+                                    // editActionDialogue.tableIndex = styleData.row
+                                    var editItem = actListModel.get(styleData.row);
+                                    actionEditor.reset();
+                                    actionEditor.setAction(editItem);
+                                    actionEditor.strOiginalTid = editItem.ttype;
+                                    actionEditor.strOriginalTtype = editItem.tid;
+                                    //TODO: set Id, change buttons
+                                    isEditing = true;
+                                    editId = styleData.row;
+                                    actTable.selection.deselect(0, actTable.rowCount - 1)
+                                    actTable.selection.select(styleData.row);
+                                }
+                            }
                             
                             Button {
                                 iconName: 'list-remove'
                                 tooltip: i18n("Remove")
                                 Layout.fillHeight: true
+                                enabled: !isEditing
                                 onClicked: {
                                     actListModel.remove(styleData.row)
                                 }
@@ -388,8 +412,9 @@ Item {
             
             GroupBox {
                 Layout.fillWidth: true
+                Layout.alignment: Qt.AlignRight
                 id: grpNewAction
-                title: i18n("New command");
+                title: isEditing ? i18n("Edit command") : i18n("New command");
                 
                 ActionEditor {
                     id: actionEditor
@@ -398,10 +423,22 @@ Item {
                 Button {
                     anchors {
                         top: actionEditor.bottom
-                        left: parent.left
+                        right: btnAddAct.left
+                        rightMargin: units.smallSpacing * 2
+                    }
+                    id: btnCancelAct
+                    text: i18n("Cancel editing");
+                    visible: isEditing
+                    onClicked: cancelEdit()
+                }
+                
+                Button {
+                    anchors {
+                        top: actionEditor.bottom
+                        right: parent.right
                     }
                     id: btnAddAct
-                    text: i18n("Add new command")
+                    text: isEditing ? i18n("Save command") : i18n("Add new command")
                     onClicked: addAct()
                 }
 
@@ -447,6 +484,8 @@ Item {
     
     function resetDialog() {
         editActionDialogue.tableIndex = -1;
+        editId = -1;
+        isEditing = false;
         txtTitle.text = "";
         txtSubTitle.text = "";
         cbIcon.currentIndex = 0;
@@ -456,16 +495,35 @@ Item {
         mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
     }
     
+    function cancelEdit() {
+        isEditing = false;
+        editId = -1;
+        actionEditor.reset();
+    }
+    
     function addAct() {
         var payload = "";
         payload = actionEditor.getPayload();
         if(payload) {
-            var newAct = {};
-            newAct.ttype = actionEditor.getType();
-            newAct.tid = actionEditor.getTargetId();
-            newAct.payload = payload;
-            actListModel.append(newAct);
-            actionListChanged();
+            actionEditor.reset();
+            if(editId < 0) {
+                var newAct = {};
+                newAct.ttype = actionEditor.getType();
+                newAct.tid = actionEditor.getTargetId();
+                newAct.payload = payload;
+                actListModel.append(newAct);
+                actionListChanged();
+            }
+            else {
+                var editAct = actListModel.get(editId);
+                editAct.ttype = actionEditor.getType();
+                editAct.tid = actionEditor.getTargetId();
+                editAct.payload = payload;
+                actionListChanged();
+                editId = -1;
+                isEditing = false;
+                
+            }
         }
     }
     

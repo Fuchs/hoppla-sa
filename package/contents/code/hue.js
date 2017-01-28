@@ -1974,13 +1974,40 @@ function parseHueTimeString(strTime) {
 
 
 /**
+ * Helper method to parse a hoppla action object
+ * @param {object} pObj the object to parse
+ * @return {object} commandObject with values
+ */
+function parseHopplaActionObject(pObj) {
+    var commandObj = {};
+    if(!pObj) {
+        dbgPrint("Empty Object, invalid");
+        commandObj.valid = false;
+        return commandObj;
+    }
+    try {
+        var body = JSON.parse(pObj.payload);
+        
+        commandObj = parseHueCommandPayload(body);
+        commandObj.method = "PUT";
+        commandObj.group = (pObj.ttype == "groups");
+        commandObj.targetId = pObj.tid;
+        return commandObj;
+    }
+    catch (e) {
+        dbgPrint("Error in parseHopplaactionObject: " + e);
+        commandObj.valid = false;
+        return commandObj;
+    }
+}
+
+/**
  * Helper method to parse a hue time string
  * @param {object} commandObj the object to parse
  * @return {object} commandObject with values
  */
 function parseHueCommandObject(pObj) {
     var commandObj = {};
-    commandObj.valid = true;
     
     if(!pObj) {
         dbgPrint("Empty Object, invalid");
@@ -1988,6 +2015,9 @@ function parseHueCommandObject(pObj) {
         return commandObj;
     }
     try {
+        
+        commandObj = parseHueCommandPayload(pObj.body);
+        
         var method = pObj.method;
         // We only support PUT for now
         if(method != "PUT") {
@@ -2004,47 +2034,7 @@ function parseHueCommandObject(pObj) {
         commandObj.group = (type == "groups")
         var target = sAddr[4];
         commandObj.targetId = target;
-        
-        var body = pObj.body;
-        
-        // For loop is needed to see if there are additional values we don't support. 
-        // In this case we mark the object as invalid, so that the editor preserves
-        // the original values and they aren't lost on saving.
-        for(var currentItem in body) {
-            if(currentItem == "on") {
-                commandObj.on = body.on;
-            }
-            else if(currentItem == "bri") {
-                commandObj.bri = body.bri;
-            }
-            else if(currentItem == "hue") {
-                commandObj.hue = body.hue;
-            }
-            else if(currentItem == "sat") {
-                commandObj.sat = body.sat;
-            }
-            else if(currentItem == "ct") {
-                commandObj.ct = body.ct;
-            }
-            else if(currentItem == "transitiontime") {
-                commandObj.transitiontime = body.transitiontime;
-            }
-            else if(currentItem == "alert") {
-                commandObj.alert = body.alert;
-            }
-            else if(currentItem == "effect") {
-                commandObj.effect = body.effect;
-            }
-            else if(currentItem == "colormode") {
-                commandObj.colormode = body.colormode;
-            }
-            else {
-                dbgPrint("Got unknown value: " + currentItem);
-                commandObj.valid = false;
-                return commandObj;
-            }
-        }
-        
+
         return commandObj;
     }
     catch (e) {
@@ -2052,6 +2042,56 @@ function parseHueCommandObject(pObj) {
         commandObj.valid = false;
         return commandObj;
     }
+}
+
+/**
+ * Helper method to parse a hue time string
+ * @param {object} commandObj the object to parse
+ * @return {object} commandObject with values
+ */
+function parseHueCommandPayload(body) {
+    var commandObj = {};
+    commandObj.valid = true;
+    // For loop is needed to see if there are additional values we don't support. 
+    // In this case we mark the object as invalid, so that the editor preserves
+    // the original values and they aren't lost on saving.
+    for(var currentItem in body) {
+        if(currentItem == "on") {
+            commandObj.on = body.on;
+            commandObj.setOn = true;
+        }
+        else if(currentItem == "bri") {
+            commandObj.bri = body.bri;
+        }
+        else if(currentItem == "hue") {
+            commandObj.hue = body.hue;
+        }
+        else if(currentItem == "sat") {
+            commandObj.sat = body.sat;
+        }
+        else if(currentItem == "ct") {
+            commandObj.ct = body.ct;
+        }
+        else if(currentItem == "transitiontime") {
+            commandObj.transitiontime = body.transitiontime;
+        }
+        else if(currentItem == "alert") {
+            commandObj.alert = body.alert;
+        }
+        else if(currentItem == "effect") {
+            commandObj.effect = body.effect;
+        }
+        else if(currentItem == "colormode") {
+            commandObj.colormode = body.colormode;
+        }
+        else {
+            dbgPrint("Got unknown value: " + currentItem);
+            commandObj.valid = false;
+            return commandObj;
+        }
+    }
+    
+    return commandObj;
 }
 
 /**
