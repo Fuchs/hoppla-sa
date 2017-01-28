@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2017-01-27 15:33+0100\n"
+"POT-Creation-Date: 2017-01-28 20:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,7 +199,7 @@ msgstr ""
 msgid "Sun, "
 msgstr ""
 
-#: package/contents/code/hue.js:1823 package/contents/ui/ActionEditor.qml:354
+#: package/contents/code/hue.js:1823 package/contents/ui/ActionEditor.qml:358
 #: package/contents/ui/TimeEditor.qml:114
 msgid "Once"
 msgstr ""
@@ -228,23 +228,23 @@ msgstr ""
 msgid "+ random:"
 msgstr ""
 
-#: package/contents/code/hue.js:2107
+#: package/contents/code/hue.js:2153
 msgid "Switch all lights on"
 msgstr ""
 
-#: package/contents/code/hue.js:2108
+#: package/contents/code/hue.js:2154
 msgid "Switches all reachable lights on"
 msgstr ""
 
-#: package/contents/code/hue.js:2109
+#: package/contents/code/hue.js:2155
 msgid "Switch all lights off"
 msgstr ""
 
-#: package/contents/code/hue.js:2110
+#: package/contents/code/hue.js:2156
 msgid "Switches all reachable lights off"
 msgstr ""
 
-#: package/contents/code/hue.js:2111
+#: package/contents/code/hue.js:2157
 msgid "LightGroup"
 msgstr ""
 
@@ -272,94 +272,94 @@ msgstr ""
 msgid "Schedules"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:120
+#: package/contents/ui/ActionEditor.qml:124
 msgid "Target"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:140
+#: package/contents/ui/ActionEditor.qml:144
 #: package/contents/ui/GroupItem.qml:500 package/contents/ui/LightItem.qml:436
 msgid "State"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:148
+#: package/contents/ui/ActionEditor.qml:152
 #: package/contents/ui/LightItem.qml:434
 msgid "On"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:156
+#: package/contents/ui/ActionEditor.qml:160
 #: package/contents/ui/LightItem.qml:434
 msgid "Off"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:163
+#: package/contents/ui/ActionEditor.qml:167
 #: package/contents/ui/GroupItem.qml:512 package/contents/ui/LightItem.qml:439
 msgid "Brightness"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:182
+#: package/contents/ui/ActionEditor.qml:186
 msgid "Effect"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:190
+#: package/contents/ui/ActionEditor.qml:194
 msgid "None"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:198
+#: package/contents/ui/ActionEditor.qml:202
 msgid "Colourloop"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:206
-#: package/contents/ui/ActionEditor.qml:221
+#: package/contents/ui/ActionEditor.qml:210
+#: package/contents/ui/ActionEditor.qml:225
 msgid "Colour"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:214
+#: package/contents/ui/ActionEditor.qml:218
 msgid "Temperature"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:301
+#: package/contents/ui/ActionEditor.qml:305
 msgid "Fade"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:323
+#: package/contents/ui/ActionEditor.qml:327
 #: package/contents/ui/configLights.qml:448
 #: package/contents/ui/configLights.qml:477
 msgid "seconds"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:331
+#: package/contents/ui/ActionEditor.qml:335
 #: package/contents/ui/configGroups.qml:168
 #: package/contents/ui/configLights.qml:153
 #: package/contents/ui/configLights.qml:321
 msgid "Blink"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:347
+#: package/contents/ui/ActionEditor.qml:351
 msgid "Stop"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:361
+#: package/contents/ui/ActionEditor.qml:365
 msgid "15 seconds"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:417
+#: package/contents/ui/ActionEditor.qml:421
 #: package/contents/ui/configGroups.qml:355
 msgid "Group"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:418
+#: package/contents/ui/ActionEditor.qml:422
 msgid "Light"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:423
+#: package/contents/ui/ActionEditor.qml:427
 msgid "All lights"
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:655
+#: package/contents/ui/ActionEditor.qml:673
 msgid "Failed to parse the specified action."
 msgstr ""
 
-#: package/contents/ui/ActionEditor.qml:656
+#: package/contents/ui/ActionEditor.qml:674
 #: package/contents/ui/TimeEditor.qml:428
 msgid "Read only mode, original values are preserved"
 msgstr ""
@@ -368,15 +368,16 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:102
+#: package/contents/ui/configActions.qml:104
 msgid "Title"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:114
+#: package/contents/ui/configActions.qml:116
 msgid "Subtitle"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:124
+#: package/contents/ui/configActions.qml:126
+#: package/contents/ui/configActions.qml:365
 #: package/contents/ui/configGroups.qml:136
 #: package/contents/ui/configLights.qml:121
 #: package/contents/ui/configLights.qml:289
@@ -384,24 +385,24 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:137
+#: package/contents/ui/configActions.qml:139
+#: package/contents/ui/configActions.qml:377
 #: package/contents/ui/configGroups.qml:178
 #: package/contents/ui/configLights.qml:163
 #: package/contents/ui/configSchedules.qml:149
 msgid "Edit"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:157
+#: package/contents/ui/configActions.qml:159
 msgid "Move up"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:168
+#: package/contents/ui/configActions.qml:170
 msgid "Move down"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:179
-#: package/contents/ui/configActions.qml:362
-#: package/contents/ui/configActions.qml:374
+#: package/contents/ui/configActions.qml:181
+#: package/contents/ui/configActions.qml:395
 #: package/contents/ui/configGroups.qml:206
 #: package/contents/ui/configGroups.qml:470
 #: package/contents/ui/configGroups.qml:482
@@ -410,49 +411,61 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:197
+#: package/contents/ui/configActions.qml:199
 msgid "Add new action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:215
+#: package/contents/ui/configActions.qml:217
 msgid "Add or edit action"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:268
+#: package/contents/ui/configActions.qml:270
 msgid "Title:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:279
+#: package/contents/ui/configActions.qml:281
 msgid "Subtitle:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:290
+#: package/contents/ui/configActions.qml:292
 msgid "Icon:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:315
+#: package/contents/ui/configActions.qml:317
 msgid "Commands:"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:325
+#: package/contents/ui/configActions.qml:328
 #: package/contents/ui/GroupItem.qml:530 package/contents/ui/LightItem.qml:458
 msgid "Type"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:341
+#: package/contents/ui/configActions.qml:344
 #: package/contents/ui/configGroups.qml:449
 msgid "Id"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:352
+#: package/contents/ui/configActions.qml:355
 msgid "Payload"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:392
+#: package/contents/ui/configActions.qml:415
+msgid "Edit command"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:415
 msgid "New command"
 msgstr ""
 
-#: package/contents/ui/configActions.qml:404
+#: package/contents/ui/configActions.qml:428
+msgid "Cancel editing"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:439
+msgid "Save command"
+msgstr ""
+
+#: package/contents/ui/configActions.qml:439
 msgid "Add new command"
 msgstr ""
 
@@ -999,14 +1012,4 @@ msgstr ""
 
 #: package/contents/ui/TimeEditor.qml:427
 msgid "Failed to parse the specified time."
-msgstr ""
-
-#: rc.cpp:1
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr ""
-
-#: rc.cpp:2
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
 msgstr ""
