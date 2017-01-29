@@ -2146,6 +2146,9 @@ function dbgPrint(msg) {
     print('[Hoppla] ' + msg)
 }
 
+/**
+ * Ignore me, I am here because extracting strings for i18n is stupid
+ */
 function dummyTranslator() {
     var str = i18n("Switch all lights on");
     str = i18n("Switches all reachable lights on");

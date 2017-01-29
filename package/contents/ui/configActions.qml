@@ -378,13 +378,11 @@ Item {
                                 Layout.fillHeight: true
                                 enabled: !isEditing
                                 onClicked: {
-                                    // editActionDialogue.tableIndex = styleData.row
                                     var editItem = actListModel.get(styleData.row);
                                     actionEditor.reset();
                                     actionEditor.setAction(editItem);
                                     actionEditor.strOiginalTid = editItem.ttype;
                                     actionEditor.strOriginalTtype = editItem.tid;
-                                    //TODO: set Id, change buttons
                                     isEditing = true;
                                     editId = styleData.row;
                                     actTable.selection.deselect(0, actTable.rowCount - 1)
