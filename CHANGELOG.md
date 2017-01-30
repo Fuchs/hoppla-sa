@@ -1,5 +1,13 @@
 # Changelog 
 
+## 2.4.2 (2017-01-30) 
+
+* Existing action commands can now be edited
+* Fix a bug that prevented weekly schedules to be filled correctly
+* Fix a bug that prevented action editor from loading an "off" state correctly
+* Workaround a plasma bug that makes configuration unavailable
+* Update tooltip as soon as data is initially available
+
 ## 2.2.0 (2017-01-28)
 
 * ActionEditor now can load existing actions, thus you can modify existing schedule commands

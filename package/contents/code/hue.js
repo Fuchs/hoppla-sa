@@ -20,15 +20,17 @@ var useAltConnection = false;
 var initialized = false;
 var altConnectionEnabled;
 var noConnection = false;
-var debug = false;
+var debugMode = false;
 
 // INIT
 
 function dbgPrint(msg) {
-    if(!debug) {
+    if(!debugMode) {
         return;
     }
-    print('[Hoppla-Hue] ' + msg)
+    else {
+        print('[Hoppla-Hue] ' + msg)
+    }
 }
 
 
@@ -70,6 +72,7 @@ function getHueConfigured() {
     var auth = plasmoid.configuration.authToken
     if(!base || !auth) {
         // something went terribly wrong here
+        dbgPrint("Can't access configuration");
         return false;
     }
     if (!base.trim() || !auth.trim()) {
@@ -2142,9 +2145,6 @@ function getHueIp (callback) {
     request.send();
 }
 
-function dbgPrint(msg) {
-    print('[Hoppla] ' + msg)
-}
 
 /**
  * Ignore me, I am here because extracting strings for i18n is stupid

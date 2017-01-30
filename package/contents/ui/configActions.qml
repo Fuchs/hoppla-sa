@@ -196,6 +196,9 @@ Item {
         
         Button {
             id: btnAddAction
+            anchors {
+                right: parent.right
+            }
             text: i18n("Add new action")
             onClicked: addAction()
         }

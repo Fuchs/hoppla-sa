@@ -221,6 +221,9 @@ Item {
         
         Button {
             id: btnAddGroup
+            anchors {
+                right: parent.right
+            }
             text: i18n("Add new group")
             onClicked: addGroup()
         }

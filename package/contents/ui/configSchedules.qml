@@ -197,6 +197,9 @@ Item {
         
         Button {
             id: btnAddSchedule
+            anchors {
+                right: parent.right
+            }
             text: i18n("Add new schedule")
             onClicked: addSchedule();
         }

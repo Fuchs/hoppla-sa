@@ -348,6 +348,8 @@ FocusScope {
     
     function fetchAllDone() {
         busyOverlay.opacity = 0;
+        // Done to initially set the tooltip
+        checkHueConnection(updatedConnection, true);
     }
     
     /**
@@ -429,7 +431,7 @@ FocusScope {
             var actionItems = JSON.parse(plasmoid.configuration.actionlist);
         }
         catch(e) {
-            debugPrint("Failed to parse actionlist json: " + json);
+            debugPrint("Failed to parse actionlist json: " + actionItems);
             return;
         }
         

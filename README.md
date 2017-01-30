@@ -15,15 +15,14 @@ It allows you to
   * Set the brightness
   * Set the colour or white temperature
   * Control single lights belonging to the group
-* Actions
-  * Use some global actions, such as turning all lights on or off
-* Set an alternative connection, including http basic auth
-  * Control your lights from outside your home network 
-  * You need to set up a proxy (e.g. apache httpd) reachable from the outside
+* Use quick actions for your favourite or most used commands
+  * Create, modify and use actions, such as turning all lights off or dimming all lights of a room
 * Manage your stuff
   * Search new lights, modify and delete existing ones
   * Create new Groups and Rooms, modify and delete existing ones
   * Create new schedules, modify and delete existing ones
+* Set an alternative connection, including http basic auth
+  * Control your lights from outside your home network 
 
 ## License 
 

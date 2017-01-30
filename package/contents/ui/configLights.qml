@@ -192,6 +192,9 @@ Item {
         
         Button {
             id: btnAddLight
+            anchors {
+                right: parent.right
+            }
             text: i18n("Add new light")
             onClicked: addLight()
             enabled: true

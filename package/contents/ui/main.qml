@@ -25,7 +25,7 @@ import "hue.js" as Hue
 
 Item {
     id: hopplaApplet
-    property bool debug: false
+    property bool debugMode: false
     
     Plasmoid.toolTipMainText: i18n("Hue Light Control")
     Plasmoid.icon: "im-jabber"
@@ -33,11 +33,20 @@ Item {
     Plasmoid.compactRepresentation: CompactRepresentation { }
     Plasmoid.fullRepresentation: FullRepresentation { }
     
+    Component.onCompleted: {
+        // We need to init here, otherwise there is a strange plasma bug
+        // which can lead to plasmoid.configuration being unavailable, 
+        // thus the plasmoid failing badly.
+        initHueConfig();
+    }
+    
     function debugPrint(msg) {
-        if(!debug) {
+        if(!debugMode) {
             return;
         }
-        print('[Hoppla] ' + msg)
+        else {
+            print('[Hoppla] ' + msg)
+        }
     }
     
     function initHueConfig() {
