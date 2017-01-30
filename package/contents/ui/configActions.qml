@@ -506,7 +506,6 @@ Item {
         var payload = "";
         payload = actionEditor.getPayload();
         if(payload) {
-            actionEditor.reset();
             if(editId < 0) {
                 var newAct = {};
                 newAct.ttype = actionEditor.getType();
@@ -525,6 +524,7 @@ Item {
                 isEditing = false;
                 
             }
+            actionEditor.reset();
         }
     }
     

@@ -453,26 +453,18 @@ ColumnLayout {
         }
     }
     
-    function getType() {
-        return typeModel.get(cbType.currentIndex).value
-    }
-    
     function getTargetId() {
-        return targetModel.get(cbTarget.currentIndex).value
+        if(useOriginalTid) {
+            return strOiginalTid;
+        }
+        return targetModel.get(cbTarget.currentIndex).uuid;
     }
     
-    function getTtype() {
+    function getType() {
         if(useOriginalTtype) {
             return strOriginalTtype;
         }
         return typeModel.get(cbType.currentIndex).value;
-    }
-    
-    function getTid() {
-        if(useOriginalTid) {
-            return strOiginalTid;
-        }
-        return targetModel.get(cbTarget.currentIndex).value;
     }
     
     function setColourHS(phue, psat) {
