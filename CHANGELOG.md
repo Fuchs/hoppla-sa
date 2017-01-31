@@ -22,8 +22,6 @@
 
 ## 2.0.0 (2017-01-20)
 
-Manage your stuff version with: 
-
 * Lights can be added and edited (renamed)
 * Groups can be added and edited
 * Actions allow fading, effects and blinking
@@ -32,8 +30,6 @@ Manage your stuff version with:
 * 100% translated to German
 
 ## 1.0.0 (2017-01-14) 
-
-Initial version with: 
 
 * Actions
   * Show two default actions, turn on and off all lamps
