@@ -122,6 +122,7 @@ Item {
                 TextField {
                     id: baseURL
                     Layout.fillWidth: true
+                    placeholderText: i18n("http://1.2.3.4 or use \"Find bridge\"")
                 }
                 
                 Label {
@@ -138,6 +139,7 @@ Item {
                 TextField {
                     id: authToken
                     Layout.fillWidth: true
+                    placeholderText: i18n("Use the \"Authenticate\" button")
                 }
             }
         }
@@ -169,6 +171,7 @@ Item {
                 TextField {
                     id: altUrl
                     Layout.fillWidth: true
+                    placeholderText: i18n("https://hue.mypersonaldyndns.fox")
                 }
                 
                 Label {
