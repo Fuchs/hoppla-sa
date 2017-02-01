@@ -171,7 +171,7 @@ Item {
                 TextField {
                     id: altUrl
                     Layout.fillWidth: true
-                    placeholderText: i18n("https://hue.mypersonaldyndns.fox")
+                    placeholderText: i18n("https://hue.mypersonaldyndns.org")
                 }
                 
                 Label {
