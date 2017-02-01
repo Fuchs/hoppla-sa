@@ -487,6 +487,13 @@ function setLightColourHS(lightId, hue, sat) {
  * 
  */
 function authenticateWithBridge(bridgeUrl, hostname, sCb, fCb) {
+    if(bridgeUrl.search(":/") < 0) {
+        // No protocol given. Default to http, most likely protocol. 
+        // Protocols not starting with / are thus not supported, 
+        // that should be fine for an html request
+        bridgeUrl = "http://" + bridgeUrl;
+    }
+    
     var appname = "Hoppla-SA";
     // https://www.developers.meethue.com/documentation/configuration-api#71_create_user
     var maxLength = 19; 
@@ -578,6 +585,12 @@ function getRequest(pUrl, pType, forceBase, forceAlt) {
     var password = "";
     if((!forceBase && useAltConnection) || forceAlt) {
         base = plasmoid.configuration.altURL
+        if(base.search(":/") < 0) {
+            // No protocol given. Default to http, most likely protocol. 
+            // Protocols not starting with / are thus not supported,
+            // that should be fine for an html request
+            base = "http://" + base;
+        }
         useAuth = plasmoid.configuration.altUseAuth
         username = plasmoid.configuration.altUsername
         password = plasmoid.configuration.altPassword
@@ -585,6 +598,12 @@ function getRequest(pUrl, pType, forceBase, forceAlt) {
     }
     else {
         base = plasmoid.configuration.baseURL
+        if(base.search(":/") < 0) {
+            // No protocol given. Default to http, most likely protocol. 
+            // Protocols not starting with / are thus not supported,
+            // that should be fine for an html request
+            base = "http://" + base;
+        }
         useAuth = plasmoid.configuration.useAuth
         username = plasmoid.configuration.username
         password = plasmoid.configuration.password
