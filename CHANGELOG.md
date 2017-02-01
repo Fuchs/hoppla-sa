@@ -1,5 +1,11 @@
 # Changelog 
 
+## 2.4.4 (2017-02-01)
+
+* Fix a bug in ActionEditor when "All lights" is selected
+* Add some placeholder texts in bridge config
+* Add http as a default protocol when none is given
+
 ## 2.4.2 (2017-01-30) 
 
 * Existing action commands can now be edited
