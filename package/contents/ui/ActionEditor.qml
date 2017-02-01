@@ -424,7 +424,7 @@ ColumnLayout {
     
     function fetchGroups() {
         targetModel.clear()
-        targetModel.append( { text: "0: " + i18n("All lights"), value: "0" } );
+        targetModel.append( { text: "0: " + i18n("All lights"), value: "0", uuid: "0"} );
         Hue.getGroupsIdName(targetModel, gotGroups);
     }
     
