@@ -14,7 +14,7 @@
    id="svg7888"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="bulb-darkblue.svg"
+   sodipodi:docname="bulb-cyan.svg"
    inkscape:export-filename="/home/jamboarder/Projects/KDE VDG/Phillips Hue Plasmoid/philips-hue-applet.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
@@ -80,8 +80,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="0.17500146"
-     inkscape:cy="12.024764"
+     inkscape:cx="1.9427684"
+     inkscape:cy="11.671211"
      inkscape:document-units="px"
      inkscape:current-layer="g4243"
      showgrid="true"
@@ -155,7 +155,7 @@
          id="g4243"
          transform="translate(-2.3692258,2.3690477)">
         <svg:path
-           style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000064;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.84615463;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+           style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.84615463;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
            d="M 11 2 C 7.9050164 2 5.3964844 3.5749509 5.3964844 6.6699219 C 5.3990168 7.4649901 5.8034693 8.2508723 6.1328125 8.9746094 L 6.1308594 8.9746094 L 6.1425781 8.9960938 C 7.7305915 11.806626 8.3855173 13.038477 8.7226562 15 C 10.686138 15.004221 11 15 11 15 C 11 15 11.345112 15.004221 13.308594 15 C 13.615086 13.038477 14.26989 11.806626 15.857422 8.9960938 L 15.867188 8.9746094 C 16.196548 8.2508723 16.601127 7.4649901 16.603516 6.6699219 C 16.603511 3.5749509 14.094979 2 11 2 z M 11 3 C 13.618892 3 15.601558 4.3323048 15.601562 6.9511719 C 15.599773 7.5458375 15.147834 8.2899508 14.869141 8.9023438 L 14.859375 8.9199219 C 13.515217 11.292506 12.777055 12.980302 12.5625 14 C 10.901053 14.004221 11 14 11 14 C 11 14 11.161447 14.004221 9.5 14 C 9.1991006 12.996467 8.4843608 11.29812 7.140625 8.9199219 L 7.1308594 8.9023438 L 7.1328125 8.9023438 C 6.8541313 8.2899508 6.3845008 7.4833699 6.3828125 6.9511719 C 6.3828125 4.3323048 8.3811035 3 11 3 z M 9 16 L 8.9824219 17 L 13 17 L 13.017578 16 L 9 16 z M 9 18 L 8.9824219 19 L 13 19 L 13.017578 18 L 9 18 z "
            transform="matrix(2.3692307,0,0,2.3692307,-536.95388,1023.1929)"
            id="path4471" />
