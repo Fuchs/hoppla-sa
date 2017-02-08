@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" height="22" viewBox="0 0 21.999999 21.999999" width="22" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<defs>
+<style id="current-color-scheme" type="text/css">.ColorScheme-Text {
+        color:#ff8c00;
+      }</style>
+</defs>
+<g transform="translate(0 -1.03e3)">
+<g transform="matrix(.422 0 0 .422 228 597)">
+<g transform="translate(-2.37 2.37)">
+<path style="text-rendering:auto;color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m-527 1.04e3v4.74h-2.37v11.8h4.74v2.37h4.74v-2.37h19v2.37h4.74v-2.37h4.74v-11.8h-2.37v-4.74c0-2.37-2.37-4.74-4.74-4.74h-23.7c-2.37 0-4.74 2.37-4.74 4.74zm4.74-2.37h23.7c1.16-0.012 2.37 1.14 2.37 2.37v4.74h-2.37v-2.37h-9.48v2.37h-2.37-2.37v-2.37h-9.48v2.37h-2.37v-4.74c0.001-1.24 1.2-2.37 2.37-2.37zm-4.74 9.48h2.37 2.37 23.7 2.37 2.37v7.11h-33.2z" fill="#ff8c00"/>
+</g>
+</g>
+</g>
+</svg>

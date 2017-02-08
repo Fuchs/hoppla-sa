@@ -49,6 +49,14 @@ Item {
         id: actListModel
     }
     
+    ListModel {
+        id: colourModel
+    }
+    
+    ListModel {
+        id: iconModel
+    }
+    
     ColumnLayout {
         Layout.fillWidth: true
         anchors.left: parent.left
@@ -145,8 +153,7 @@ Item {
                                 var editItem = actionListModel.get(styleData.row);
                                 txtTitle.text = editItem.title;
                                 txtSubTitle.text = editItem.subtitle;
-                                var cbIndex = cbIcon.find(editItem.icon);
-                                cbIcon.currentIndex = cbIndex;
+                                setIconCb(editItem.icon);
                                 actListModel.clear();
                                 for(var x = 0; x < editItem.actions.count; ++x) {
                                     actListModel.append(editItem.actions.get(x));
@@ -226,7 +233,7 @@ Item {
             if(editActionDialogue.tableIndex >= 0) {
                 actionListModel.setProperty(editActionDialogue.tableIndex, 'title', txtTitle.text)
                 actionListModel.setProperty(editActionDialogue.tableIndex, 'subtitle', txtSubTitle.text)
-                actionListModel.setProperty(editActionDialogue.tableIndex, 'icon', cbIcon.currentText)
+                actionListModel.setProperty(editActionDialogue.tableIndex, 'icon', getIcon())
                 var acts = actionListModel.get(editActionDialogue.tableIndex).actions;
                 acts.clear();
                 for(var a = 0; a < actListModel.count; ++a) {
@@ -237,7 +244,7 @@ Item {
                 var newItem = {};
                 newItem.title = txtTitle.text;
                 newItem.subtitle = txtSubTitle.text;
-                newItem.icon = cbIcon.currentText;
+                newItem.icon = getIcon();
                 newItem.userAdded = true;
                 newItem.uuid = "" + (actionListModel.count + 1)
                 newItem.actions = [ "void" ]
@@ -265,7 +272,7 @@ Item {
                 id: grdTitle
                 anchors.left: parent.left
                 anchors.right: parent.right
-                columns: 3
+                columns: 4
                 Layout.fillWidth: true
                 
                 Label {
@@ -275,7 +282,7 @@ Item {
                 
                 TextField {
                     id: txtTitle
-                    Layout.columnSpan: 2
+                    Layout.columnSpan: 3
                     Layout.fillWidth: true
                 }
                 
@@ -286,7 +293,7 @@ Item {
                 
                 TextField {
                     id: txtSubTitle
-                    Layout.columnSpan : 2
+                    Layout.columnSpan : 3
                     Layout.fillWidth: true
                 }
                 
@@ -298,19 +305,29 @@ Item {
                 ComboBox {
                     id: cbIcon
                     Layout.fillWidth: true
-                    model: [ "bathroom-dark.svg", "bathroom-light.svg", "bedroom-dark.svg", "bedroom-light.svg", "bulb-blue.svg", "bulb-cyan.svg", "bulb-darkblue.svg", "bulb-darkgreen.svg", "bulb-darkred.svg", "bulb-dark.svg", "bulb-green.svg", "bulb-lightblue.svg", "bulb-lightgreen.svg", "bulb-lightorange.svg", "bulb-lightred.svg", "bulb-light.svg", "bulb-magenta.svg", "bulb-orange.svg", "bulb-rainbow-invert.svg", "bulb-rainbow.svg", "bulb-red.svg", "bulb-yellow.svg", "carport-light.svg", "dining-dark.svg", "dining-light.svg", "driveway-dark.svg", "driveway-light.svg", "frontdoor-dark.svg", "frontdoor-light.svg", "garage-dark.svg", "garage-light.svg", "garden-dark.svg", "garden-light.svg", "group-dark.svg", "group-light.svg", "gym-dark.svg", "gym-light.svg", "hallway-dark.svg", "hallway-light.svg", "kidsbedroom-dark.svg", "kidsbedroom-light.svg", "kitchen-dark.svg", "kitchen-light.svg", "livingroom-dark.svg", "livingroom-light.svg", "nursery-dark.svg", "nursery-light.svg", "office-dark.svg", "office-light.svg", "other-dark.svg", "other-light.svg", "recreation-dark.svg", "recreation-light.svg", "terrace-dark.svg", "terrace-light.svg", "toilet-dark.svg", "toilet-light.svg" ]
+                    textRole: "text"
+                    model: iconModel
+                    onCurrentIndexChanged: setIcon()
+                }
+                
+                ComboBox {
+                    id: cbIconColour
+                    Layout.fillWidth: true
+                    textRole: "text"
+                    model: colourModel 
                     onCurrentIndexChanged: setIcon()
                 }
                 
                 PlasmaCore.Svg {
                     id: mySvg
+                    size:  units.iconSizes.small
                 }
                 
                 PlasmaCore.SvgItem {
                     id: actionIcon
-                    
                     height: units.iconSizes.small
                     width: height
+                    smooth: true
                     svg: mySvg
                 }
             }
@@ -471,11 +488,89 @@ Item {
             actionItem.actions = cItem.actions;
             actionListModel.append(actionItem);
         }
+
+        iconModel.append( { text: i18n("Bulb"), value: "bulb" } )    
+        iconModel.append( { text: i18n("House"), value: "group" } )
+        iconModel.append( { text: i18n("Bathroom"), value: "bathroom" } )
+        iconModel.append( { text: i18n("Bedroom"), value: "bedroom" } )
+        iconModel.append( { text: i18n("Carport"), value: "carport" } )
+        iconModel.append( { text: i18n("Dining"), value: "dining" } )
+        iconModel.append( { text: i18n("Driveway"), value: "driveway" } )
+        iconModel.append( { text: i18n("Front door"), value: "frontdoor" } )
+        iconModel.append( { text: i18n("Garage"), value: "garage" } )
+        iconModel.append( { text: i18n("Garden"), value: "garden" } )
+        iconModel.append( { text: i18n("Gym"), value: "gym" } )
+        iconModel.append( { text: i18n("Hallway"), value: "hallway" } )
+        iconModel.append( { text: i18n("Kids bedroom"), value: "kidsbedroom" } )
+        iconModel.append( { text: i18n("Kitchen"), value: "kitchen" } )
+        iconModel.append( { text: i18n("Living room"), value: "livingroom" } )
+        iconModel.append( { text: i18n("Nursery"), value: "nursery" } )
+        iconModel.append( { text: i18n("Office"), value: "office" } )
+        iconModel.append( { text: i18n("Recreation"), value: "recreation" } )
+        iconModel.append( { text: i18n("Terrace"), value: "terrace" } )
+        iconModel.append( { text: i18n("Toilet"), value: "toilet" } )
+        
+        colourModel.append( { text: i18n("Rainbow"), value: "rainbow" } )
+        colourModel.append( { text: i18n("Light grey"), value: "light" } )
+        colourModel.append( { text: i18n("Dark grey"), value: "dark" } )
+        colourModel.append( { text: i18n("White"), value: "white" } )
+        colourModel.append( { text: i18n("Black"), value: "black" } )
+        colourModel.append( { text: i18n("Light red"), value: "lightred" } )
+        colourModel.append( { text: i18n("Red"), value: "red" } )
+        colourModel.append( { text: i18n("Dark red"), value: "darkred" } )
+        colourModel.append( { text: i18n("Light green"), value: "lightgreen" } )
+        colourModel.append( { text: i18n("Green"), value: "green" } )
+        colourModel.append( { text: i18n("Dark green"), value: "darkgreen" } )
+        colourModel.append( { text: i18n("Light blue"), value: "lightblue" } )
+        colourModel.append( { text: i18n("Blue"), value: "blue" } )
+        colourModel.append( { text: i18n("Dark blue"), value: "darkblue" } )
+        colourModel.append( { text: i18n("Light orange"), value: "lightorange" } )
+        colourModel.append( { text: i18n("Orange"), value: "orange" } )
+        colourModel.append( { text: i18n("Dark orange"), value: "darkorange" } )
+        colourModel.append( { text: i18n("Light purple"), value: "lightpurple" } )
+        colourModel.append( { text: i18n("Purple"), value: "purple" } )
+        colourModel.append( { text: i18n("Dark purple"), value: "darkpurple" } )
+        colourModel.append( { text: i18n("Cyan"), value: "cyan" } )
+        colourModel.append( { text: i18n("Magenta"), value: "magenta" } )
+        colourModel.append( { text: i18n("Yellow"), value: "yellow" } )
+        colourModel.append( { text: i18n("Inverted Rainbow"), value: "rainbow2" } )
     }
     
     function setIcon() {
-        var iconText = cbIcon.currentText;
-        mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
+        var iconName = iconModel.get(cbIcon.currentIndex).value;
+        var iconColour = colourModel.get(cbIconColour.currentIndex).value;
+        mySvg.imagePath = Qt.resolvedUrl("../images/" + iconName + "-" + iconColour + ".svg");
+    }
+    
+    function getIcon() {
+        var strIcon = "";
+        strIcon += iconModel.get(cbIcon.currentIndex).value;
+        strIcon += "-"
+        strIcon += colourModel.get(cbIconColour.currentIndex).value;
+        strIcon += ".svg"
+        return strIcon;
+    }
+    
+    function setIconCb(iconText) {
+        var icn = iconText.split("-");
+        if(icn.length < 2) {
+            return;
+        }
+        var iconVal = icn[0];
+        var colrVal = icn[1].replace(".svg","");
+        
+        for(var i = 0; i < iconModel.count; ++i) {
+            if(iconVal == iconModel.get(i).value) {
+                cbIcon.currentIndex = i;
+            }
+        }
+
+        for(var i = 0; i < colourModel.count; ++i) {
+            if(colrVal == colourModel.get(i).value) {
+                cbIconColour.currentIndex = i;
+            }
+        }
+        
     }
     
     function addAction() {
@@ -490,10 +585,10 @@ Item {
         txtTitle.text = "";
         txtSubTitle.text = "";
         cbIcon.currentIndex = 0;
+        cbIconColour.currentIndex = 0;
         actListModel.clear();
         actionEditor.reset();
-        var iconText = cbIcon.currentText;
-        mySvg.imagePath = Qt.resolvedUrl("../images/" + iconText);
+        setIcon();
     }
     
     function cancelEdit() {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" height="22" viewBox="0 0 21.999999 21.999999" width="22" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<defs>
+<style id="current-color-scheme" type="text/css">.ColorScheme-Text {
+        color:#008000;
+      }</style>
+</defs>
+<g transform="translate(0 -1.03e3)">
+<g transform="matrix(.422 0 0 .422 228 597)">
+<g transform="translate(-2.37 2.37)">
+<path style="text-rendering:auto;color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m5.57 3c-0.72 0.03-1.61 0.7-1.57 1.5v6.5h-1l1.66 5c0.25 0.6 0.86 1 1.34 1h1v1h1v-1h3 3v1h1v-1h1c0.5 0 1.2-0.6 1.3-1l1.7-5h-14v-6.09c0-0.58 0.27-0.79 0.56-0.8 0.6-0.02 0.97 0.64 0.97 0.64l-0.51 0.51 0.7 0.71 0.75-0.75 1.25-1.25-0.7-0.71-0.75 0.75s-0.77-1.04-1.7-1.01zm3.39 1.69l-0.6 0.8 0.8 0.6 0.6-0.8-0.8-0.6zm-0.9 1.1l-0.8 0.6 0.6 0.8 0.8-0.6-0.6-0.8zm2.54 0.1l-0.64 0.8 0.84 0.6 0.6-0.8-0.8-0.6zm1.6 1.2l-0.6 0.8 0.8 0.6 0.6-0.8-0.8-0.6zm-2.94 0.3l-0.8 0.6 0.6 0.8 0.8-0.6-0.6-0.8zm1.24 1.6l-0.84 0.6 0.64 0.81 0.8-0.61-0.6-0.8zm-5.75 3.01h12.6l-0.9 3c-0.2 1-0.5 1-1.5 1h-4-4c-1.05 0.1-1.04-0.1-1.38-1l-0.87-3z" transform="matrix(2.37 0 0 2.37 -537 1.02e3)" fill="#008000"/>
+</g>
+</g>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" height="22" viewBox="0 0 21.999999 21.999999" width="22" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<defs>
+<style id="current-color-scheme" type="text/css">.ColorScheme-Text {
+        color:#ffa500;
+      }</style>
+</defs>
+<g transform="translate(0 -1.03e3)">
+<path style="text-rendering:auto;color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m3.5 1.03e3c-0.551 0-1 0.441-1 0.992-0.0025 0.36 0.188 0.693 0.5 0.873v11.1h1v-2h14v2h1v-11.1c0.304-0.176 0.494-0.498 0.5-0.85v-0.016c0.000004-0.551-0.445-0.998-0.996-1-0.551 0-1 0.441-1 0.992-0.0025 0.36 0.188 0.693 0.5 0.873v1.13h-14v-1.13c0.304-0.176 0.494-0.498 0.5-0.85v-0.016c0.0000043-0.551-0.445-0.998-0.996-1zm0.496 4h1v4h-1zm2 0h1v4h-1zm2 0h1v4h-1zm2 0h2v4h-2zm3 0h1v4h-1zm2 0h1v4h-1zm2 0h1v4h-1z" fill="#ffa500"/>
+</g>
+</svg>
