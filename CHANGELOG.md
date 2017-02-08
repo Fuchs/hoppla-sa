@@ -1,5 +1,10 @@
 # Changelog 
 
+## 2.6.0 (2017-02-08) 
+
+* Add coloured icons for all types
+* Change the editAction GUI to make icon and colour easier to pick
+
 ## 2.4.4 (2017-02-01)
 
 * Fix a bug in ActionEditor when "All lights" is selected
