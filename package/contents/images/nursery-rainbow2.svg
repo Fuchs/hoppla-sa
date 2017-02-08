@@ -13,7 +13,10 @@
       }</style>
 <linearGradient id="a" x1="11" gradientUnits="userSpaceOnUse" x2="11" xlink:href="#b" y1="19" y2="2.05"/>
 </defs>
-<g transform="translate(0 -1.03e3)">
-<path style="text-rendering:auto;color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m3.5 1.03e3c-0.551 0-1 0.441-1 0.992-0.0025 0.36 0.188 0.693 0.5 0.873v11.1h1v-2h14v2h1v-11.1c0.304-0.176 0.494-0.498 0.5-0.85v-0.016c0.000004-0.551-0.445-0.998-0.996-1-0.551 0-1 0.441-1 0.992-0.0025 0.36 0.188 0.693 0.5 0.873v1.13h-14v-1.13c0.304-0.176 0.494-0.498 0.5-0.85v-0.016c0.0000043-0.551-0.445-0.998-0.996-1zm0.496 4h1v4h-1zm2 0h1v4h-1zm2 0h1v4h-1zm2 0h2v4h-2zm3 0h1v4h-1zm2 0h1v4h-1zm2 0h1v4h-1z" fill="url(#b)"/>
+  <g transform="translate(-0.46610164,-1025.2458)">
+    <path
+       style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#4d4d4d;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto"
+       d="m 3.5,1030 c -0.551,0 -1,0.441 -1,0.992 -0.0025,0.36 0.188,0.693 0.5,0.873 l 0,11.1 1,0 0,-2 14,0 0,2 1,0 0,-11.1 c 0.304,-0.176 0.494,-0.498 0.5,-0.85 l 0,-0.016 c 4e-6,-0.551 -0.445,-0.998 -0.996,-1 -0.551,0 -1,0.441 -1,0.992 -0.0025,0.36 0.188,0.693 0.5,0.873 l 0,1.13 -14,0 0,-1.13 c 0.304,-0.176 0.494,-0.498 0.5,-0.85 l 0,-0.016 c 4.3e-6,-0.551 -0.445,-0.998 -0.996,-1 z m 0.496,4 1,0 0,4 -1,0 z m 2,0 1,0 0,4 -1,0 z m 2,0 1,0 0,4 -1,0 z m 2,0 2,0 0,4 -2,0 z m 3,0 1,0 0,4 -1,0 z m 2,0 1,0 0,4 -1,0 z m 2,0 1,0 0,4 -1,0 z"
+       id="path9" fill="url(#b)"/>
 </g>
 </svg>

@@ -5,11 +5,22 @@
         color:#008000;
       }</style>
 </defs>
-<g transform="translate(0 -1.03e3)">
-<g transform="matrix(.422 0 0 .422 228 597)">
-<g transform="translate(-2.37 2.37)">
-<path style="text-rendering:auto;color-rendering:auto;color:#000000;isolation:auto;mix-blend-mode:normal;shape-rendering:auto;solid-color:#000000;image-rendering:auto" d="m5 5v2h-1v2h-1v3h1v2h1v2h2v-4h8v4h2v-2h1v-2h1v-3h-1v-2h-1v-2h-2v4h-8v-4h-2zm2 5h8v1h-8v-1z" transform="matrix(2.37 0 0 2.37 -537 1.02e3)" fill="#008000"/>
-</g>
-</g>
-</g>
+  <g
+     transform="translate(-0.27966098,-1028.0424)"
+     id="g7">
+    <g
+       transform="matrix(0.422,0,0,0.422,228,597)"
+       id="g9">
+      <g
+         transform="translate(-2.37,2.37)"
+         id="g11">
+        <path
+           style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#008000;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto"
+           d="m 5,5 0,2 -1,0 0,2 -1,0 0,3 1,0 0,2 1,0 0,2 2,0 0,-4 8,0 0,4 2,0 0,-2 1,0 0,-2 1,0 0,-3 -1,0 0,-2 -1,0 0,-2 -2,0 0,4 L 7,9 7,5 5,5 Z m 2,5 8,0 0,1 -8,0 0,-1 z"
+           transform="matrix(2.37,0,0,2.37,-537,1020)"
+           id="path13"
+            />
+      </g>
+    </g>
+  </g>
 </svg>
