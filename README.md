@@ -60,7 +60,7 @@ to install the plasmoid
 
 and 
 
-`plasmapkg2 -r ch.fuchsnet.plasma.hoppla-sa`
+`plasmapkg2 -r package`
 
 to remove it again.
 
