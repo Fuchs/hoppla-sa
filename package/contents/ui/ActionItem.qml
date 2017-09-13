@@ -113,7 +113,7 @@ PlasmaComponents.ListItem {
             }
             
             text: i18n("OK")
-            opacity: actionItem.containsMouse ? 1 : 0
+            opacity: actionItem.containsMouse ? 1 : 0 || actionItem.focus
             visible: opacity != 0
             
             Behavior on opacity {
@@ -123,6 +123,16 @@ PlasmaComponents.ListItem {
             }
             
             onClicked: execute()
+        }
+        
+        Keys.onReturnPressed: {
+            console.log("Return")
+            execute()
+        }
+        
+        Keys.onSpacePressed: {
+            console.log("Space")
+            execute()
         }
         
         Component.onCompleted: {

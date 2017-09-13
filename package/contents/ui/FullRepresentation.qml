@@ -99,6 +99,8 @@ FocusScope {
             right: parent.right
         }
         
+        activeFocusOnTab : true
+        
         PlasmaComponents.TabButton {
             id: actionsTab
             text: i18n("Actions")
