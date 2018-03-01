@@ -379,7 +379,7 @@ PlasmaComponents.ListItem {
             var child = groupModel.get(i);
             var children = child.slights.split(',');
             if(children.indexOf(vuuid) >= 0) {
-                updateGroup(child);
+                updateGroup(child, 200);
             }
         }
     }
@@ -391,7 +391,7 @@ PlasmaComponents.ListItem {
         for(var i = 0; i < lightModel.count; ++i) {
             var child = lightModel.get(i);
             if(child.vuuid == vuuid) {
-                updateLight(child);
+                updateLight(child, 200);
             }
         }
     }

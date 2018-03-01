@@ -109,12 +109,12 @@ Item {
           Hue.switchLight(vuuid, val);
     }
     
-    function updateGroup(group) {
-        Hue.updateGroup(group);
+    function updateGroup(group, delay) {
+        Hue.updateGroup(group, delay);
     }
     
-    function updateLight(light) {
-        Hue.updateLight(light);
+    function updateLight(light, delay) {
+        Hue.updateLight(light, delay);
     }
     
     // Apparently plasmoid is not available everywhere ...
