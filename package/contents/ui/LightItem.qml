@@ -30,13 +30,8 @@ PlasmaComponents.ListItem {
     property string defaultIcon : "help-about"
     property bool available : vreachable
     
-    onFocusChanged : if (focus) {
-        ListView.view.currentIndex = index
-        console.log("Focus: ", index)
-    }
-    
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
-    checked: containsMouse || focus
+    checked: containsMouse
     enabled: true
     
     // Set an auto updater
@@ -72,9 +67,6 @@ PlasmaComponents.ListItem {
         // also used to update the GUI components when new values from hue arrive.
         // Slightly hacky, but the best option as long as we don't want a proper data source.
         PlasmaComponents.Label {
-            onFocusChanged : if (focus) {
-                console.log("Focus: label")
-            }
             id: lastUpdated
             visible: false;
             text: vLastUpdated
@@ -91,11 +83,7 @@ PlasmaComponents.ListItem {
         height: Math.max(units.iconSizes.medium, lightLabel.height + lightInfoLabel.height + slider.height) + Math.round(units.gridUnit / 2)
         
         HueColourItem {
-            
             id: colourItem
-            onFocusChanged : if (focus) {
-                console.log("Focus: colorItem")
-            }
             width: units.iconSizes.medium 
             height: units.iconSizes.medium
             
@@ -117,9 +105,7 @@ PlasmaComponents.ListItem {
         
         PlasmaComponents.Label {
             id: lightLabel
-            onFocusChanged : if (focus) {
-                console.log("Focus: lightLabel")
-            }
+            
             anchors {
                 bottom: colourItem.verticalCenter
                 left: colourItem.right
@@ -138,10 +124,6 @@ PlasmaComponents.ListItem {
         PlasmaComponents.Label {
             id: lightInfoLabel
             
-            onFocusChanged : if (focus) {
-                console.log("Focus: lightInfoLabel")
-            }
-            
             anchors {
                 left: colourItem.right
                 leftMargin: Math.round(units.gridUnit / 2)
@@ -157,25 +139,6 @@ PlasmaComponents.ListItem {
             textFormat: Text.PlainText
         }
         
-        PlasmaComponents.CheckBox {
-            id: lightOnOffButton
-            
-                        onFocusChanged : if (focus) {
-                console.log("Focus: button")
-            }
-            
-            anchors {
-                right: parent.right
-                rightMargin: Math.round(units.gridUnit / 2)
-                verticalCenter: colourItem.verticalCenter
-            }
-            
-            checked: von
-            enabled: available
-            
-            onClicked: toggleOnOff()
-        }
-        
         RowLayout {
             
             anchors {
@@ -187,9 +150,6 @@ PlasmaComponents.ListItem {
             
             PlasmaCore.IconItem  {
                 id: "brightnessIcon"
-                            onFocusChanged : if (focus) {
-                console.log("Focus: brightnessIcon")
-            }
                 Layout.maximumHeight: slider.height
                 Layout.maximumWidth: slider.height
                 source: "contrast"
@@ -198,9 +158,6 @@ PlasmaComponents.ListItem {
             
             PlasmaComponents.Slider {
                 id: slider
-                            onFocusChanged : if (focus) {
-                console.log("Focus: slider")
-            }
                 
                 Layout.fillWidth: true
                 minimumValue: 0
@@ -210,8 +167,6 @@ PlasmaComponents.ListItem {
                 enabled: available && von
                 updateValueWhileDragging : false
                 value: vbri
-                
-                activeFocusOnTab : true
 
                 // This is a hack that is needed due to how
                 // oddly Hue manages brightness for groups and children.
@@ -243,20 +198,23 @@ PlasmaComponents.ListItem {
         }
         
         
+        PlasmaComponents.CheckBox {
+            id: lightOnOffButton
+            
+            anchors {
+                right: parent.right
+                rightMargin: Math.round(units.gridUnit / 2)
+                verticalCenter: colourItem.verticalCenter
+            }
+            
+            checked: von
+            enabled: available
+            
+            onClicked: toggleOnOff()
+        }
+        
         onClicked: {
             expanded = !expanded;
-        }
-        
-        Keys.onReturnPressed: {
-            console.log("Return")
-            expanded = !expanded;
-        }
-        
-        Keys.onSpacePressed: {
-            console.log("Space")
-            if(lightOnOffButton.enabled) {
-                toggleOnOff()
-            }
         }
     }
     
@@ -273,8 +231,6 @@ PlasmaComponents.ListItem {
         
         PlasmaComponents.TabBar {
             id: lightTabBar
-            
-            activeFocusOnTab : expanded
             
             anchors {
                 top: parent.top
@@ -423,7 +379,7 @@ PlasmaComponents.ListItem {
             var child = groupModel.get(i);
             var children = child.slights.split(',');
             if(children.indexOf(vuuid) >= 0) {
-                updateGroup(child);
+                updateGroup(child, 200);
             }
         }
     }
@@ -435,7 +391,7 @@ PlasmaComponents.ListItem {
         for(var i = 0; i < lightModel.count; ++i) {
             var child = lightModel.get(i);
             if(child.vuuid == vuuid) {
-                updateLight(child);
+                updateLight(child, 200);
             }
         }
     }

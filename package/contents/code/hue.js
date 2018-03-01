@@ -165,13 +165,21 @@ function getAvailableLightsIdName(myModel) {
  * Update a specific light with values from hue
  *
  * @param {object} myLight a light entry from the model of a ListView
+ * @param {int} myDelay amount of miliseconds to wait before update
  */
-function updateLight(myLight) {
+function updateLight(myLight, myDelay) {
     if(noConnection) {
         return;
     }
     var myUrl = "lights/" + myLight.vuuid;
-    getJsonFromHue(myUrl, parseLightToObject, baseFail, baseDone, myLight, myLight.vuuid);
+    
+    var mytimer = new Timer();
+    mytimer.interval = myDelay;
+    mytimer.repeat = false;
+    mytimer.triggered.connect(function () {
+        getJsonFromHue(myUrl, parseLightToObject, baseFail, baseDone, myLight, myLight.vuuid);
+    })
+    mytimer.start();
 }
 
 /**
@@ -250,13 +258,21 @@ function getGroupLights(myList, myLights) {
  * Update a specific group with values from hue
  *
  * @param {object} myGroup a group entry from the model of a ListView
+ * @param {int} myDelay amount of miliseconds to wait before update
  */
-function updateGroup(myGroup) {
+function updateGroup(myGroup, myDelay) {
     if(noConnection) {
         return;
     }
     var myUrl = "groups/" + myGroup.vuuid;
-    getJsonFromHue(myUrl, parseGroupToObject, baseFail, baseDone, myGroup, myGroup.vuuid);
+    
+    var mytimer = new Timer();
+    mytimer.interval = myDelay;
+    mytimer.repeat = false;
+    mytimer.triggered.connect(function () {
+       getJsonFromHue(myUrl, parseGroupToObject, baseFail, baseDone, myGroup, myGroup.vuuid);
+    })
+    mytimer.start();
 }
 
 /**

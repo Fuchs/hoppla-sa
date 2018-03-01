@@ -438,7 +438,7 @@ PlasmaComponents.ListItem {
         updateGui();
         for(var i = 0; i < groupLightModel.count; ++i) {
             var child = groupLightModel.get(i);
-            updateLight(child);
+            updateLight(child, 200);
         }
         
     }
@@ -450,7 +450,7 @@ PlasmaComponents.ListItem {
         for(var i = 0; i < groupModel.count; ++i) {
             var child = groupModel.get(i);
             if(child.vuuid == vuuid) {
-                updateGroup(child);
+                updateGroup(child, 200);
             }
         }
     }
