@@ -546,7 +546,7 @@ PlasmaComponents.ListItem {
         // adding all their ids to the children array
         for(var i = 0; i < groupLightModel.count; ++i) {
             var child = groupLightModel.get(i);
-            updateLight(child);
+            updateLight(child, 200);
             children.push(child.vuuid);
         }
         // Now iterate over the list of all lights shown in the
@@ -555,7 +555,7 @@ PlasmaComponents.ListItem {
         for(var i = 0; i < lightModel.count; ++i) {
             var child = lightModel.get(i);
             if(children.indexOf(child.vuuid) >= 0) {
-                updateLight(child);
+                updateLight(child, 200);
             }
         }
     }

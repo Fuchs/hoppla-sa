@@ -312,6 +312,14 @@ FocusScope {
             checkHueConnection(updatedConnection, true);
         }
         
+        onPollChanged: {
+            resetTimer();
+        }
+        
+        onPollTimeChanged: {
+            resetTimer();
+        }
+        
         onAuthTokenChanged: {
             initHueConfig();
             checkHueConnection(updatedConnection, true);

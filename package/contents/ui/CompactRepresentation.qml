@@ -35,6 +35,18 @@ MouseArea {
         resetTimer();
     }
     
+        Connections {
+        target: plasmoid.configuration
+
+        onPollChanged: {
+            resetTimer();
+        }
+        
+        onPollTimeChanged: {
+            resetTimer();
+        }
+    }
+    
     // Method to restart the poll timer with configured values
     function resetTimer() {
         compactTimer.stop();
@@ -53,8 +65,13 @@ MouseArea {
      * the main or alt bridge.
      */
     function updateLoop() {
-        // Check connection state
-        checkHueConnection(updatedConnection, false);
+        if (!fullRepresentationInitialized) {
+            // Check connection state
+            checkHueConnection(updatedConnection, false);
+        }
+        else {
+            resetTimer();
+        }
     }
     
     /**
