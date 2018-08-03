@@ -46,6 +46,14 @@
       <label>Authentication Token for Hue</label>
       <default></default>
     </entry>
+    <entry name="poll" type="Bool">
+        <label>Regularly check HUE availability and status</label>
+        <default>True</default>
+    </entry>
+    <entry name="pollTime" type="Int">
+        <label>Poll time</label>
+        <default>30</default>
+    </entry>
   </group>
   <group name="Actions">
         <entry name="actionlist" type="string">

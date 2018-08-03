@@ -37,6 +37,8 @@ Item {
     property alias cfg_altUsername: username.text
     property alias cfg_altPassword: password.text
     property alias cfg_altUseAuth: altRequireAuth.checked
+    property alias cfg_poll: pollCb.checked
+    property alias cfg_pollTime: sbPollTime.value
     property string infoColour: "#5555ff"
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
@@ -141,6 +143,24 @@ Item {
                     Layout.fillWidth: true
                     placeholderText: i18n("Use the \"Authenticate\" button")
                 }
+                
+                CheckBox {
+                    id: pollCb
+                    text: i18n("Check for status every")
+                    Layout.alignment: Qt.AlignLeft
+                }
+                
+                SpinBox {
+                    id: sbPollTime
+                    maximumValue: 43200000000
+                    minimumValue: 1
+                    enabled: pollCb.checked
+                }
+                
+                Label {
+                    Layout.alignment: Qt.AlignLeft
+                    text: i18n("seconds")
+                }
             }
         }
         
@@ -156,8 +176,7 @@ Item {
             anchors.top: altConnectionCb.bottom
             flat: true
             visible: altConnectionCb.checked
-            
-            
+
             GridLayout {
                 columns: 2
                 Layout.fillWidth: true

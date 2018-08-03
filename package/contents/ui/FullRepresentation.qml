@@ -226,12 +226,11 @@ FocusScope {
             left: parent.left
             right: parent.right
         }
-        
-        
+    
         PlasmaExtras.ScrollArea {
             id: actionScrollView
             visible: tabBar.currentTab == actionsTab && !noHueConfigured && !hueNotConnected && !hueUnauthenticated
-            
+
             anchors {
                 top: parent.top
                 topMargin: units.smallSpacing
@@ -239,7 +238,7 @@ FocusScope {
                 left: parent.left
                 right: parent.right
             }
-            
+
             ListView {
                 id: actionView
                 anchors.fill: parent
@@ -250,11 +249,11 @@ FocusScope {
                 delegate: ActionItem { }
             }
         }
-        
+
         PlasmaExtras.ScrollArea {
             id: groupScrollView
             visible: tabBar.currentTab == groupsTab && !noHueConfigured && !hueNotConnected
-            
+
             anchors {
                 top: parent.top
                 topMargin: units.smallSpacing
@@ -262,7 +261,7 @@ FocusScope {
                 left: parent.left
                 right: parent.right
             }
-            
+
             ListView {
                 id: groupView
                 anchors.fill: parent
@@ -273,11 +272,11 @@ FocusScope {
                 delegate: GroupItem { }
             }
         }
-        
+
         PlasmaExtras.ScrollArea {
             id: lightScrollView
             visible: tabBar.currentTab == lightsTab && !noHueConfigured && !hueNotConnected
-            
+
             anchors {
                 top: parent.top
                 topMargin: units.smallSpacing
@@ -285,7 +284,7 @@ FocusScope {
                 left: parent.left
                 right: parent.right
             }
-            
+
             ListView {
                 id: lightsView
                 anchors.fill: parent
@@ -297,18 +296,14 @@ FocusScope {
             }
         }
     }
-    
+
     Component.onCompleted: {
-        initHueConfig();
+        getHueConfigured();
         reInit(true, true);
-        fullTimer.stop();
-        // Check connection every 30 seconds
-        fullTimer.interval = 30000;
-        fullTimer.repeat = true;
-        fullTimer.triggered.connect(updateLoop);
-        fullTimer.start();
+        resetTimer();
+        plasmoid.compactRepresentationItem.fullRepresentationInitialized = true;
     }
-    
+
     Connections {
         target: plasmoid.configuration
 
@@ -346,6 +341,18 @@ FocusScope {
         }
     }
     
+    // Method to restart the poll timer with configured values
+    function resetTimer() {
+        fullTimer.stop();
+        if (plasmoid.configuration.poll) {
+            // We store the time in seconds to be more user friendly
+            fullTimer.interval = plasmoid.configuration.pollTime * 1000;
+            fullTimer.repeat = true;
+            fullTimer.triggered.connect(updateLoop);
+            fullTimer.start();
+        }
+    }
+    
     function fetchAllDone() {
         busyOverlay.opacity = 0;
         // Done to initially set the tooltip
@@ -373,12 +380,13 @@ FocusScope {
             // Don't interrupt the user
             return;
         }
-        
+
         if(connection === "none") {
             hueNotConnected = true;
             hueUnauthenticated = false;
             reInit(false, false);
             plasmoid.toolTipSubText = i18n("Hue bridge not reachable");
+            plasmoid.status = PlasmaCore.Types.PassiveStatus;
             return;
         }
         else if(connection === "unauth") {
@@ -386,6 +394,7 @@ FocusScope {
             hueUnauthenticated = true;
             reInit(false, false);
             plasmoid.toolTipSubText = i18n("Not authenticated with Hue bridge");
+            plasmoid.status = PlasmaCore.Types.ActiveStatus;
             return;
         }
         else if(connection === "main") {
@@ -393,12 +402,14 @@ FocusScope {
             hueUnauthenticated = false;
             reInit(false, false);
             setLightsTooltip(i18n("Main connection"));
+            plasmoid.status = PlasmaCore.Types.ActiveStatus;
         }
         else if(connection === "alt") {
             hueNotConnected = false;
             hueUnauthenticated = false;
             reInit(false, false);
             setLightsTooltip(i18n("Alternative connection"));
+            plasmoid.status = PlasmaCore.Types.ActiveStatus;
         }
     }
     
