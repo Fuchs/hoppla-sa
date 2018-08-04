@@ -93,14 +93,44 @@ MouseArea {
         else if(connection === "main") {
             plasmoid.toolTipSubText = i18n("Connected to Philips HUE via main connection");
             plasmoid.status = PlasmaCore.Types.ActiveStatus;
+            getLights(lightModel)
+            setLightsTooltip(i18n("Main connection"));
         }
         else if(connection === "alt") {
             plasmoid.toolTipSubText = i18n("Connected to Philips HUE via alternative connection");
             plasmoid.status = PlasmaCore.Types.ActiveStatus;
+            getLights(lightModel)
+            setLightsTooltip(i18n("Alternative connection"));
+        
         }
     }
-    
+
+        /**
+     * Helper to set a tooltip with baseText: n/m lights on
+     * @param {String} baseText base text to use
+     */
+    function setLightsTooltip(baseText) {
+
+        var lightsTotal = lightModel.count;
+        if (lightsTotal > 0) {
+            var lightOn = 0;
+
+            for(var i = 0; i < lightModel.count; ++i) {
+                if(lightModel.get(i).von) {
+                    lightOn++;
+                }
+            }
+
+            var tooltip = baseText + ": " + lightOn + "/" + lightsTotal + " " + i18n("lights on")
+            plasmoid.toolTipSubText = tooltip;
+        }
+    }
+
     Timer {
         id: compactTimer
     }
+    
+    ListModel {
+        id: lightModel
+    }  
 }
