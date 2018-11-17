@@ -35,6 +35,7 @@ Item {
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
     property bool isEditing: false
+    property int rowToDelete: -1
     property int editId: -1
     
     width: parent.width
@@ -188,8 +189,8 @@ Item {
                             tooltip: i18n("Remove")
                             Layout.fillHeight: true
                             onClicked: {
-                                actionListModel.remove(styleData.row)
-                                actionListChanged()
+                                rowToDelete = styleData.row
+                                confirmDeleteDialogue.open()
                             }
                         }
                     }
@@ -461,6 +462,27 @@ Item {
                 }
 
             }
+        }
+    }
+    
+    MessageDialog {
+        id: confirmDeleteDialogue
+        visible: false
+        title: i18n("Confirm deletion")
+        icon: StandardIcon.Critical
+        text: i18n("Deleting an action can't be undone. Do you really want to delete this action?")
+        standardButtons: StandardButton.Yes | StandardButton.No
+        onYes: {
+            actionListModel.remove(rowToDelete);
+            actionListChanged();
+        }
+        onNo: {
+            confirmDeleteDialogue.visible = false;
+            rowToDelete = -1;
+        }
+        onRejected: {
+            confirmDeleteDialogue.visible = false;
+            rowToDelete = -1;
         }
     }
     

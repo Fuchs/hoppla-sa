@@ -34,6 +34,7 @@ Item {
     property string infoColour: "#5555ff"
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
+    property string idToDelete: "-1"
     
     ListModel {
         id: schedulesModel
@@ -183,7 +184,8 @@ Item {
                             Layout.fillHeight: true
                             onClicked: {
                                 var editItem = schedulesModel.get(styleData.row);
-                                Hue.deleteSchedule(editItem.uuid, deleteScheduleDone)
+                                idToDelete = editItem.uuid;
+                                confirmDeleteDialogue.open();
                             }
                         }
                     }
@@ -371,6 +373,26 @@ Item {
                     }
                 }
             }
+        }
+    }
+    
+    MessageDialog {
+        id: confirmDeleteDialogue
+        visible: false
+        title: i18n("Confirm deletion")
+        icon: StandardIcon.Critical
+        text: i18n("Deleting a schedule will remove it from your Philips Hue system and can't be undone. Do you really want to delete this schedule?")
+        standardButtons: StandardButton.Yes | StandardButton.No
+        onYes: {
+            Hue.deleteSchedule(idToDelete, deleteScheduleDone);
+        }
+        onNo: {
+            confirmDeleteDialogue.visible = false
+            idToDelete = -1
+        }
+        onRejected: {
+            confirmDeleteDialogue.visible = false
+            idToDelete = -1
         }
     }
     
