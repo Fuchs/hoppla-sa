@@ -21,6 +21,7 @@ var initialized = false;
 var altConnectionEnabled;
 var noConnection = false;
 var debugMode = false;
+var availableClasses = {}
 
 // INIT
 
@@ -102,6 +103,14 @@ function getLights(myModel) {
     }
     var myUrl = "lights";
     getJsonFromHue(myUrl, parseAllLightsToModel, baseFail, baseDone, myModel, "");
+}
+
+function getConfiguration(myConfig, doneCallback) {
+    if(noConnection) {
+        return;
+    }
+    var myUrl = "config";
+    getJsonFromHue(myUrl, parseConfigToModel, baseFail, doneCallback, myConfig, "");
 }
 
 function getNewLights(myModel, doneCallback) {
@@ -1148,7 +1157,8 @@ function parseGroupsToSimpleModel(json, listModel, name, doneCallback) {
         myGroup.name = cgroup.name;
         myGroup.type = cgroup.type || i18n("Not available");
         myGroup.class = cgroup.class || i18n("Not available");
-        if(myGroup.type == "LightGroup" || myGroup.type == "Room") {
+        if(myGroup.type == "LightGroup" || myGroup.type == "Room" || myGroup.type == "Entertainment" || myGroup.type == "Zone" ) {
+            myGroup.editable = (myGroup.type == "LightGroup" || myGroup.type == "Room" || myGroup.type == "Zone")
             myGroup.uuid = groupName;
             myGroup.text = groupName + ": " + cgroup.name;
             myGroup.value = "" + groupName;
@@ -1398,15 +1408,17 @@ function parseAvailableLightsToSimpleModel(json, listModel, name, doneCallback) 
     var myGroups = myResult["groups"];
     for(var groupName in myGroups) {
         var cgroup = myGroups[groupName];
-        if(cgroup.lights) {
-            for(var light in  cgroup.lights) {
-                usedLight.push(cgroup.lights[light]);
+        if(cgroup.type = "Room") {
+            if(cgroup.lights) {
+                for(var light in  cgroup.lights) {
+                    usedLight.push(cgroup.lights[light]);
+                }
             }
         }
     }
-    
+
     var foundLights = false;
-    
+
     var myLights = myResult["lights"];
     for(var lightName in myLights) {
         foundLights = true;
@@ -1442,10 +1454,10 @@ function parseAllLightsToModel(json, listModel, name, doneCallback) {
     }
     if(myLights[0]) {
         if(myLights[0].error) {
-            if(myGroups[0].error.type == 1) {
+            if(myLights[0].error.type == 1) {
                 //TODO: Unauthorized
             }
-            if(myGroups[0].error.type == 3) {
+            if(myLights[0].error.type == 3) {
                 //TODO: unavailable
             }
         }
@@ -1500,6 +1512,55 @@ function parseAllLightsToModel(json, listModel, name, doneCallback) {
     }
     
     doneCallback(true, json);
+}
+
+function parseConfigToModel(json, myConfig, name, doneCallback) {
+   try {
+        var cfg = JSON.parse(json);
+    }
+    catch(e) {
+        dbgPrint("Failed to parse json: " + json);
+        doneCallback(false, json);
+        return;
+    }
+    if(cfg[0]) {
+        if(cfg[0].error) {
+            if(cfg[0].error.type == 1) {
+                //TODO: Unauthorized
+            }
+            if(cfg[0].error.type == 3) {
+                //TODO: unavailable
+            }
+        }
+    }
+    myConfig = {};
+    myConfig.vname = cfg.name || i18n("Not available");
+    myConfig.vuuid = myConfig.vname + "-config";
+    myConfig.zigbeechannel = cfg.zigbeechannel || -1;
+    myConfig.bridgeid = cfg.bridgeid || i18n("Not available");
+    myConfig.mac = cfg.mac || i18n("Not available");
+    myConfig.dhcp = cfg.dhcp || false;
+    myConfig.ipaddress = cfg.ipaddress || i18n("Not available");
+    myConfig.netmask = cfg.netmask || i18n("Not available");
+    myConfig.gateway = cfg.gateway || i18n("Not available");
+    myConfig.proxyaddress = cfg.proxyaddress || i18n("Not available");
+    myConfig.proxyport = cfg.proxyport || 0;
+    myConfig.UTC = cfg.UTC || i18n("Not available");
+    myConfig.localtime = cfg.localtime || i18n("Not available");
+    myConfig.timezone = cfg.timezone || i18n("Not available");
+    myConfig.modelid = cfg.modelid || i18n("Not available");
+    myConfig.datastoreversion = cfg.datastoreversion || i18n("Not available");
+    myConfig.swversion = cfg.swversion || i18n("Not available");
+    myConfig.apiversion = cfg.apiversion || i18n("0.0.0");
+    try {
+        myConfig.apiver = parseInt(myConfig.apiversion.replace(/\./g, ""));
+    }
+    catch(e) {
+        dbgPrint("Failed to parse version in json: " + json);
+        myConfig.apiver = parseInt("0");
+    }
+
+    doneCallback(true, myConfig);
 }
 
 function parseLightToModel(json, listModel, lightName, doneCallback) {
@@ -1703,28 +1764,65 @@ function parseSchedulesToSimpleModel(json, listModel, name, doneCallback) {
  * @param {ListModel} myModel model to fill
  * Adds: name (Hue), translatedName (i18n), iconName (lowercase, stripped whitespace)
  */
-function fillWithClasses(myModel) {
+function fillWithClasses(classModel) {
+
+    availableClasses = classModel
+    var config = {}
+    getConfiguration(config, fillWithClassesForConfig)
+}
+
+function fillWithClassesForConfig(success, myConfig) {
+
+    var myver = 0
+    if (success && myConfig !== null && myConfig.apiver !== null) {
+        myver = myConfig.apiver
+    }
+
     // We do these one by one so we can translate them
-    myModel.clear();
-    myModel.append({name: "Living room", translatedName: i18n("Living room"), iconName: "livingroom"});
-    myModel.append({name: "Kitchen", translatedName: i18n("Kitchen"), iconName: "kitchen"});
-    myModel.append({name: "Dining", translatedName: i18n("Dining"), iconName: "dining"});
-    myModel.append({name: "Bedroom", translatedName: i18n("Bedroom"), iconName: "bedroom"});
-    myModel.append({name: "Kids bedroom", translatedName: i18n("Kids bedroom"), iconName: "kidsbedroom"});
-    myModel.append({name: "Bathroom", translatedName: i18n("Bathroom"), iconName: "bathroom"});
-    myModel.append({name: "Nursery", translatedName: i18n("Nursery"), iconName: "nursery"});
-    myModel.append({name: "Recreation", translatedName: i18n("Recreation"), iconName: "recreation"});
-    myModel.append({name: "Office", translatedName: i18n("Office"), iconName: "office"});
-    myModel.append({name: "Gym", translatedName: i18n("Gym"), iconName: "gym"});
-    myModel.append({name: "Hallway", translatedName: i18n("Hallway"), iconName: "hallway"});
-    myModel.append({name: "Toilet", translatedName: i18n("Toilet"), iconName: "toilet"});
-    myModel.append({name: "Front door", translatedName: i18n("Front door"), iconName: "frontdoor"});
-    myModel.append({name: "Garage", translatedName: i18n("Garage"), iconName: "garage"});
-    myModel.append({name: "Terrace", translatedName: i18n("Terrace"), iconName: "terrace"});
-    myModel.append({name: "Garden", translatedName: i18n("Garden"), iconName: "garden"});
-    myModel.append({name: "Driveway", translatedName: i18n("Driveway"), iconName: "driveway"});
-    myModel.append({name: "Carport", translatedName: i18n("Carport"), iconName: "carport"});
-    myModel.append({name: "Other", translatedName: i18n("Other"), iconName: "other"});
+    availableClasses.clear();
+    availableClasses.append({name: "Living room", translatedName: i18n("Living room"), iconName: "livingroom"});
+    availableClasses.append({name: "Kitchen", translatedName: i18n("Kitchen"), iconName: "kitchen"});
+    availableClasses.append({name: "Dining", translatedName: i18n("Dining"), iconName: "dining"});
+    availableClasses.append({name: "Bedroom", translatedName: i18n("Bedroom"), iconName: "bedroom"});
+    availableClasses.append({name: "Kids bedroom", translatedName: i18n("Kids bedroom"), iconName: "kidsbedroom"});
+    availableClasses.append({name: "Bathroom", translatedName: i18n("Bathroom"), iconName: "bathroom"});
+    availableClasses.append({name: "Nursery", translatedName: i18n("Nursery"), iconName: "nursery"});
+    availableClasses.append({name: "Recreation", translatedName: i18n("Recreation"), iconName: "recreation"});
+    availableClasses.append({name: "Office", translatedName: i18n("Office"), iconName: "office"});
+    availableClasses.append({name: "Gym", translatedName: i18n("Gym"), iconName: "gym"});
+    availableClasses.append({name: "Hallway", translatedName: i18n("Hallway"), iconName: "hallway"});
+    availableClasses.append({name: "Toilet", translatedName: i18n("Toilet"), iconName: "toilet"});
+    availableClasses.append({name: "Front door", translatedName: i18n("Front door"), iconName: "frontdoor"});
+    availableClasses.append({name: "Garage", translatedName: i18n("Garage"), iconName: "garage"});
+    availableClasses.append({name: "Terrace", translatedName: i18n("Terrace"), iconName: "terrace"});
+    availableClasses.append({name: "Garden", translatedName: i18n("Garden"), iconName: "garden"});
+    availableClasses.append({name: "Driveway", translatedName: i18n("Driveway"), iconName: "driveway"});
+    availableClasses.append({name: "Carport", translatedName: i18n("Carport"), iconName: "carport"});
+    availableClasses.append({name: "Other", translatedName: i18n("Other"), iconName: "other"});
+    // available since API version 1.30.0
+    if (myver >= 1300) {
+        availableClasses.append({name: "Home", translatedName: i18n("Home"), iconName: "home"});
+        availableClasses.append({name: "Downstairs", translatedName: i18n("Downstairs"), iconName: "downstairs"});
+        availableClasses.append({name: "Upstairs", translatedName: i18n("Upstairs"), iconName: "upstairs"});
+        availableClasses.append({name: "Top floor", translatedName: i18n("Top floor"), iconName: "topfloor"});
+        availableClasses.append({name: "Attic", translatedName: i18n("Attic"), iconName: "attic"});
+        availableClasses.append({name: "Guest room", translatedName: i18n("Guest room"), iconName: "guestroom"});
+        availableClasses.append({name: "Staircase", translatedName: i18n("Staircase"), iconName: "staircase"});
+        availableClasses.append({name: "Lounge", translatedName: i18n("Lounge"), iconName: "lounge"});
+        availableClasses.append({name: "Man cave", translatedName: i18n("Man cave"), iconName: "mancave"});
+        availableClasses.append({name: "Computer", translatedName: i18n("Computer"), iconName: "computer"});
+        availableClasses.append({name: "Studio", translatedName: i18n("Studio"), iconName: "studio"});
+        availableClasses.append({name: "Music", translatedName: i18n("Music"), iconName: "music"});
+        availableClasses.append({name: "TV", translatedName: i18n("TV"), iconName: "tv"});
+        availableClasses.append({name: "Reading", translatedName: i18n("Reading"), iconName: "reading"});
+        availableClasses.append({name: "Closet", translatedName: i18n("Closet"), iconName: "closet"});
+        availableClasses.append({name: "Storage", translatedName: i18n("Storage"), iconName: "storage"});
+        availableClasses.append({name: "Laundry room", translatedName: i18n("Laundry room"), iconName: "laundryroom"});
+        availableClasses.append({name: "Balcony", translatedName: i18n("Balcony"), iconName: "balcony"});
+        availableClasses.append({name: "Porch", translatedName: i18n("Porch"), iconName: "porch"});
+        availableClasses.append({name: "Barbecue", translatedName: i18n("Barbecue"), iconName: "barbecue"});
+        availableClasses.append({name: "Pool", translatedName: i18n("Pool"), iconName: "pool"});
+    }
 }
 
 /**

@@ -177,6 +177,7 @@ Item {
                         Button {
                             iconName: 'entry-edit'
                             tooltip: i18n("Edit")
+                            enabled: groupsModel.get(styleData.row).editable
                             Layout.fillHeight: true
                             onClicked: {
                                 resetDialog();
@@ -190,12 +191,16 @@ Item {
                                 else if (editItem.type == "LightGroup" ) {
                                     rbGroup.checked = true;
                                 }
-                                else { 
+                                else if (editItem.type == "Zone") { 
+                                    rbZone.checked = true;
+                                    cbClass.currentIndex = cbClass.find(editItem.tclass);
+                                }
+                                else {
                                     // can't manage that type, should not happen
                                     return;
                                 }
-                                getLightsForGroup(editItem.uuid, editItem.slights);
                                 rbTypeChanged();
+                                getLightsForGroup(editItem.uuid, editItem.slights);
 
                                 editGroupDialogue.open();
                             }
@@ -262,12 +267,25 @@ Item {
                         var cClass = cbClassModel.get(cbClass.currentIndex);
                         strJson += "\"" + cClass.name + "\"";
                     }
-                    else {
+                    else if(rbZone.checked) {
+                        strJson += "\"Zone\"," ;
+                        strJson += "\"class\":";
+                        var cClass = cbClassModel.get(cbClass.currentIndex);
+                        strJson += "\"" + cClass.name + "\"";
+                    }
+                    else if(rbGroup.checked) {
                         strJson += "\"LightGroup\"" ;
                     }
+
                 }
                 else {
                     if(rbRoom.checked) {
+                        strJson += ",\"class\":";
+                        var cClass = cbClassModel.get(cbClass.currentIndex);
+                        strJson += "\"" + cClass.name + "\"";
+                    }
+                    else if(rbZone.checked) {
+                        // same as room for now, but keep separate should they add differences
                         strJson += ",\"class\":";
                         var cClass = cbClassModel.get(cbClass.currentIndex);
                         strJson += "\"" + cClass.name + "\"";
@@ -333,7 +351,7 @@ Item {
                     id: grdTitle
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    columns: 3
+                    columns: 4
                     Layout.fillWidth: true
                     
                     Label {
@@ -347,11 +365,15 @@ Item {
                         Layout.fillWidth: true
                         maximumLength: 32
                     }
+
+                    Label {
+                    }
                     
                     Label {
                         Layout.alignment: Qt.AlignRight
                         text: i18n("Group type:")
                     }
+
                     
                     ExclusiveGroup { id: typeGroup }
                     
@@ -374,23 +396,32 @@ Item {
                         }
                         enabled: editGroupDialogue.groupId == "-1"
                     }
+                    RadioButton {
+                        id: rbZone
+                        text: i18n("Zone")
+                        exclusiveGroup: typeGroup
+                        onClicked: {
+                            rbTypeChanged()
+                        }
+                        enabled: editGroupDialogue.groupId == "-1"
+                    }
                     
                     Label {
                     }
                     
                     Label {
-                        Layout.columnSpan: 2
+                        Layout.columnSpan: 3
                         font.italic: true
-                        text: i18n("A light can only be in one room but multiple groups at the same time.")
+                        text: i18n("A light can only be in one room but multiple groups or zones at the same time.")
                     }
                     
                     Label {
                     }
                     
                     Label {
-                        Layout.columnSpan: 2
+                        Layout.columnSpan: 3
                         font.italic: true
-                        text: i18n("Only rooms have a class with a specific icon, groups only have a name")
+                        text: i18n("Rooms and zones have a class with a specific icon, groups only have a name")
                     }
                     
                     Label {
@@ -400,10 +431,10 @@ Item {
                     
                     ComboBox {
                         id: cbClass
-                        Layout.columnSpan: 2
+                        Layout.columnSpan: 3
                         Layout.fillWidth: true
                         model: cbClassModel
-                        enabled: rbRoom.checked
+                        enabled: rbRoom.checked || rbZone.checked
                         textRole: 'translatedName'
                     }
                 }
@@ -538,7 +569,7 @@ Item {
             availableLightsModel.clear();
             Hue.getAvailableLightsIdName(availableLightsModel);
         }
-        else if(rbGroup.checked) {
+        else if(rbGroup.checked || rbZone.checked) {
             availableLightsModel.clear();
             Hue.getLightsIdName(availableLightsModel);
         }
@@ -551,11 +582,12 @@ Item {
     
     function resetDialog() {
         groupLightsModel.clear();
+        availableLightsModel.clear();
         txtGroupName.text = ""
         rbGroup.checked = true; 
         rbRoom.checked = false;
+        rbZone.checked = false;
         cbClass.currentIndex = 0;
-        rbTypeChanged();
     }
     
     function addLight(lightId, lightName) {
