@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/Fuchs/hoppla-sa/issues\n"
-"POT-Creation-Date: 2019-05-24 01:15+0200\n"
+"POT-Creation-Date: 2019-05-25 03:15+0200\n"
 "PO-Revision-Date: 2017-01-12 23:42+0100\n"
 "Last-Translator: Christian Loosli <develop@fuchsnet.ch>\n"
 "Language-Team: Christian Loosli <develop@fuchsnet.ch>\n"
@@ -76,7 +76,7 @@ msgstr "Kei Lampe ohni Ruum verfüägbar"
 
 #: package/contents/code/hue.js:1554
 msgid "0.0.0"
-msgstr ""
+msgstr "0.0.0"
 
 #: package/contents/code/hue.js:1736
 msgid "disabled"
@@ -166,87 +166,87 @@ msgstr "Ysteuplatz"
 msgid "Other"
 msgstr "Angeres"
 
-#: package/contents/code/hue.js:1804
+#: package/contents/code/hue.js:1804 package/contents/ui/configActions.qml:534
 msgid "Home"
 msgstr "Dehei"
 
-#: package/contents/code/hue.js:1805
+#: package/contents/code/hue.js:1805 package/contents/ui/configActions.qml:535
 msgid "Downstairs"
 msgstr "Ungergschoss"
 
-#: package/contents/code/hue.js:1806
+#: package/contents/code/hue.js:1806 package/contents/ui/configActions.qml:536
 msgid "Upstairs"
 msgstr "Obergschoss"
 
-#: package/contents/code/hue.js:1807
+#: package/contents/code/hue.js:1807 package/contents/ui/configActions.qml:537
 msgid "Top floor"
 msgstr "Dachgschoss"
 
-#: package/contents/code/hue.js:1808
+#: package/contents/code/hue.js:1808 package/contents/ui/configActions.qml:538
 msgid "Attic"
 msgstr "Eschtrig"
 
-#: package/contents/code/hue.js:1809
+#: package/contents/code/hue.js:1809 package/contents/ui/configActions.qml:539
 msgid "Guest room"
 msgstr "Gäschtezimmer"
 
-#: package/contents/code/hue.js:1810
+#: package/contents/code/hue.js:1810 package/contents/ui/configActions.qml:540
 msgid "Staircase"
 msgstr "Stägähuus"
 
-#: package/contents/code/hue.js:1811
+#: package/contents/code/hue.js:1811 package/contents/ui/configActions.qml:541
 msgid "Lounge"
 msgstr "Lounge"
 
-#: package/contents/code/hue.js:1812
+#: package/contents/code/hue.js:1812 package/contents/ui/configActions.qml:542
 msgid "Man cave"
 msgstr "Mannezimmer"
 
-#: package/contents/code/hue.js:1813
+#: package/contents/code/hue.js:1813 package/contents/ui/configActions.qml:543
 msgid "Computer"
 msgstr "Computer"
 
-#: package/contents/code/hue.js:1814
+#: package/contents/code/hue.js:1814 package/contents/ui/configActions.qml:544
 msgid "Studio"
 msgstr "Studio"
 
-#: package/contents/code/hue.js:1815
+#: package/contents/code/hue.js:1815 package/contents/ui/configActions.qml:545
 msgid "Music"
 msgstr "Musig"
 
-#: package/contents/code/hue.js:1816
+#: package/contents/code/hue.js:1816 package/contents/ui/configActions.qml:546
 msgid "TV"
 msgstr "Fernseh"
 
-#: package/contents/code/hue.js:1817
+#: package/contents/code/hue.js:1817 package/contents/ui/configActions.qml:547
 msgid "Reading"
 msgstr "Läsä"
 
-#: package/contents/code/hue.js:1818
+#: package/contents/code/hue.js:1818 package/contents/ui/configActions.qml:548
 msgid "Closet"
 msgstr "Schrank"
 
-#: package/contents/code/hue.js:1819
+#: package/contents/code/hue.js:1819 package/contents/ui/configActions.qml:549
 msgid "Storage"
 msgstr "Steuruum"
 
-#: package/contents/code/hue.js:1820
+#: package/contents/code/hue.js:1820 package/contents/ui/configActions.qml:550
 msgid "Laundry room"
 msgstr "Wöschchuchi"
 
-#: package/contents/code/hue.js:1821
+#: package/contents/code/hue.js:1821 package/contents/ui/configActions.qml:551
 msgid "Balcony"
 msgstr "Baukon"
 
-#: package/contents/code/hue.js:1822
+#: package/contents/code/hue.js:1822 package/contents/ui/configActions.qml:552
 msgid "Porch"
 msgstr "Veranda"
 
-#: package/contents/code/hue.js:1823
+#: package/contents/code/hue.js:1823 package/contents/ui/configActions.qml:553
 msgid "Barbecue"
 msgstr "Grillierä"
 
-#: package/contents/code/hue.js:1824
+#: package/contents/code/hue.js:1824 package/contents/ui/configActions.qml:554
 msgid "Pool"
 msgstr "Pool"
 
@@ -439,6 +439,7 @@ msgid "15 seconds"
 msgstr "15 Sekundä"
 
 #: package/contents/ui/ActionEditor.qml:421
+#: package/contents/ui/configActions.qml:515
 #: package/contents/ui/configGroups.qml:382
 msgid "Group"
 msgstr "Gruppä"
@@ -616,104 +617,100 @@ msgstr ""
 msgid "Bulb"
 msgstr "Lampä"
 
-#: package/contents/ui/configActions.qml:515
-msgid "House"
-msgstr "Huus"
-
-#: package/contents/ui/configActions.qml:535
+#: package/contents/ui/configActions.qml:555
 msgid "Rainbow"
 msgstr "Rägäbogä"
 
-#: package/contents/ui/configActions.qml:536
+#: package/contents/ui/configActions.qml:556
 msgid "Light grey"
 msgstr "Häugrau"
 
-#: package/contents/ui/configActions.qml:537
+#: package/contents/ui/configActions.qml:557
 msgid "Dark grey"
 msgstr "Dunkugrau"
 
-#: package/contents/ui/configActions.qml:538
+#: package/contents/ui/configActions.qml:558
 msgid "White"
 msgstr "Wyss"
 
-#: package/contents/ui/configActions.qml:539
+#: package/contents/ui/configActions.qml:559
 msgid "Black"
 msgstr "Schwarz"
 
-#: package/contents/ui/configActions.qml:540
+#: package/contents/ui/configActions.qml:560
 msgid "Light red"
 msgstr "Häurot"
 
-#: package/contents/ui/configActions.qml:541
+#: package/contents/ui/configActions.qml:561
 msgid "Red"
 msgstr "Rot"
 
-#: package/contents/ui/configActions.qml:542
+#: package/contents/ui/configActions.qml:562
 msgid "Dark red"
 msgstr "Dunkurot"
 
-#: package/contents/ui/configActions.qml:543
+#: package/contents/ui/configActions.qml:563
 msgid "Light green"
 msgstr "Häugrau"
 
-#: package/contents/ui/configActions.qml:544
+#: package/contents/ui/configActions.qml:564
 msgid "Green"
 msgstr "Grüen"
 
-#: package/contents/ui/configActions.qml:545
+#: package/contents/ui/configActions.qml:565
 msgid "Dark green"
 msgstr "Dunkugrüen"
 
-#: package/contents/ui/configActions.qml:546
+#: package/contents/ui/configActions.qml:566
 msgid "Light blue"
 msgstr "Häugblau"
 
-#: package/contents/ui/configActions.qml:547
+#: package/contents/ui/configActions.qml:567
 msgid "Blue"
 msgstr "Blau"
 
-#: package/contents/ui/configActions.qml:548
+#: package/contents/ui/configActions.qml:568
 msgid "Dark blue"
 msgstr "Dunkublau"
 
-#: package/contents/ui/configActions.qml:549
+#: package/contents/ui/configActions.qml:569
 msgid "Light orange"
 msgstr "Häuorange"
 
-#: package/contents/ui/configActions.qml:550
+#: package/contents/ui/configActions.qml:570
 msgid "Orange"
 msgstr "Orange"
 
-#: package/contents/ui/configActions.qml:551
+#: package/contents/ui/configActions.qml:571
 msgid "Dark orange"
 msgstr "Dunkuorange"
 
 # #: package/contents/ui/configActions.qml:530
-#: package/contents/ui/configActions.qml:552
+#: package/contents/ui/configActions.qml:572
 msgid "Light purple"
 msgstr "Häuviolett"
 
-#: package/contents/ui/configActions.qml:553
+#: package/contents/ui/configActions.qml:573
 msgid "Purple"
 msgstr "Violett"
 
-#: package/contents/ui/configActions.qml:554
+#: package/contents/ui/configActions.qml:574
 msgid "Dark purple"
 msgstr "Dunkuviolett"
 
-#: package/contents/ui/configActions.qml:555
+#: package/contents/ui/configActions.qml:575
 msgid "Cyan"
 msgstr "Cyan"
 
-#: package/contents/ui/configActions.qml:556
+#: package/contents/ui/configActions.qml:576
 msgid "Magenta"
 msgstr "Magänta"
 
-#: package/contents/ui/configActions.qml:557
+#: package/contents/ui/configActions.qml:577
 msgid "Yellow"
 msgstr "Gäub"
 
-#: package/contents/ui/configActions.qml:558
+#: package/contents/ui/configActions.qml:578
 msgid "Inverted Rainbow"
 msgstr "Umkehrtä Rägäbogä"
 
@@ -865,13 +862,14 @@ msgstr "Ruum"
 
 #: package/contents/ui/configGroups.qml:401
 msgid "Zone"
-msgstr ""
+msgstr "Zone"
 
 #: package/contents/ui/configGroups.qml:415
 msgid ""
 "A light can only be in one room but multiple groups or zones at the same "
 "time."
-msgstr "Lampä chöi glychzytig numä i eim Ruum si, aber i mehrerä Gruppä oder Zonä."
+msgstr ""
+"Lampä chöi glychzytig numä i eim Ruum si, aber i mehrerä Gruppä oder Zonä."
 
 #: package/contents/ui/configGroups.qml:424
 msgid ""
@@ -1298,3 +1296,6 @@ msgstr "Gruppänamä:"
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr ""
+
+#~ msgid "House"
+#~ msgstr "Huus"
