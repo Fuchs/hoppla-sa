@@ -98,7 +98,8 @@ PlasmaComponents.ListItem {
             type: "bulb"
             
             anchors {
-                verticalCenter: parent.verticalCenter
+                top: parent.top
+                topMargin: Math.round(units.iconSizes.medium / 2)
                 left: parent.left
             }
         }
@@ -221,7 +222,7 @@ PlasmaComponents.ListItem {
     Item {
         id: lightDetailsItem
         visible: expanded
-        height: (theme.smallestFont.pointSize * 12) + lightTabBar.height
+        height: Math.max((lightWhitesItem.height + units.smallSpacing * 8 + lightTabBar.height), ((theme.smallestFont.pointSize * 14) + lightTabBar.height) )
         
         anchors {
             top: lightItemBase.bottom

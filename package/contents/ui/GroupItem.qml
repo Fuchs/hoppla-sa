@@ -91,7 +91,8 @@ PlasmaComponents.ListItem {
             type: "group"
             
             anchors {
-                verticalCenter: parent.verticalCenter
+                top: parent.top
+                topMargin: Math.round(units.iconSizes.medium / 2)
                 left: parent.left
             }
         }
