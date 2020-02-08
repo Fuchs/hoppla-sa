@@ -35,6 +35,7 @@ Item {
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
     property bool isEditing: false
+    property int rowToDelete: -1
     property int editId: -1
     
     width: parent.width
@@ -188,8 +189,8 @@ Item {
                             tooltip: i18n("Remove")
                             Layout.fillHeight: true
                             onClicked: {
-                                actionListModel.remove(styleData.row)
-                                actionListChanged()
+                                rowToDelete = styleData.row
+                                confirmDeleteDialogue.open()
                             }
                         }
                     }
@@ -464,6 +465,27 @@ Item {
         }
     }
     
+    MessageDialog {
+        id: confirmDeleteDialogue
+        visible: false
+        title: i18n("Confirm deletion")
+        icon: StandardIcon.Critical
+        text: i18n("Deleting an action can't be undone. Do you really want to delete this action?")
+        standardButtons: StandardButton.Yes | StandardButton.No
+        onYes: {
+            actionListModel.remove(rowToDelete);
+            actionListChanged();
+        }
+        onNo: {
+            confirmDeleteDialogue.visible = false;
+            rowToDelete = -1;
+        }
+        onRejected: {
+            confirmDeleteDialogue.visible = false;
+            rowToDelete = -1;
+        }
+    }
+    
     Component.onCompleted: {
         if(!Hue.isInitialized()) {
             Hue.initHueConfig();
@@ -490,7 +512,7 @@ Item {
         }
 
         iconModel.append( { text: i18n("Bulb"), value: "bulb" } )    
-        iconModel.append( { text: i18n("House"), value: "group" } )
+        iconModel.append( { text: i18n("Group"), value: "group" } )
         iconModel.append( { text: i18n("Bathroom"), value: "bathroom" } )
         iconModel.append( { text: i18n("Bedroom"), value: "bedroom" } )
         iconModel.append( { text: i18n("Carport"), value: "carport" } )
@@ -509,7 +531,27 @@ Item {
         iconModel.append( { text: i18n("Recreation"), value: "recreation" } )
         iconModel.append( { text: i18n("Terrace"), value: "terrace" } )
         iconModel.append( { text: i18n("Toilet"), value: "toilet" } )
-        
+        iconModel.append( { text: i18n("Home"), value: "home" } )
+        iconModel.append( { text: i18n("Downstairs"), value: "downstairs" } )
+        iconModel.append( { text: i18n("Upstairs"), value: "upstairs" } )
+        iconModel.append( { text: i18n("Top floor"), value: "topfloor" } )
+        iconModel.append( { text: i18n("Attic"), value: "attic" } )
+        iconModel.append( { text: i18n("Guest room"), value: "guestroom" } )
+        iconModel.append( { text: i18n("Staircase"), value: "staircase" } )
+        iconModel.append( { text: i18n("Lounge"), value: "lounge" } )
+        iconModel.append( { text: i18n("Man cave"), value: "mancave" } )
+        iconModel.append( { text: i18n("Computer"), value: "computer" } )
+        iconModel.append( { text: i18n("Studio"), value: "studio" } )
+        iconModel.append( { text: i18n("Music"), value: "music" } )
+        iconModel.append( { text: i18n("TV"), value: "tv" } )
+        iconModel.append( { text: i18n("Reading"), value: "reading" } )
+        iconModel.append( { text: i18n("Closet"), value: "closet" } )
+        iconModel.append( { text: i18n("Storage"), value: "storage" } )
+        iconModel.append( { text: i18n("Laundry room"), value: "laundryroom" } )
+        iconModel.append( { text: i18n("Balcony"), value: "balcony" } )
+        iconModel.append( { text: i18n("Porch"), value: "porch" } )
+        iconModel.append( { text: i18n("Barbecue"), value: "barbecue" } )
+        iconModel.append( { text: i18n("Pool"), value: "pool" } )
         colourModel.append( { text: i18n("Rainbow"), value: "rainbow" } )
         colourModel.append( { text: i18n("Light grey"), value: "light" } )
         colourModel.append( { text: i18n("Dark grey"), value: "dark" } )

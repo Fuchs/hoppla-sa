@@ -35,6 +35,7 @@ Item {
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
     property int attempts: 60
+    property string idToDelete: "-1"
     
     ListModel {
         id: lightsModel
@@ -178,7 +179,8 @@ Item {
                             Layout.fillHeight: true
                             onClicked: {
                                 var editItem = lightsModel.get(styleData.row);
-                                Hue.deleteLight(editItem.uuid, deleteLightDone)
+                                idToDelete = editItem.uuid;
+                                confirmDeleteDialogue.open();
                             }
                         }
                     }
@@ -418,6 +420,26 @@ Item {
                     }
                 }
             }
+        }
+    }
+    
+    MessageDialog {
+        id: confirmDeleteDialogue
+        visible: false
+        title: i18n("Confirm deletion")
+        icon: StandardIcon.Critical
+        text: i18n("Deleting a light will remove it from your Philips Hue system and can't be undone. Do you really want to delete this light?")
+        standardButtons: StandardButton.Yes | StandardButton.No
+        onYes: {
+            Hue.deleteLight(idToDelete, deleteLightDone)
+        }
+        onNo: {
+            confirmDeleteDialogue.visible = false;
+            idToDelete = -1;
+        }
+        onRejected: {
+            confirmDeleteDialogue.visible = false;
+            idToDelete = -1;
         }
     }
     

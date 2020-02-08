@@ -28,7 +28,7 @@ Item {
     // All supported classes by hue groups as of now (January 2017)
     // Limit it to these even when new ones get added, so we are sure we 
     // have an icon for it, otherwise fall back to the default icon
-    property var supportedClasses : ["livingroom","kitchen","dining","bedroom","kidsbedroom","bathroom","nursery","recreation","office","gym","hallway","toilet","frontdoor","garage","terrace","garden","driveway","carport","other","bulb"]
+    property var supportedClasses : ["livingroom","kitchen","dining","bedroom","kidsbedroom","bathroom","nursery","recreation","office","gym","hallway","toilet","frontdoor","garage","terrace","garden","driveway","carport","other", "home", "downstairs", "upstairs", "topfloor", "attic", "guestroom", "staircase", "lounge", "mancave", "computer", "studio", "music", "tv", "reading", "closet", "storage", "laundryroom", "balcony", "porch", "barbecue", "pool", "bulb"]
     
     property string colourMode
     property string type

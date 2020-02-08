@@ -69,10 +69,9 @@ PlasmaComponents.ListItem {
             left: parent.left
             right: parent.right
             top: parent.top
-            topMargin: -Math.round(units.gridUnit)
         }
         
-        height: Math.max(units.iconSizes.medium, groupLabel.height + groupInfoLabel.height + groupBrightnessSlider.height) + Math.round(units.gridUnit / 2)
+        height: Math.max(units.iconSizes.medium, groupLabel.height + groupInfoLabel.height) + groupBrightnessSlider.height + Math.round(units.gridUnit / 2)
         
         HueColourItem {
             id: colourItem
@@ -91,7 +90,7 @@ PlasmaComponents.ListItem {
             type: "group"
             
             anchors {
-                verticalCenter: parent.verticalCenter
+                verticalCenter: groupItemBase.verticalCenter - Math.round(groupBrightnessSlider.height / 2)
                 left: parent.left
             }
         }
@@ -155,6 +154,7 @@ PlasmaComponents.ListItem {
                 rightMargin: Math.round(units.gridUnit)
                 right: groupOnOffButton.left
                 top: groupInfoLabel.bottom
+                topMargin: units.smallSpacing * 2
             }
             
             PlasmaCore.IconItem  {

@@ -77,10 +77,9 @@ PlasmaComponents.ListItem {
             left: parent.left
             right: parent.right
             top: parent.top
-            topMargin: -Math.round(units.gridUnit)
         }
         
-        height: Math.max(units.iconSizes.medium, lightLabel.height + lightInfoLabel.height + slider.height) + Math.round(units.gridUnit / 2)
+        height: Math.max(units.iconSizes.medium, lightLabel.height + lightInfoLabel.height) + slider.height + Math.round(units.gridUnit / 2)
         
         HueColourItem {
             id: colourItem
@@ -98,7 +97,7 @@ PlasmaComponents.ListItem {
             type: "bulb"
             
             anchors {
-                verticalCenter: parent.verticalCenter
+                verticalCenter: lightItemBase.verticalCenter - Math.round(slider.height / 2)
                 left: parent.left
             }
         }
@@ -146,6 +145,7 @@ PlasmaComponents.ListItem {
                 rightMargin: Math.round(units.gridUnit)
                 right: lightOnOffButton.left
                 top: lightInfoLabel.bottom
+                topMargin: units.smallSpacing * 2
             }
             
             PlasmaCore.IconItem  {
@@ -221,7 +221,10 @@ PlasmaComponents.ListItem {
     Item {
         id: lightDetailsItem
         visible: expanded
-        height: (theme.smallestFont.pointSize * 12) + lightTabBar.height
+        // Explanation: there can be two items that could be the tallest in the light, depending on font size. 
+        // For small fonts, the temperature / colour chooser will be taller, so we add it's size plus the base.
+        // For big font sizes, the details will be. So we add 8 lines of details plus 2 lines margin, plus the base.
+        height: Math.max((tempChooser.height + lightItemBase.height), ((theme.smallestFont.pointSize * 10) + lightItemBase.height) )
         
         anchors {
             top: lightItemBase.bottom
@@ -234,7 +237,6 @@ PlasmaComponents.ListItem {
             
             anchors {
                 top: parent.top
-                topMargin: Math.round(units.gridUnit / 2)
                 left: parent.left
                 right: parent.right
             }
