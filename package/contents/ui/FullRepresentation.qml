@@ -426,12 +426,13 @@ FocusScope {
      * @param {String} baseText base text to use
      */
     function setLightsTooltip(baseText) {
+        var myLights = lightModel
 
-        var lightsTotal = lightModel.count;
+        var lightsTotal = myLights.count;
         var lightOn = 0;
   
-        for(var i = 0; i < lightModel.count; ++i) {
-            if(lightModel.get(i).von) {
+        for(var i = 0; i < myLights.count; ++i) {
+            if(myLights.get(i).von) {
                 lightOn++;
             }
         }

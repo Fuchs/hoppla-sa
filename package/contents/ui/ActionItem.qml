@@ -132,8 +132,9 @@ PlasmaComponents.ListItem {
     
     function execute() {
         
-        for (var i = 0; i < actions.count; i++) {
-            var act = actions.get(i);
+        var myActions = actions
+        for (var i = 0; i < myActions.count; i++) {
+            var act = myActions.get(i);
             if(act.ttype === "groups") {
                 var url = act.ttype + "/" + act.tid + "/action";
             }
