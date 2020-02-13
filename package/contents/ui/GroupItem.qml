@@ -436,8 +436,9 @@ PlasmaComponents.ListItem {
      */
     function updateMe() {
         updateGui();
-        for(var i = 0; i < groupLightModel.count; ++i) {
-            var child = groupLightModel.get(i);
+        var myGroupLights = groupLightModel;
+        for(var i = 0; i < myGroupLights.count; ++i) {
+            var child = myGroupLights.get(i);
             updateLight(child, 200);
         }
         
@@ -447,8 +448,9 @@ PlasmaComponents.ListItem {
      * Helper to get our own values from hue and update ourselves
      */
     function updateSelf() {
-        for(var i = 0; i < groupModel.count; ++i) {
-            var child = groupModel.get(i);
+        var myGroups = groupModel;
+        for(var i = 0; i < myGroups.count; ++i) {
+            var child = myGroups.get(i);
             if(child.vuuid == vuuid) {
                 updateGroup(child, 200);
             }
@@ -542,18 +544,20 @@ PlasmaComponents.ListItem {
      */
     function updateChildren() {
         var children = []
+        var myGroupLights = groupLightModel;
         // First update our own list of children, 
         // adding all their ids to the children array
-        for(var i = 0; i < groupLightModel.count; ++i) {
-            var child = groupLightModel.get(i);
+        for(var i = 0; i < myGroupLights.count; ++i) {
+            var child = myGroupLights.get(i);
             updateLight(child, 200);
             children.push(child.vuuid);
         }
         // Now iterate over the list of all lights shown in the
         // lights tab of the FullRepresentation, only update
         // those that belong to this group by using the children array
-        for(var i = 0; i < lightModel.count; ++i) {
-            var child = lightModel.get(i);
+        var myLights = lightModel;
+        for(var i = 0; i < myLights.count; ++i) {
+            var child = myLights.get(i);
             if(children.indexOf(child.vuuid) >= 0) {
                 updateLight(child, 200);
             }

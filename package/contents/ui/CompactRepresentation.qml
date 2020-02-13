@@ -111,12 +111,14 @@ MouseArea {
      */
     function setLightsTooltip(baseText) {
 
-        var lightsTotal = lightModel.count;
+        var myLights = lightModel;
+        
+        var lightsTotal = myLights.count;
         if (lightsTotal > 0) {
             var lightOn = 0;
 
-            for(var i = 0; i < lightModel.count; ++i) {
-                if(lightModel.get(i).von) {
+            for(var i = 0; i < myLights.count; ++i) {
+                if(myLights.get(i).von) {
                     lightOn++;
                 }
             }

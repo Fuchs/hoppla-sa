@@ -377,8 +377,10 @@ PlasmaComponents.ListItem {
      * all GUI instances of ourselves are updated.
      */
     function updateParents() {
-        for(var i = 0; i < groupModel.count; ++i) {
-            var child = groupModel.get(i);
+        var myGroups = groupModel
+        
+        for(var i = 0; i < myGroups.count; ++i) {
+            var child = myGroups.get(i);
             var children = child.slights.split(',');
             if(children.indexOf(vuuid) >= 0) {
                 updateGroup(child, 200);
@@ -390,8 +392,10 @@ PlasmaComponents.ListItem {
      * Helper to get our own values from hue and update ourselves
      */
     function updateSelf() {
-        for(var i = 0; i < lightModel.count; ++i) {
-            var child = lightModel.get(i);
+        var myLights = lightModel
+        
+        for(var i = 0; i < myLights.count; ++i) {
+            var child = myLights.get(i);
             if(child.vuuid == vuuid) {
                 updateLight(child, 200);
             }
