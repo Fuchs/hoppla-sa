@@ -1,5 +1,25 @@
 # Changelog 
 
+## 2.8.4 (2019-12-5)
+
+* Fixes various spacing issues, especially with scaling enabled.
+
+## 2.8.2 (2019-5-25)
+
+Adds support for some things added in 1.30 HUE API, namely:
+* new types of rooms
+* entertainment groups (limited support, can't be edited, but can be controlled or removed)
+* zones (full support, but not throughout tested)
+
+## 2.8.0 (2018-11-17)
+
+* This release finally adds shippable translations for Get new plasmoids / .plasmoid methods.
+* Non-undoable deletion of actions, lights, groups and schedules now asks for confirmation.
+
+## 2.6.2 (2018-3-1)
+
+* Fix a bug caused by a hue update, so it no longer immediately returns up to date info about a group or light. 
+
 ## 2.6.0 (2017-02-08) 
 
 * Add coloured icons for all types
