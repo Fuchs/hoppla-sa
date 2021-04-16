@@ -2274,7 +2274,7 @@ function getHueIp (callback) {
         }
         callback(false, "");
     }
-    request.open("GET", "https://www.meethue.com/api/nupnp");
+    request.open("GET", "https://discovery.meethue.com");
     request.send();
 }
 
