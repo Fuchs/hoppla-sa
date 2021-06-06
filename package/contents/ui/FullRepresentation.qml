@@ -16,7 +16,9 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
+import QtQuick 2.8
+import QtQml 2.15
+
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -40,52 +42,6 @@ FocusScope {
             PropertyAnimation {
                 //this comes from PlasmaCore
                 duration: units.shortDuration
-            }
-        }
-    }
-    
-    Item {
-        id: toolBar
-        height: openSettingsButton.height
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-        
-        PlasmaCore.Svg {
-            id: lineSvg
-            imagePath: "widgets/line"
-        }
-        
-        Row {
-            id: rightButtons
-            spacing: units.smallSpacing
-            
-            anchors {
-                right: parent.right
-                rightMargin: Math.round(units.gridUnit / 2)
-                verticalCenter: parent.verticalCenter
-            }
-            
-            PlasmaComponents.ToolButton {
-                id: refreshButton
-                iconSource: "view-refresh"
-                tooltip: i18n("Refresh")
-                onClicked: {
-                    reInit(false, true);
-                }
-            }
-            
-            PlasmaComponents.ToolButton {
-                id: openSettingsButton
-                
-                iconSource: "configure"
-                tooltip: i18n("Configure Philips Hue...")
-                
-                onClicked: {
-                    plasmoid.action("configure").trigger()
-                }
             }
         }
     }
@@ -329,7 +285,7 @@ FocusScope {
             addActions();
         }
     }
-    
+   
     // Method to re-init the plasmoid. 
     // This is used on refresh because it puts way less load on the Hue bridge
     // as it fetches all lights and groups together, instead of updating each.

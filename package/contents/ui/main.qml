@@ -16,10 +16,13 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
+import QtQuick 2.8
+import QtQml 2.15
+
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kquickcontrolsaddons 2.0
+import org.kde.kquickcontrolsaddons 2.0 
+
 
 import "hue.js" as Hue
 
@@ -34,12 +37,21 @@ Item {
     Plasmoid.fullRepresentation: FullRepresentation { }
     
     Component.onCompleted: {
+
+        // New plasma changed how actions work, add refresh here, config is taken care of automatically
+        plasmoid.setAction("refresh", i18n("Refresh"), "view-refresh");
+
         // We need to init here, otherwise there is a strange plasma bug
         // which can lead to plasmoid.configuration being unavailable, 
         // thus the plasmoid failing badly.
         initHueConfig();
     }
     
+    function action_refresh() {
+       plasmoid.fullRepresentationItem.reInit(false, true);
+    }
+
+
     function debugPrint(msg) {
         if(!debugMode) {
             return;
