@@ -1,5 +1,9 @@
 # Changelog 
 
+## 4.0.0 (2021-06-08)
+
+* Updated to support new Plasma 5.21 design and features
+
 ## 2.8.4 (2019-12-5)
 
 * Fixes various spacing issues, especially with scaling enabled.
