@@ -29,6 +29,7 @@ It allows you to
 This software is distributed under the LGPL 2.1 License. See COPYING for details. 
 
 ## Requirements
+* **Starting with Version 4.\*, at least Plasma 5.21 is needed. Please use older versions for prior plasma releases.**
 * Plasma 5 & Qt 5.4+
 * Qt5 Graphical Effects
 * Extra CMake Modules (only for building)
