@@ -218,8 +218,10 @@ PlasmaComponents.ListItem {
     Item {
         id: groupDetailsItem
         visible: expanded
-        height: Math.max(theme.smallestFont.pointSize * 12, groupLightsView.contentHeight) + groupTabBar.height
-        
+        // Compare the height of the list of lights, the info text part or the colour / temp chooser
+        // which is made up from a gridUnit * 6 rectangle and a smallSpacing * 4 vertical padding.
+        // Whichever of the three is the tallest plus the tab bar is the needed height.
+        height: Math.max(groupInfoItem.height, ((units.gridUnit * 6) + (units.smallSpacing * 4)), groupLightsView.contentHeight) + groupTabBar.height
         
         anchors {
             top: groupItemBase.bottom
