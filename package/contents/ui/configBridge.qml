@@ -1,5 +1,5 @@
 /*
- *    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,12 +16,12 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.0
-import QtQuick.Layouts 1.0
-import QtQuick.Controls 1.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kcoreaddons 1.0 as KCoreAddons
-import "../code/hue.js" as Hue
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kcoreaddons as KCoreAddons
+import "code/hue.js" as Hue
 
 
 Item {

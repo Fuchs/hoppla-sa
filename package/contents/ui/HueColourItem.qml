@@ -1,5 +1,5 @@
 /*
- *   Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *   Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  *   This library is free software; you can redistribute it and/or
  *   modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,11 @@
  *   License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
-import QtQuick.Layouts 1.1
-import QtGraphicalEffects 1.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import QtQuick
+import QtQuick.Layouts
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.ksvg as KSvg
 
 
 Item {
@@ -61,12 +61,12 @@ Item {
         antialiasing: true
     }
     
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: mySvg
         
     }
     
-    PlasmaCore.SvgItem {
+    KSvg.SvgItem {
         id: itemIcon
         
         anchors {

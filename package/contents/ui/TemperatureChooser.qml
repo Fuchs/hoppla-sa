@@ -1,5 +1,5 @@
 /*
- * C opyright* 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ * C opyright* 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,9 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
-import QtQuick.Layouts 1.1
-import QtGraphicalEffects 1.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Shapes
 
 MouseArea {
     id: whiteTempRect
@@ -26,10 +26,9 @@ MouseArea {
     height: units.gridUnit * 6
     property alias rectWidth : whiteTempRect.width
     
-    LinearGradient {
-        anchors.fill: parent
-        start: Qt.point(0, 0)
-        end: Qt.point(whiteTempRect.width, 0)
+    Rectangle {
+        width:parent.width
+        height: parent.height
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#b4ffff" }
             GradientStop { position: 0.4; color: "#ffffff" }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,8 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
-import QtQuick.Layouts 1.1
-import QtGraphicalEffects 1.0
+import QtQuick
+import QtQuick.Layouts
 
 MouseArea {
     id: hueSatRect
@@ -28,10 +27,8 @@ MouseArea {
     property alias rectHeight : hueSatRect.height
     
     //153 366 500
-    LinearGradient {
+    Rectangle {
         anchors.fill: parent
-        start: Qt.point(0, 0)
-        end: Qt.point(hueSatRect.width, 0)
         gradient: Gradient {
             GradientStop { position: 0/6; color: "red" }
             GradientStop { position: 1/6; color: "magenta" }
@@ -43,10 +40,8 @@ MouseArea {
         }
     }
     
-    LinearGradient {
+    Rectangle {
         anchors.fill: parent
-        start: Qt.point(0, 0)
-        end: Qt.point(0, hueSatRect.height)
         gradient: Gradient {
             GradientStop { position: 0/6; color: "#00ffffff" }
             GradientStop { position: 1/6; color: "#2affffff" }

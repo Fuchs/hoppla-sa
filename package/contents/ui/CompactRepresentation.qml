@@ -1,5 +1,5 @@
 /*
-    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -16,15 +16,16 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.2
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import QtQuick
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.kirigami as Kirigami
 
 MouseArea {
     onClicked: plasmoid.expanded = !plasmoid.expanded
     property bool fullRepresentationInitialized: false
 
-    PlasmaCore.IconItem {
+    Kirigami.Icon {
         id: hopplaslIcon
         anchors.fill: parent
         source: "im-jabber"

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,14 +17,15 @@
  */
 
 
-import QtQuick 2.2
-import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import QtQuick
+import QtQuick.Layouts
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.ksvg as KSvg
 
-import "hue.js" as Hue
+import "code/hue.js" as Hue
 
-PlasmaComponents.ListItem {
+PlasmaComponents.ItemDelegate {
     id: actionItem
     
     property bool expanded : visibleDetails
@@ -49,11 +50,11 @@ PlasmaComponents.ListItem {
         
         height: Math.max(units.iconSizes.medium, actionLabel.height + actionInfoLabel.height) + Math.round(units.gridUnit / 2)
         
-        PlasmaCore.Svg {
+        KSvg.Svg {
             id: mySvg
         }
         
-        PlasmaCore.SvgItem {
+        KSvg.SvgItem {
             id: actionIcon
             
             anchors {

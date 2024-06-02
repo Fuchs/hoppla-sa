@@ -1,5 +1,5 @@
 /*
- *    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,36 +16,41 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.8
-import QtQml 2.15
+import QtQuick
+import QtQml
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kquickcontrolsaddons 2.0 
+import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kquickcontrolsaddons
 
 
-import "hue.js" as Hue
+import "code/hue.js" as Hue
 
-Item {
+PlasmoidItem {
     id: hopplaApplet
     property bool debugMode: false
     
-    Plasmoid.toolTipMainText: i18n("Hue Light Control")
+    toolTipMainText: i18n("Hue Light Control")
     Plasmoid.icon: "im-jabber"
     
-    Plasmoid.compactRepresentation: CompactRepresentation { }
-    Plasmoid.fullRepresentation: FullRepresentation { }
+    compactRepresentation: CompactRepresentation { }
+    fullRepresentation: FullRepresentation { }
     
     Component.onCompleted: {
-
-        // New plasma changed how actions work, add refresh here, config is taken care of automatically
-        plasmoid.setAction("refresh", i18n("Refresh"), "view-refresh");
-
         // We need to init here, otherwise there is a strange plasma bug
         // which can lead to plasmoid.configuration being unavailable, 
         // thus the plasmoid failing badly.
         initHueConfig();
     }
+
+    Plasmoid.contextualActions: [
+        PlasmaCore.Action {
+            id: refreshAction
+            text: i18n("Refresh")
+            icon.name: "view-refresh"
+            onTriggered: action_refresh()
+        }
+    ]
     
     function action_refresh() {
        plasmoid.fullRepresentationItem.reInit(false, true);

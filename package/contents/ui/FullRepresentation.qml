@@ -1,5 +1,5 @@
 /*
- *    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,12 +16,12 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.8
-import QtQml 2.15
+import QtQuick
+import QtQml
 
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
 
 FocusScope {
     focus: true
@@ -183,7 +183,7 @@ FocusScope {
             right: parent.right
         }
     
-        PlasmaExtras.ScrollArea {
+        PlasmaComponents.ScrollView {
             id: actionScrollView
             visible: tabBar.currentTab == actionsTab && !noHueConfigured && !hueNotConnected && !hueUnauthenticated
 
@@ -206,7 +206,7 @@ FocusScope {
             }
         }
 
-        PlasmaExtras.ScrollArea {
+        PlasmaComponents.ScrollView {
             id: groupScrollView
             visible: tabBar.currentTab == groupsTab && !noHueConfigured && !hueNotConnected
 
@@ -229,7 +229,7 @@ FocusScope {
             }
         }
 
-        PlasmaExtras.ScrollArea {
+        PlasmaComponents.ScrollView {
             id: lightScrollView
             visible: tabBar.currentTab == lightsTab && !noHueConfigured && !hueNotConnected
 

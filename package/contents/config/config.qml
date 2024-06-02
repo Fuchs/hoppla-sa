@@ -1,5 +1,5 @@
 /*
-    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -16,9 +16,9 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick
 
-import org.kde.plasma.configuration 2.0
+import org.kde.plasma.configuration
 
 ConfigModel {
     id: configModel

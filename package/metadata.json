@@ -1,0 +1,27 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "develop@fuchsnet.ch",
+                "Name": "Christian (Fuchs) Loosli"
+            }
+        ],
+        "Category": "System Information",
+        "Description": "Hue Lights Control",
+        "Description[de]": "Hue-Lichtsteuerung",
+        "Icon": "im-jabber",
+        "Id": "ch.fuchsnet.plasma.hoppla-sa",
+        "License": "LGPL",
+        "Name": "Hue Light Control",
+        "Name[de]": "Hue Lichtsteuerung",
+        "ServiceTypes": [
+            "Plasma/Applet"
+        ],
+        "Version": "6.0.0",
+        "Website": "https://github.com/Fuchs/hoppla-sa"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-NotificationArea": "true",
+    "X-Plasma-NotificationAreaCategory": "Hardware"
+}

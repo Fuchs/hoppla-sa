@@ -1,5 +1,5 @@
 /*
- *    Copyright 2016-2017 Christian Loosli <develop@fuchsnet.ch>
+ *    Copyright 2016-2024 Christian Loosli <develop@fuchsnet.ch>
  * 
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,12 +16,13 @@
  *    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
-import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import QtQuick
+import QtQuick.Layouts
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.kirigami as Kirigami
 
-PlasmaComponents.ListItem {
+PlasmaComponents.ItemDelegate {
     id: lightItem
     
     property bool expanded : false
@@ -148,7 +149,7 @@ PlasmaComponents.ListItem {
                 topMargin: units.smallSpacing * 2
             }
             
-            PlasmaCore.IconItem  {
+            Kirigami.Icon  {
                 id: "brightnessIcon"
                 Layout.maximumHeight: slider.height
                 Layout.maximumWidth: slider.height
@@ -160,12 +161,12 @@ PlasmaComponents.ListItem {
                 id: slider
                 
                 Layout.fillWidth: true
-                minimumValue: 0
-                maximumValue: 254
+                from: 0
+                to: 254
                 stepSize: 1
                 visible: expanded
                 enabled: available && von
-                updateValueWhileDragging : false
+                // TODO: PORT: updateValueWhileDragging : false
                 value: vbri
 
                 // This is a hack that is needed due to how
@@ -243,19 +244,19 @@ PlasmaComponents.ListItem {
             
             PlasmaComponents.TabButton {
                 id: lightWhitesTab
-                iconSource: "color-picker-white"
+                //TODO: Port: iconSource: "color-picker-white"
                 visible: vHasTemperature
             }
             
             PlasmaComponents.TabButton {
                 id: lightColoursTab
-                iconSource: "color-management"
+                //TODO: Port: iconSource: "color-management"
                 visible: vHasColour
             }
             
             PlasmaComponents.TabButton {
                 id: lightInfoTab
-                iconSource: "help-about"
+                //TODO: Port: iconSource: "help-about"
             }
         }
         
