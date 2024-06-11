@@ -17,247 +17,182 @@
  */
 
 import QtQuick
-import QtQml
+import QtQuick.Layouts
+import QtQuick.Controls
 
-import org.kde.plasma.extras as PlasmaExtras
-import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami as Kirigami
+import org.kde.kitemmodels as KItemModels
+import org.kde.plasma.components as PC3
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.plasmoid
 
-FocusScope {
-    focus: true
-    id: mainView
-    
-    property bool noHueConfigured: !getHueConfigured()
-    property bool hueNotConnected: false
-    property bool hueUnauthenticated: false
-    
-    PlasmaComponents.BusyIndicator {
-        id: busyOverlay
-        anchors.centerIn: parent
-        //whilst the model is loading, stay visible
-        //we use opacity rather than visible to force an animation
-        opacity: 0
+PlasmaExtras.Representation {
+        id: fullRep
 
-        Behavior on opacity {
-            PropertyAnimation {
-                //this comes from PlasmaCore
-                duration: units.shortDuration
-            }
-        }
-    }
-    
-    PlasmaComponents.TabBar {
-        id: tabBar
-        
-        anchors {
-            top: toolBar.bottom
-            left: parent.left
-            right: parent.right
-        }
-        
-        PlasmaComponents.TabButton {
-            id: actionsTab
-            text: i18n("Actions")
-        }
-        
-        PlasmaComponents.TabButton {
-            id: groupsTab
-            text: i18n("Groups")
-        }
-        
-        PlasmaComponents.TabButton {
-            id: lightsTab
-            text: i18n("Lights")
-        }
-    }
-    
-    
-    Item {
-        id: hueNotConfiguredView
-        
-        anchors.fill: parent
-        visible: noHueConfigured
-        
-        PlasmaExtras.Heading {
-            id: noHueConfiguredHeading
-            level: 3
-            opacity: 0.6
-            text: i18n("No Hue bridge configured")
-            
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                bottom: noHueConfiguredLabel.top
-                bottomMargin: units.smallSpacing
-            }
-        }
-        
-        PlasmaComponents.Label {
-            id: noHueConfiguredLabel
-            
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                bottom: configureHueBridgeButton.top
-                bottomMargin: units.largeSpacing
-            }
-            
-            height: paintedHeight
-            elide: Text.ElideRight
-            font.weight: Font.Normal
-            font.pointSize: theme.smallestFont.pointSize
-            text : i18n("You need to configure your Hue bridge")
-            textFormat: Text.PlainText
-        }
-        
-        PlasmaComponents.Button {
-            id: configureHueBridgeButton
-            text: i18n("Configure Hue Bridge")
-            
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                verticalCenter: parent.verticalCenter
-            }
-            
-            onClicked: {
-                plasmoid.action("configure").trigger()
-            }
-        }
-    }
-    
-    Item {
-        id: hueNotConnectedView
-        
-        anchors.fill: parent
-        visible: false
-        
-        PlasmaExtras.Heading {
-            id: hueNotConnectedHeading
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                bottom: hueNotConnectedLabel.top
-                bottomMargin: units.smallSpacing
-            }
-            
-            level: 3
-            opacity: 0.6
-            text: hueUnauthenticated ?  i18n("Not authenticated") : i18n("Hue not reachable")
-        }
-        
-        PlasmaComponents.Label {
-            id: hueNotConnectedLabel
-            
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                bottom: connnectHueBridgeButton.top
-                bottomMargin: units.largeSpacing
-            }
-            
-            font.weight: Font.Normal
-            height: paintedHeight
-            elide: Text.ElideRight
-            font.pointSize: theme.smallestFont.pointSize
-            text : hueUnauthenticated ? i18n("Authenticate with your bridge") : i18n("Check if your Hue bridge is configured and reachable") 
-            textFormat: Text.PlainText
-        }
-        
-        PlasmaComponents.Button {
-            id: connnectHueBridgeButton
-            text: i18n("Configure Hue Bridge")
-            
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                verticalCenter: parent.verticalCenter
-            }
-            
-            onClicked: {
-                plasmoid.action("configure").trigger()
-            }
-        }
-    }
-    
-    Item {
-        id: tabView
-        anchors {
-            top: tabBar.bottom
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
-        }
-    
-        PlasmaComponents.ScrollView {
-            id: actionScrollView
-            visible: tabBar.currentTab == actionsTab && !noHueConfigured && !hueNotConnected && !hueUnauthenticated
+        KeyNavigation.down: tabBar.currentItem
 
-            anchors {
-                top: parent.top
-                topMargin: units.smallSpacing
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-            }
 
-            ListView {
-                id: actionView
+        header: PlasmaExtras.PlasmoidHeading {
+            // Make this toolbar's buttons align vertically with the ones above
+            rightPadding: -1
+            // Allow tabbar to touch the header's bottom border
+            bottomPadding: -bottomInset
+
+            RowLayout {
                 anchors.fill: parent
-                clip: true
-                currentIndex: -1
-                model: actionModel
-                boundsBehavior: Flickable.StopAtBounds
-                delegate: ActionItem { }
+                spacing: Kirigami.Units.smallSpacing
+
+                PC3.TabBar {
+                    id: tabBar
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+
+                    // KeyNavigation.down: contentView.currentItem.contentItem.upperListView.itemAtIndex(0)
+
+                    PC3.TabButton {
+                        id: actionsTab
+                        text: i18n("Actions")
+
+                        KeyNavigation.up: fullRep.KeyNavigation.up
+                    }
+
+                    PC3.TabButton {
+                        id: groupsTab
+                        text: i18n("Groups")
+
+                        KeyNavigation.up: fullRep.KeyNavigation.up
+                    }
+
+                    PC3.TabButton {
+                        id: lightsTab
+                        text: i18n("Lights")
+
+                        KeyNavigation.up: fullRep.KeyNavigation.up
+                    }
+                }
+
+
+                PC3.ToolButton {
+                    visible: !(plasmoid.containmentDisplayHints & PlasmaCore.Types.ContainmentDrawsPlasmoidHeading)
+
+                    icon.name: "configure"
+                    onClicked: plasmoid.internalAction("configure").trigger()
+
+                    Accessible.name: plasmoid.internalAction("configure").text
+                    PC3.ToolTip {
+                        text: plasmoid.internalAction("configure").text
+                    }
+                }
             }
         }
 
-        PlasmaComponents.ScrollView {
-            id: groupScrollView
-            visible: tabBar.currentTab == groupsTab && !noHueConfigured && !hueNotConnected
+        contentItem: StackView {
+            id: contentView
+            property var hiddenTypes: []
+            initialItem: actionsView
 
-            anchors {
-                top: parent.top
-                topMargin: units.smallSpacing
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
+            TwoPartView {
+                id: actionsView
+                listModel: actionModel
+                listDelegate: ActionItem { }
+                iconName: "edit-none"
+                placeholderText: i18n("no actions")
             }
 
-            ListView {
-                id: groupView
-                anchors.fill: parent
-                clip: true
-                currentIndex: -1
-                boundsBehavior: Flickable.StopAtBounds
-                model: groupModel
-                delegate: GroupItem { }
-            }
-        }
-
-        PlasmaComponents.ScrollView {
-            id: lightScrollView
-            visible: tabBar.currentTab == lightsTab && !noHueConfigured && !hueNotConnected
-
-            anchors {
-                top: parent.top
-                topMargin: units.smallSpacing
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
+            TwoPartView {
+                id: groupsView
+                listModel: groupModel
+                listDelegate: GroupItem { }
+                iconName: "edit-none"
+                placeholderText: i18n("no groups")
             }
 
-            ListView {
+            TwoPartView {
                 id: lightsView
-                anchors.fill: parent
-                clip: true
-                currentIndex: -1
-                boundsBehavior: Flickable.StopAtBounds
-                model: lightModel
-                delegate: LightItem { }
+                listModel: lightModel
+                listDelegate: LightItem { }
+                iconName: "edit-none"
+                placeholderText: i18n("no lights")
+            }
+
+
+            Connections {
+                target: tabBar
+                function onCurrentIndexChanged() {
+                    if (tabBar.currentItem === actionsTab) {
+                        contentView.replace(actionsView)
+                    } else if (tabBar.currentItem === groupsTab) {
+                        contentView.replace(groupsView)
+                    } else if (tabBar.currentItem === lightsTab) {
+                        contentView.replace(lightsView)
+                    }
+                }
             }
         }
-    }
+
+        component TwoPartView : PC3.ScrollView {
+            id: scrollView
+            property string iconName: ""
+            property string placeholderText: ""
+            required property ListModel listModel
+            required property Component listDelegate
+
+
+
+            Loader {
+                parent: scrollView
+                anchors.centerIn: parent
+                width: parent.width -  Kirigami.Units.gridUnit * 4
+                active: visible
+                visible: scrollView.listModel.length < 1
+                sourceComponent: PlasmaExtras.PlaceholderMessage {
+                    iconName: scrollView.iconName
+                    text: scrollView.placeholderText
+                }
+            }
+            contentItem: Flickable {
+                contentHeight: layout.implicitHeight
+                clip: true
+
+                ColumnLayout {
+                    id: layout
+                    width: parent.width
+                    spacing: 0
+                    ListView {
+                        id: content
+                        visible: true
+                        interactive: false
+                        Layout.fillWidth: true
+                        implicitHeight: contentHeight
+                        model: scrollView.listModel
+                        delegate: scrollView.listDelegate
+
+                        Keys.onDownPressed: event => {
+                            if (currentIndex < count - 1) {
+                                incrementCurrentIndex();
+                                currentItem.forceActiveFocus();
+                            }
+                            event.accepted = true;
+                        }
+                        Keys.onUpPressed: event => {
+                            if (currentIndex > 0) {
+                                decrementCurrentIndex();
+                                currentItem.forceActiveFocus();
+                            }
+                            event.accepted = true;
+                        }
+                    }
+                }
+            }
+        }
 
     Component.onCompleted: {
         getHueConfigured();
         reInit(true, true);
         resetTimer();
-        plasmoid.compactRepresentationItem.fullRepresentationInitialized = true;
+        compactRepresentationItem.fullRepresentationInitialized = true;
     }
 
     Connections {
@@ -292,14 +227,14 @@ FocusScope {
     // This leads to side effects such as closing the current expanded selection, 
     // but this should be acceptable, else updateGroups and updateLights can be used.
     function reInit(initial, fetchAll) {
-        hueNotConfiguredView.visible = !getHueConfigured();
-        hueNotConnectedView.visible = getHueConfigured() && hueNotConnected;
-        tabView.visible = getHueConfigured() && !hueNotConnected;
+        // hueNotConfiguredView.visible = !getHueConfigured();
+        // hueNotConnectedView.visible = getHueConfigured() && hueNotConnected;
+        // tabView.visible = getHueConfigured() && !hueNotConnected;
         if(initial) {
             checkHueConnection(updatedConnection, true);
         }
         if(fetchAll) {
-            busyOverlay.opacity = 1;
+            //TODO busyOverlay.opacity = 1;
             getAll(groupModel, lightModel, fetchAllDone);
             addActions();
         }
@@ -318,7 +253,7 @@ FocusScope {
     }
     
     function fetchAllDone() {
-        busyOverlay.opacity = 0;
+        //TODO: busyOverlay.opacity = 0;
         // Done to initially set the tooltip
         checkHueConnection(updatedConnection, true);
     }
@@ -346,31 +281,31 @@ FocusScope {
         }
 
         if(connection === "none") {
-            hueNotConnected = true;
-            hueUnauthenticated = false;
+            //TODO: hueNotConnected = true;
+            //TODO: hueUnauthenticated = false;
             reInit(false, false);
-            plasmoid.toolTipSubText = i18n("Hue bridge not reachable");
+            main.toolTipSubText = i18n("Hue bridge not reachable");
             plasmoid.status = PlasmaCore.Types.PassiveStatus;
             return;
         }
         else if(connection === "unauth") {
-            hueNotConnected = true;
-            hueUnauthenticated = true;
+            //TODO: hueNotConnected = true;
+            //TODO: hueUnauthenticated = true;
             reInit(false, false);
-            plasmoid.toolTipSubText = i18n("Not authenticated with Hue bridge");
+            main.toolTipSubText = i18n("Not authenticated with Hue bridge");
             plasmoid.status = PlasmaCore.Types.ActiveStatus;
             return;
         }
         else if(connection === "main") {
-            hueNotConnected = false;
-            hueUnauthenticated = false;
+            //TODO: hueNotConnected = false;
+            //TODO: hueUnauthenticated = false;
             reInit(false, false);
             setLightsTooltip(i18n("Main connection"));
             plasmoid.status = PlasmaCore.Types.ActiveStatus;
         }
         else if(connection === "alt") {
-            hueNotConnected = false;
-            hueUnauthenticated = false;
+            //TODO: hueNotConnected = false;
+            //TODO: hueUnauthenticated = false;
             reInit(false, false);
             setLightsTooltip(i18n("Alternative connection"));
             plasmoid.status = PlasmaCore.Types.ActiveStatus;
@@ -394,7 +329,7 @@ FocusScope {
         }
         
         var tooltip = baseText + ": " + lightOn + "/" + lightsTotal + " " + i18n("lights on")
-        plasmoid.toolTipSubText = tooltip;
+        main.toolTipSubText = tooltip;
     }
     
     /**

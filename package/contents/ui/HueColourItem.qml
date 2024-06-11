@@ -20,6 +20,7 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents
+import org.kde.kirigami as Kirigami
 import org.kde.ksvg as KSvg
 
 
@@ -61,10 +62,6 @@ Item {
         antialiasing: true
     }
     
-    KSvg.Svg {
-        id: mySvg
-        
-    }
     
     KSvg.SvgItem {
         id: itemIcon
@@ -73,10 +70,8 @@ Item {
             verticalCenter: parent.verticalCenter
             horizontalCenter: parent.horizontalCenter
         }
-        
-        height: units.iconSizes.medium - units.smallSpacing * 2
+        height: Kirigami.Units.iconSizes.medium - Kirigami.Units.smallSpacing * 2
         width: height
-        svg: mySvg
     }
     
     
@@ -173,10 +168,10 @@ Item {
         var perceptedBrightness = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
         
         if (perceptedBrightness < 0.5) {
-            mySvg.imagePath = Qt.resolvedUrl("../images/" + iconName + "-dark.svg");
+            itemIcon.imagePath = Qt.resolvedUrl("../images/" + iconName + "-dark.svg");
         }
         else {
-            mySvg.imagePath = Qt.resolvedUrl("../images/" + iconName + "-light.svg");
+            itemIcon.imagePath = Qt.resolvedUrl("../images/" + iconName + "-light.svg");
         }
     }
 }

@@ -20,31 +20,33 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
 
-PlasmaComponents.ItemDelegate {
+PlasmaExtras.ExpandableListItem  {
     id: lightItem
     
     property bool expanded : false
-    property int baseHeight : lightItemBase.height + (units.smallSpacing * 2) - slider.height
+    property int baseHeight : lightItemBase.height + (Kirigami.Units.smallSpacing * 2) - slider.height
     property var currentLightDetails : createCurrentLightDetails()
     property string defaultIcon : "help-about"
     property bool available : vreachable
     
     height: expanded ? baseHeight + lightTabBar.height + lightDetailsItem.height : baseHeight
-    checked: containsMouse
+    // TODO: needed? checked: containsMouse
     enabled: true
     
     // Set an auto updater
     Component.onCompleted: {
         if(vHasTemperature) {
-            lightTabBar.currentTab = lightWhitesTab;
+            //TODO: Prettify
+            lightTabBar.currentIndex = 0;
         }
         else if(!vHasTemperature && vHasColour) {
-            lightTabBar.currentTab = lightColoursTab;
+            lightTabBar.currentIndex = 1;
         }
         else {
-            lightTabBar.currentTab = lightInfoTab;
+            lightTabBar.currentIndex = 2;
         }
 
         lightTimer.stop();
@@ -80,12 +82,12 @@ PlasmaComponents.ItemDelegate {
             top: parent.top
         }
         
-        height: Math.max(units.iconSizes.medium, lightLabel.height + lightInfoLabel.height) + slider.height + Math.round(units.gridUnit / 2)
+        height: Math.max(Kirigami.Units.iconSizes.medium, lightLabel.height + lightInfoLabel.height) + slider.height + Math.round(Kirigami.Units.gridUnit / 2)
         
         HueColourItem {
             id: colourItem
-            width: units.iconSizes.medium 
-            height: units.iconSizes.medium
+            width: Kirigami.Units.iconSizes.medium 
+            height: Kirigami.Units.iconSizes.medium
             
             valOn: von
             colourMode: vcolormode
@@ -98,7 +100,6 @@ PlasmaComponents.ItemDelegate {
             type: "bulb"
             
             anchors {
-                verticalCenter: lightItemBase.verticalCenter - Math.round(slider.height / 2)
                 left: parent.left
             }
         }
@@ -109,7 +110,7 @@ PlasmaComponents.ItemDelegate {
             anchors {
                 bottom: colourItem.verticalCenter
                 left: colourItem.right
-                leftMargin: Math.round(units.gridUnit / 2)
+                leftMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
             }
             
@@ -126,14 +127,14 @@ PlasmaComponents.ItemDelegate {
             
             anchors {
                 left: colourItem.right
-                leftMargin: Math.round(units.gridUnit / 2)
+                leftMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 right: lightOnOffButton.visible ? lightOnOffButton.left : parent.right
                 top: lightLabel.bottom
             }
             
             height: paintedHeight
             elide: Text.ElideRight
-            font.pointSize: theme.smallestFont.pointSize
+            font.pointSize: Kirigami.Theme.smallFont.pointSize
             opacity: available ? 0.6 : 0.4
             text: available ? vtype : i18n("Not available")
             textFormat: Text.PlainText
@@ -143,13 +144,13 @@ PlasmaComponents.ItemDelegate {
             
             anchors {
                 left: colourItem.right
-                rightMargin: Math.round(units.gridUnit)
+                rightMargin: Math.round(Kirigami.Units.gridUnit)
                 right: lightOnOffButton.left
                 top: lightInfoLabel.bottom
-                topMargin: units.smallSpacing * 2
+                topMargin: Kirigami.Units.smallSpacing * 2
             }
             
-            Kirigami.Icon  {
+            Kirigami.Icon {
                 id: "brightnessIcon"
                 Layout.maximumHeight: slider.height
                 Layout.maximumWidth: slider.height
@@ -166,7 +167,7 @@ PlasmaComponents.ItemDelegate {
                 stepSize: 1
                 visible: expanded
                 enabled: available && von
-                // TODO: PORT: updateValueWhileDragging : false
+                //TODO: portme updateValueWhileDragging : false
                 value: vbri
 
                 // This is a hack that is needed due to how
@@ -204,7 +205,7 @@ PlasmaComponents.ItemDelegate {
             
             anchors {
                 right: parent.right
-                rightMargin: Math.round(units.gridUnit / 2)
+                rightMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 verticalCenter: colourItem.verticalCenter
             }
             
@@ -225,7 +226,7 @@ PlasmaComponents.ItemDelegate {
         // Explanation: there can be two items that could be the tallest in the light, depending on font size. 
         // For small fonts, the temperature / colour chooser will be taller, so we add it's size plus the base.
         // For big font sizes, the details will be. So we add 8 lines of details plus 2 lines margin, plus the base.
-        height: Math.max((tempChooser.height + lightItemBase.height), ((theme.smallestFont.pointSize * 10) + lightItemBase.height) )
+        height: Math.max((tempChooser.height + lightItemBase.height), ((Kirigami.Theme.smallFont.pointSize * 10) + lightItemBase.height) )
         
         anchors {
             top: lightItemBase.bottom
@@ -244,34 +245,34 @@ PlasmaComponents.ItemDelegate {
             
             PlasmaComponents.TabButton {
                 id: lightWhitesTab
-                //TODO: Port: iconSource: "color-picker-white"
+                icon.source: "color-picker-white"
                 visible: vHasTemperature
             }
             
             PlasmaComponents.TabButton {
                 id: lightColoursTab
-                //TODO: Port: iconSource: "color-management"
+                icon.source: "color-management"
                 visible: vHasColour
             }
             
             PlasmaComponents.TabButton {
                 id: lightInfoTab
-                //TODO: Port: iconSource: "help-about"
+                icon.source: "help-about"
             }
         }
         
         Item {
             id: lightWhitesItem
-            visible: lightTabBar.currentTab == lightWhitesTab
+            visible: lightTabBar.currentIndex == 0
             width: parent.width
             
             anchors {
                 top: lightTabBar.bottom
-                topMargin: units.smallSpacing * 4
+                topMargin: Kirigami.Units.smallSpacing * 4
                 left: parent.left
-                leftMargin: units.gridUnit * 2
+                leftMargin: Kirigami.Units.gridUnit * 2
                 right: parent.right
-                rightMargin: units.gridUnit * 2
+                rightMargin: Kirigami.Units.gridUnit * 2
             }
             
             TemperatureChooser {
@@ -291,22 +292,22 @@ PlasmaComponents.ItemDelegate {
         
         Item {
             id: lightColourItem
-            visible: lightTabBar.currentTab == lightColoursTab
+            visible: lightTabBar.currentIndex == 1
             width: parent.width
             
             anchors {
                 top: lightTabBar.bottom
-                topMargin: units.smallSpacing * 4
+                topMargin: Kirigami.Units.smallSpacing * 4
                 left: parent.left
-                leftMargin: units.gridUnit * 2
+                leftMargin: Kirigami.Units.gridUnit * 2
                 right: parent.right
-                rightMargin: units.gridUnit * 2
+                rightMargin: Kirigami.Units.gridUnit * 2
             }
             
             ColourChooser {
                 id: colorChooser
                 width: parent.width
-                height: units.gridUnit * 6
+                height: Kirigami.Units.gridUnit * 6
                 
                 onReleased: {
                     if(available && von) {
@@ -322,21 +323,21 @@ PlasmaComponents.ItemDelegate {
         
         Item {
             id: lightInfoItem
-            visible: lightTabBar.currentTab == lightInfoTab
+            visible: lightTabBar.currentIndex == 2
             width: parent.width
             
             anchors {
                 top: lightTabBar.bottom
-                topMargin: units.smallSpacing / 4
+                topMargin: Kirigami.Units.smallSpacing / 4
                 left: parent.left
-                leftMargin: units.gridUnit * 2
+                leftMargin: Kirigami.Units.gridUnit * 2
                 right: parent.right
             }
             
             GridLayout {
                 width: parent.width
                 columns: 2
-                rowSpacing: units.smallSpacing / 4
+                rowSpacing: Kirigami.Units.smallSpacing / 4
                 
                 Repeater {
                     id: lightInfoRepeater
@@ -348,7 +349,7 @@ PlasmaComponents.ItemDelegate {
                         Layout.fillWidth: true
                         horizontalAlignment: index % 2 ? Text.AlignLeft : Text.AlignRight
                         elide: index % 2 ? Text.ElideRight : Text.ElideNone
-                        font.pointSize: theme.smallestFont.pointSize
+                        font.pointSize: Kirigami.Theme.smallFont.pointSize
                         opacity: 0.6
                         text: index % 2 ? currentLightDetails[index] : "<b>%1</b>:".arg(currentLightDetails[index])
                         textFormat: index % 2 ? Text.PlainText : Text.StyledText

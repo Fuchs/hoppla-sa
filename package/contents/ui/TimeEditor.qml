@@ -19,6 +19,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtGraphicalEffects 
 import QtQuick.Dialogs
 import org.kde.plasma.core as PlasmaCore
 import "code/hue.js" as Hue

@@ -22,14 +22,15 @@ import QtQuick.Layouts
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents
 import QtQuick.Controls as QtControls
+import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
 
 
-PlasmaComponents.ItemDelegate {
+PlasmaExtras.ExpandableListItem  {
     id: groupItem
     
     property bool expanded : false
-    property int baseHeight : groupItemBase.height + (units.smallSpacing * 2) - groupBrightnessSlider.height
+    property int baseHeight : groupItemBase.height + (Kirigami.Units.smallSpacing * 2) - groupBrightnessSlider.height
     property var currentGroupDetails : createCurrentGroupDetails()
     property var currentGroupLights : []
     property string defaultIcon : "help-about"
@@ -38,7 +39,7 @@ PlasmaComponents.ItemDelegate {
 
     
     height: expanded ? baseHeight + groupTabBar.height + groupDetailsItem.height : baseHeight
-    checked: containsMouse
+    //TODO: needed? checked: containsMouse
     enabled: true
     
     // Set an auto updater
@@ -72,12 +73,12 @@ PlasmaComponents.ItemDelegate {
             top: parent.top
         }
         
-        height: Math.max(units.iconSizes.medium, groupLabel.height + groupInfoLabel.height) + groupBrightnessSlider.height + Math.round(units.gridUnit / 2)
+        height: Math.max(Kirigami.Units.iconSizes.medium, groupLabel.height + groupInfoLabel.height) + groupBrightnessSlider.height + Math.round(Kirigami.Units.gridUnit / 2)
         
         HueColourItem {
             id: colourItem
-            width: units.iconSizes.medium 
-            height: units.iconSizes.medium
+            width: Kirigami.Units.iconSizes.medium 
+            height: Kirigami.Units.iconSizes.medium
             
             valOn: vany_on
             colourMode: vcolormode
@@ -91,7 +92,6 @@ PlasmaComponents.ItemDelegate {
             type: "group"
             
             anchors {
-                verticalCenter: groupItemBase.verticalCenter - Math.round(groupBrightnessSlider.height / 2)
                 left: parent.left
             }
         }
@@ -102,7 +102,7 @@ PlasmaComponents.ItemDelegate {
             anchors {
                 bottom: colourItem.verticalCenter
                 left: colourItem.right
-                leftMargin: Math.round(units.gridUnit / 2)
+                leftMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
             }
             
@@ -119,14 +119,14 @@ PlasmaComponents.ItemDelegate {
             
             anchors {
                 left: colourItem.right
-                leftMargin: Math.round(units.gridUnit / 2)
+                leftMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 right: groupOnOffButton.visible ? groupOnOffButton.left : parent.right
                 top: groupLabel.bottom
             }
             
             height: paintedHeight
             elide: Text.ElideRight
-            font.pointSize: theme.smallestFont.pointSize
+            font.pointSize: Kirigami.Theme.smallFont.pointSize
             opacity: available ? 0.6 : 0.4
             text: available ? getSubtext() : getSubtext() + " : " + i18n("not available")
             textFormat: Text.PlainText
@@ -138,7 +138,7 @@ PlasmaComponents.ItemDelegate {
             
             anchors {
                 right: parent.right
-                rightMargin: Math.round(units.gridUnit / 2)
+                rightMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 verticalCenter: colourItem.verticalCenter
             }
             
@@ -152,10 +152,10 @@ PlasmaComponents.ItemDelegate {
             
             anchors {
                 left: colourItem.right
-                rightMargin: Math.round(units.gridUnit)
+                rightMargin: Math.round(Kirigami.Units.gridUnit)
                 right: groupOnOffButton.left
                 top: groupInfoLabel.bottom
-                topMargin: units.smallSpacing * 2
+                topMargin: Kirigami.Units.smallSpacing * 2
             }
             
             Kirigami.Icon  {
@@ -165,14 +165,14 @@ PlasmaComponents.ItemDelegate {
                 source: "contrast"
                 visible: expanded
             }
-            
+
             PlasmaComponents.Slider {
                 id: groupBrightnessSlider
 
                 Layout.fillWidth: true
                 from: 0
                 to: 255
-                //TODO: Port: updateValueWhileDragging : false
+                //TODO: PortMe updateValueWhileDragging : false
                 stepSize: 1
                 visible: expanded
                 enabled: vany_on
@@ -222,7 +222,7 @@ PlasmaComponents.ItemDelegate {
         // Compare the height of the list of lights, the info text part or the colour / temp chooser
         // which is made up from a gridUnit * 6 rectangle and a smallSpacing * 4 vertical padding.
         // Whichever of the three is the tallest plus the tab bar is the needed height.
-        height: Math.max(groupInfoItem.height, ((units.gridUnit * 6) + (units.smallSpacing * 4)), groupLightsView.contentHeight) + groupTabBar.height
+        height: Math.max(groupInfoItem.height, ((Kirigami.Units.gridUnit * 6) + (Kirigami.Units.smallSpacing * 4)), groupLightsView.contentHeight) + groupTabBar.height
         
         anchors {
             top: groupItemBase.bottom
@@ -241,24 +241,24 @@ PlasmaComponents.ItemDelegate {
             
             PlasmaComponents.TabButton {
                 id: groupLightsTab
-                //TODO: Port: iconSource: "im-jabber"
+                icon.source: "im-jabber"
             }
             
             PlasmaComponents.TabButton {
                 id: groupWhitesTab
-                //TODO: Port: iconSource: "color-picker-white"
+                icon.source: "color-picker-white"
                 visible: vHasTemperature
             }
             
             PlasmaComponents.TabButton {
                 id: groupColoursTab
-                //TODO: Port: iconSource: "color-management"
+                icon.source: "color-management"
                 visible: vHasColour
             }
             
             PlasmaComponents.TabButton {
                 id: groupInfoTab
-                //TODO: Port: iconSource: "help-about"
+                icon.source: "help-about"
             }
         }
         
@@ -266,15 +266,15 @@ PlasmaComponents.ItemDelegate {
             id: groupLightsView
             anchors {
                 top: groupTabBar.bottom
-                topMargin: Math.round(units.gridUnit / 2)
+                topMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 left: parent.left
-                leftMargin: units.gridUnit * 2
+                leftMargin: Kirigami.Units.gridUnit * 2
                 right: parent.right
             }
             
             interactive: false
             height: expanded ? groupLightsView.contentHeight : 0
-            visible: height > 0 && groupTabBar.currentTab == groupLightsTab
+            visible: height > 0 && groupTabBar.currentIndex == 0
             currentIndex: -1
             model: groupLightModel
             delegate: LightItem { }
@@ -282,16 +282,16 @@ PlasmaComponents.ItemDelegate {
         
         Item {
             id: groupWhitesItem
-            visible: groupTabBar.currentTab == groupWhitesTab
+            visible: groupTabBar.currentIndex == 1
             width: parent.width
             
             anchors {
                 top: groupTabBar.bottom
-                topMargin: units.smallSpacing * 4
+                topMargin: Kirigami.Units.smallSpacing * 4
                 left: parent.left
-                leftMargin: units.gridUnit * 2
+                leftMargin: Kirigami.Units.gridUnit * 2
                 right: parent.right
-                rightMargin: units.gridUnit * 2
+                rightMargin: Kirigami.Units.gridUnit * 2
             }
             
             TemperatureChooser {
@@ -312,22 +312,23 @@ PlasmaComponents.ItemDelegate {
         
         Item {
             id: groupColourItem
-            visible: groupTabBar.currentTab == groupColoursTab
+            //TODO: All of me
+            visible: groupTabBar.currentIndex == 2
             width: parent.width
             
             anchors {
                 top: groupTabBar.bottom
-                topMargin: units.smallSpacing * 4
+                topMargin: Kirigami.Units.smallSpacing * 4
                 left: parent.left
-                leftMargin: units.gridUnit * 2
+                leftMargin: Kirigami.Units.gridUnit * 2
                 right: parent.right
-                rightMargin: units.gridUnit * 2
+                rightMargin: Kirigami.Units.gridUnit * 2
             }
             
             ColourChooser {
                 id: colorChooser
                 width: parent.width
-                height: units.gridUnit * 6
+                height: Kirigami.Units.gridUnit * 6
                 
                 onReleased: {
                     if(available && vany_on) {
@@ -349,9 +350,9 @@ PlasmaComponents.ItemDelegate {
         //             
         //             anchors {
         //                 top: groupTabBar.bottom
-        //                 topMargin: units.smallSpacing / 2
+        //                 topMargin: Kirigami.Units.smallSpacing / 2
         //                 left: parent.left
-        //                 leftMargin: units.gridUnit * 2
+        //                 leftMargin: Kirigami.Units.gridUnit * 2
         //                 right: parent.right
         //             }
         //             
@@ -367,21 +368,21 @@ PlasmaComponents.ItemDelegate {
         
         Item {
             id: groupInfoItem
-            visible: groupTabBar.currentTab == groupInfoTab
+            visible: groupTabBar.currentIndex == 3
             width: parent.width
             
             anchors {
                 top: groupTabBar.bottom
-                topMargin: units.smallSpacing / 2
+                topMargin: Kirigami.Units.smallSpacing / 2
                 left: parent.left
-                leftMargin: units.gridUnit * 2
+                leftMargin: Kirigami.Units.gridUnit * 2
                 right: parent.right
             }
             
             GridLayout {
                 width: parent.width
                 columns: 2
-                rowSpacing: units.smallSpacing / 4
+                rowSpacing: Kirigami.Units.smallSpacing / 4
                 
                 Repeater {
                     id: groupInfoRepeater
@@ -393,7 +394,7 @@ PlasmaComponents.ItemDelegate {
                         Layout.fillWidth: true
                         horizontalAlignment: index % 2 ? Text.AlignLeft : Text.AlignRight
                         elide: index % 2 ? Text.ElideRight : Text.ElideNone
-                        font.pointSize: theme.smallestFont.pointSize
+                        font.pointSize: Kirigami.Theme.smallFont.pointSize
                         opacity: 0.6
                         text: index % 2 ? currentGroupDetails[index] : "<b>%1</b>:".arg(currentGroupDetails[index])
                         textFormat: index % 2 ? Text.PlainText : Text.StyledText

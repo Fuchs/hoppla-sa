@@ -17,53 +17,81 @@
  */
 
 import QtQuick
-import QtQml
+import QtQuick.Layouts
+import QtQuick.Controls
 
-import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
-import org.kde.kquickcontrolsaddons
+import org.kde.ksvg as KSvg
+import org.kde.kirigami as Kirigami
+import org.kde.kitemmodels as KItemModels
+import org.kde.plasma.components as PC3
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.plasmoid
 
+import org.kde.kcmutils as KCMUtils
+import org.kde.config as KConfig
 
 import "code/hue.js" as Hue
 
 PlasmoidItem {
-    id: hopplaApplet
-    property bool debugMode: false
-    
-    toolTipMainText: i18n("Hue Light Control")
+    id: main
+
+    property string displayName: "Hoppla Hue Plasmoid"
+
+    switchHeight: Layout.minimumHeight
+    switchWidth: Layout.minimumWidth
+
     Plasmoid.icon: "im-jabber"
-    
-    compactRepresentation: CompactRepresentation { }
-    fullRepresentation: FullRepresentation { }
-    
-    Component.onCompleted: {
-        // We need to init here, otherwise there is a strange plasma bug
-        // which can lead to plasmoid.configuration being unavailable, 
-        // thus the plasmoid failing badly.
-        initHueConfig();
+
+    toolTipMainText: {
+        return i18n("Hoppla Hue Plasmoid");
     }
+
+    fullRepresentation: FullRepresentation { }
+
+    compactRepresentation: CompactRepresentation { }
 
     Plasmoid.contextualActions: [
         PlasmaCore.Action {
-            id: refreshAction
             text: i18n("Refresh")
             icon.name: "view-refresh"
-            onTriggered: action_refresh()
+            onTriggered: {
+                fullRepresentationItem.reInit(false, true)
+            }
         }
     ]
+
+    Component.onCompleted: {
+        // We need to init here, otherwise there is a strange plasma bug
+        // which can lead to plasmoid.configuration being unavailable,
+        // thus the plasmoid failing badly.
+
+        initHueConfig();
+    }
+
+    ListModel {
+        id: actionModel
+    }
+
+    ListModel {
+        id: groupModel
+    }
+
+    ListModel {
+        id: lightModel
+    }
+
+    Timer {
+        id: fullTimer
+    }
     
     function action_refresh() {
-       plasmoid.fullRepresentationItem.reInit(false, true);
+       fullRepresentationItem.reInit(false, true);
     }
 
 
     function debugPrint(msg) {
-        if(!debugMode) {
-            return;
-        }
-        else {
-            print('[Hoppla] ' + msg)
-        }
+        Hue.debugPrint(msg)
     }
     
     function initHueConfig() {
@@ -133,10 +161,4 @@ PlasmoidItem {
     function updateLight(light, delay) {
         Hue.updateLight(light, delay);
     }
-    
-    // Apparently plasmoid is not available everywhere ...
-    function isPlasmoidExpanded() {
-        return plasmoid.expanded;
-    }
-
 }

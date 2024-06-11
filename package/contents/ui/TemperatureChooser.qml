@@ -19,17 +19,19 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Shapes
+import org.kde.kirigami as Kirigami
 
 MouseArea {
     id: whiteTempRect
     width: parent.width
-    height: units.gridUnit * 6
+    height: Kirigami.Units.gridUnit * 6
     property alias rectWidth : whiteTempRect.width
     
     Rectangle {
         width:parent.width
         height: parent.height
         gradient: Gradient {
+            orientation: Gradient.Horizontal
             GradientStop { position: 0.0; color: "#b4ffff" }
             GradientStop { position: 0.4; color: "#ffffff" }
             GradientStop { position: 1.0; color: "#ff9500" }

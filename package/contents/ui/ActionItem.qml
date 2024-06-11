@@ -21,20 +21,19 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.extras as PlasmaExtras
 import org.kde.ksvg as KSvg
+import org.kde.kirigami as Kirigami
 
 import "code/hue.js" as Hue
 
 PlasmaComponents.ItemDelegate {
     id: actionItem
-    
-    property bool expanded : visibleDetails
-    property bool visibleDetails : false
-    property int baseHeight : actionItemBase.height
+
+    property int baseHeight : 40
     property string defaultIcon : "help-about"
     
-    height:  Math.max(units.iconSizes.medium, actionLabel.height + actionInfoLabel.height) + Math.round(units.gridUnit / 2)
-    checked: containsMouse
+    height:  Math.max(Kirigami.Units.iconSizes.medium, actionLabel.height + actionInfoLabel.height) + Math.round(Kirigami.Units.gridUnit / 2)
     enabled: true
     
     Item {
@@ -45,84 +44,84 @@ PlasmaComponents.ItemDelegate {
             left: parent.left
             right: parent.right
             top: parent.top
-            topMargin: -Math.round(units.gridUnit / 3)
+            topMargin: -Math.round(Kirigami.Units.gridUnit / 3)
         }
         
-        height: Math.max(units.iconSizes.medium, actionLabel.height + actionInfoLabel.height) + Math.round(units.gridUnit / 2)
-        
+        height: Math.max(Kirigami.Units.iconSizes.medium, actionLabel.height + actionInfoLabel.height) + Math.round(Kirigami.Units.gridUnit / 2)
+
         KSvg.Svg {
             id: mySvg
         }
-        
+
         KSvg.SvgItem {
             id: actionIcon
-            
+
             anchors {
                 left: parent.left
                 verticalCenter: parent.verticalCenter
             }
-            
-            height: units.iconSizes.medium
+
+            height: Kirigami.Units.iconSizes.medium
             width: height
             svg: mySvg
         }
-        
+
         PlasmaComponents.Label {
             id: actionLabel
-            
+
             anchors {
                 top: parent.top
-                topMargin: units.smallSpacing
+                topMargin: Kirigami.Units.smallSpacing
                 bottom: actionIcon.verticalCenter
                 left: actionIcon.right
-                leftMargin: Math.round(units.gridUnit / 2)
+                leftMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 right: executeButton.visible ? executeButton.left : parent.right
             }
-            
+
             height: paintedHeight
             elide: Text.ElideRight
             font.weight: Font.Normal
             text: title
             textFormat: Text.PlainText
         }
-        
+
         PlasmaComponents.Label {
             id: actionInfoLabel
-            
+
             anchors {
                 left: actionIcon.right
-                leftMargin: Math.round(units.gridUnit / 2)
+                leftMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 top: actionLabel.bottom
-                topMargin: units.smallSpacing
+                topMargin: Kirigami.Units.smallSpacing
             }
-            
+
             height: paintedHeight
             elide: Text.ElideRight
-            font.pointSize: theme.smallestFont.pointSize
+            //TODO: PortMe font.pointSize: theme.smallestFont.pointSize
             opacity: 0.6
             text: subtitle
             textFormat: Text.PlainText
         }
-        
+
         PlasmaComponents.Button {
             id: executeButton
-            
+
             anchors {
                 right: parent.right
-                rightMargin: Math.round(units.gridUnit / 2)
+                rightMargin: Math.round(Kirigami.Units.gridUnit / 2)
                 verticalCenter: actionIcon.verticalCenter
             }
-            
+
             text: i18n("OK")
             opacity: actionItem.containsMouse ? 1 : 0
-            visible: opacity != 0
-            
+            visible: true // TODO: FIXME
+
             Behavior on opacity {
                 NumberAnimation {
-                    duration: units.shortDuration
+                    duration: Kirigami.Units.shortDuration
                 }
             }
-            
+
             onClicked: execute()
         }
         

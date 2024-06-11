@@ -17,15 +17,17 @@
  */
 
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Layouts
 import org.kde.plasma.core as PlasmaCore
-import org.kde.kcoreaddons as KCoreAddons
+import org.kde.coreaddons as KCoreAddons
+import org.kde.kirigami as Kirigami
 import "code/hue.js" as Hue
+import org.kde.kirigami as Kirigami
+import org.kde.kcmutils as KCM
 
+KCM.SimpleKCM {
 
-Item {
-    
     KCoreAddons.KUser {
         id: kuser
     }
@@ -43,189 +45,191 @@ Item {
     property string errorColour: "#ff0000"
     property string successColour: "#00aa00"
     
-    width: parent.width
-    anchors.left: parent.left
-    anchors.right: parent.right
-    
-    ColumnLayout {
-        Layout.fillWidth: true
+    Item {
+        width: parent.width
         anchors.left: parent.left
         anchors.right: parent.right
         
-        GroupBox {
-            id: grpStatus
+        ColumnLayout {
             Layout.fillWidth: true
             anchors.left: parent.left
             anchors.right: parent.right
-            flat: true
-            visible: false
             
-            Rectangle {
-                id: rctStatus
-                width: parent.width
-                height: (units.gridUnit * 2.5) + units.smallSpacing
-                color: "#00000000"
-                border.color: "black"
-                border.width: 1
-                radius: 5
-            }
-            
-            Label {
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    top: parent.top
-                    topMargin: units.smallSpacing
-                }
-                id: lblStatusTitle
-                color: "white"
-                text: "Test"
-                font.bold: true
-            }
-            Label {
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    top: lblStatusTitle.bottom
-                    topMargin: units.smallSpacing
-                }
-                id: lblStatusText
-                color: "white"
-                text: "Test"
-                font.bold: true
-            }
-        }
-        
-        
-        GroupBox {
-            id: grpMain
-            Layout.fillWidth: true
-            anchors.left: parent.left
-            anchors.right: parent.right
-            flat: true
-            
-            GridLayout {
-                id: grdMain
+            GroupBox {
+                id: grpStatus
+                Layout.fillWidth: true
                 anchors.left: parent.left
                 anchors.right: parent.right
-                columns: 3
-                Layout.fillWidth: true
+                // flat: true
+                visible: false
                 
-                Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Bridge Address:")
-                }
-                
-                Button {
-                    id: btnFindBridge
-                    enabled: true
-                    text: i18n("Find bridge")
-                    onClicked: findBridge()
-                }
-                
-                TextField {
-                    id: baseURL
-                    Layout.fillWidth: true
-                    placeholderText: i18n("http://1.2.3.4 or use \"Find bridge\"")
+                Rectangle {
+                    id: rctStatus
+                    width: parent.width
+                    height: (Kirigami.Units.gridUnit * 2.5) + Kirigami.Units.smallSpacing
+                    color: "#00000000"
+                    border.color: "black"
+                    border.width: 1
+                    radius: 5
                 }
                 
                 Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Authentication Name:")
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        top: parent.top
+                        topMargin: Kirigami.Units.smallSpacing
+                    }
+                    id: lblStatusTitle
+                    color: "white"
+                    text: "Test"
+                    font.bold: true
                 }
-                
-                Button {
-                    id: btnAuthenticate
-                    text: i18n("Authenticate")
-                    onClicked: authenticate()
-                }
-                
-                TextField {
-                    id: authToken
-                    Layout.fillWidth: true
-                    placeholderText: i18n("Use the \"Authenticate\" button")
-                }
-                
-                CheckBox {
-                    id: pollCb
-                    text: i18n("Check for status every")
-                    Layout.alignment: Qt.AlignLeft
-                }
-                
-                SpinBox {
-                    id: sbPollTime
-                    maximumValue: 43200000000
-                    minimumValue: 1
-                    enabled: pollCb.checked
-                }
-                
                 Label {
-                    Layout.alignment: Qt.AlignLeft
-                    text: i18n("seconds")
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        top: lblStatusTitle.bottom
+                        topMargin: Kirigami.Units.smallSpacing
+                    }
+                    id: lblStatusText
+                    color: "white"
+                    text: "Test"
+                    font.bold: true
                 }
             }
-        }
-        
-        CheckBox {
-            id: altConnectionCb
-            text: i18n("Use a fallback connection when the bridge is out of reach")
-        }
-        
-        GroupBox {
-            Layout.fillWidth: true
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: altConnectionCb.bottom
-            flat: true
-            visible: altConnectionCb.checked
-
-            GridLayout {
-                columns: 2
+            
+            
+            GroupBox {
+                id: grpMain
                 Layout.fillWidth: true
-                anchors.fill: parent
+                anchors.left: parent.left
+                anchors.right: parent.right
+                // flat: true
                 
-                Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Alternative bridge URL:")
-                }
-                
-                TextField {
-                    id: altUrl
+                GridLayout {
+                    id: grdMain
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    columns: 3
                     Layout.fillWidth: true
-                    placeholderText: i18n("https://hue.mypersonaldyndns.org")
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Bridge Address:")
+                    }
+                    
+                    Button {
+                        id: btnFindBridge
+                        enabled: true
+                        text: i18n("Find bridge")
+                        onClicked: findBridge()
+                    }
+                    
+                    TextField {
+                        id: baseURL
+                        Layout.fillWidth: true
+                        placeholderText: i18n("http://1.2.3.4 or use \"Find bridge\"")
+                    }
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Authentication Name:")
+                    }
+                    
+                    Button {
+                        id: btnAuthenticate
+                        text: i18n("Authenticate")
+                        onClicked: authenticate()
+                    }
+                    
+                    TextField {
+                        id: authToken
+                        Layout.fillWidth: true
+                        placeholderText: i18n("Use the \"Authenticate\" button")
+                    }
+                    
+                    CheckBox {
+                        id: pollCb
+                        text: i18n("Check for status every")
+                        Layout.alignment: Qt.AlignLeft
+                    }
+                    
+                    SpinBox {
+                        id: sbPollTime
+                        to: 30758400
+                        from: 1
+                        enabled: pollCb.checked
+                    }
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignLeft
+                        text: i18n("seconds")
+                    }
                 }
-                
-                Label {
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Requires basic authentication:")
-                }
-                
-                CheckBox {
-                    id: altRequireAuth
-                    Layout.alignment: Qt.AlignLeft
-                }
-                
-                Label {
-                    visible: altRequireAuth.checked
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Username:")
-                }
-                
-                TextField {
-                    id: username
-                    visible: altRequireAuth.checked
+            }
+            
+            CheckBox {
+                id: altConnectionCb
+                text: i18n("Use a fallback connection when the bridge is out of reach")
+            }
+            
+            GroupBox {
+                Layout.fillWidth: true
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: altConnectionCb.bottom
+                // flat: true
+                visible: altConnectionCb.checked
+
+                GridLayout {
+                    columns: 2
                     Layout.fillWidth: true
-                }
-                
-                Label {
-                    visible: altRequireAuth.checked
-                    Layout.alignment: Qt.AlignRight
-                    text: i18n("Password:")
-                }
-                
-                TextField {
-                    id: password
-                    visible: altRequireAuth.checked
-                    Layout.fillWidth: true
-                    echoMode: TextInput.Password
+                    anchors.fill: parent
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Alternative bridge URL:")
+                    }
+                    
+                    TextField {
+                        id: altUrl
+                        Layout.fillWidth: true
+                        placeholderText: i18n("https://hue.mypersonaldyndns.org")
+                    }
+                    
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Requires basic authentication:")
+                    }
+                    
+                    CheckBox {
+                        id: altRequireAuth
+                        Layout.alignment: Qt.AlignLeft
+                    }
+                    
+                    Label {
+                        visible: altRequireAuth.checked
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Username:")
+                    }
+                    
+                    TextField {
+                        id: username
+                        visible: altRequireAuth.checked
+                        Layout.fillWidth: true
+                    }
+                    
+                    Label {
+                        visible: altRequireAuth.checked
+                        Layout.alignment: Qt.AlignRight
+                        text: i18n("Password:")
+                    }
+                    
+                    TextField {
+                        id: password
+                        visible: altRequireAuth.checked
+                        Layout.fillWidth: true
+                        echoMode: TextInput.Password
+                    }
                 }
             }
         }

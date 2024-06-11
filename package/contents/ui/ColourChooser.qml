@@ -18,11 +18,12 @@
 
 import QtQuick
 import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 
 MouseArea {
     id: hueSatRect
     width: parent.width
-    height: units.gridUnit * 6
+    height: Kirigami.Units.gridUnit * 6
     property alias rectWidth : hueSatRect.width
     property alias rectHeight : hueSatRect.height
     
@@ -30,6 +31,7 @@ MouseArea {
     Rectangle {
         anchors.fill: parent
         gradient: Gradient {
+            orientation: Gradient.Horizontal
             GradientStop { position: 0/6; color: "red" }
             GradientStop { position: 1/6; color: "magenta" }
             GradientStop { position: 2/6; color: "blue" }

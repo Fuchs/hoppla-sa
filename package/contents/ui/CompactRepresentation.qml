@@ -22,14 +22,45 @@ import org.kde.plasma.components as PlasmaComponents
 import org.kde.kirigami as Kirigami
 
 MouseArea {
-    onClicked: plasmoid.expanded = !plasmoid.expanded
-    property bool fullRepresentationInitialized: false
+
+    property bool wasExpanded: false
+
+    anchors.fill: parent
+    hoverEnabled: true
+    acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+    onPressed: mouse => {
+        if (mouse.button == Qt.LeftButton) {
+            wasExpanded = main.expanded;
+        } else if (mouse.button == Qt.MiddleButton) {
+            //TODO: Do something
+        }
+    }
+
+    onClicked: mouse => {
+        if (mouse.button == Qt.LeftButton) {
+            main.expanded = !wasExpanded;
+        }
+    }
+
+    onWheel: wheel => {
+        const delta = (wheel.inverted ? -1 : 1) * (wheel.angleDelta.y ? wheel.angleDelta.y : -wheel.angleDelta.x);
+        wheelDelta += delta;
+        // Magic number 120 for common "one click"
+        // See: https://qt-project.org/doc/qt-5/qml-qtquick-wheelevent.html#angleDelta-prop
+        while (wheelDelta >= 120) {
+            //TODO: Do something
+        }
+        while (wheelDelta <= -120) {
+            //TODO: Do something
+        }
+    }
 
     Kirigami.Icon {
-        id: hopplaslIcon
         anchors.fill: parent
-        source: "im-jabber"
+        source: plasmoid.icon
     }
+    
+    property bool fullRepresentationInitialized: false
 
     Component.onCompleted: {
         getHueConfigured();
@@ -75,6 +106,7 @@ MouseArea {
         }
     }
     
+    //TODO: Unify with full rep
     /**
      * Helper to check the updated connection
      * @param {String} connection the connection state
@@ -82,23 +114,23 @@ MouseArea {
     function updatedConnection(connection, enforce) {
 
         if(connection === "none") {
-            plasmoid.toolTipSubText = i18n("Hue bridge not reachable");
+            main.toolTipSubText = i18n("Hue bridge not reachable");
             plasmoid.status = PlasmaCore.Types.PassiveStatus;
             return;
         }
         else if(connection === "unauth") {
             plasmoid.toolTipSubText = i18n("Not authenticated with Hue bridge");
-            plasmoid.status = PlasmaCore.Types.ActiveStatus;
+            main.status = PlasmaCore.Types.ActiveStatus;
             return;
         }
         else if(connection === "main") {
-            plasmoid.toolTipSubText = i18n("Connected to Philips HUE via main connection");
+            main.toolTipSubText = i18n("Connected to Philips HUE via main connection");
             plasmoid.status = PlasmaCore.Types.ActiveStatus;
             getLights(lightModel)
             setLightsTooltip(i18n("Main connection"));
         }
         else if(connection === "alt") {
-            plasmoid.toolTipSubText = i18n("Connected to Philips HUE via alternative connection");
+            main.toolTipSubText = i18n("Connected to Philips HUE via alternative connection");
             plasmoid.status = PlasmaCore.Types.ActiveStatus;
             getLights(lightModel)
             setLightsTooltip(i18n("Alternative connection"));
@@ -125,7 +157,7 @@ MouseArea {
             }
 
             var tooltip = baseText + ": " + lightOn + "/" + lightsTotal + " " + i18n("lights on")
-            plasmoid.toolTipSubText = tooltip;
+            main.toolTipSubText = tooltip;
         }
     }
 
