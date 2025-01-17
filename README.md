@@ -99,7 +99,7 @@ A possible apache httpd configuration would be
 </IfModule>
 ```
 
-where mydyanmicdnsdomain.org is a domain pointing at your public address from your home network.
+where `mydynanmicdnsdomain.org` is a domain pointing at your public address from your home network.
 Please read your httpd documentation on how to set it up, especially on how to add basic authentication.
 Note that due to the higher delay between requests and replies to the bridge, this can lead to the plasmoid
 being sometimes not up to date about the current state until the next background update occurs. 
